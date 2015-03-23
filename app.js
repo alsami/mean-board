@@ -9,6 +9,7 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var categories = require('./routes/categories');
 var threads = require('./routes/threads');
+var posts = require('./routes/posts');
 
 // require mongoose and connect to mongodb
 var mongoose = require('mongoose');
@@ -38,6 +39,7 @@ app.use('/', routes);
 app.use('/api/user', users);
 app.use('/api/category', categories);
 app.use('/api/thread', threads);
+app.use('/api/post', posts);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
