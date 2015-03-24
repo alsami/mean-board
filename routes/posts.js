@@ -42,6 +42,9 @@ router.post('/', function(req, res, next) {
 				setLastPostForAllCategories(thread.parent, post._id);
 			});
 		});
+
+		res.header("Content-Type", "application/json; charset=utf-8");
+		res.json(post);
 	});
 });
 
