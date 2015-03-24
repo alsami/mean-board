@@ -3,7 +3,7 @@ var Schema = mongoose.Schema;
 
 var PostSchema = new Schema({
 	body: String,
-	parent: {type: Schema.Types.ObjectId, ref: 'Category'},
+	parent: {type: Schema.Types.ObjectId, ref: 'Thread', required: true},
 	deletedAt: Date
 });
 

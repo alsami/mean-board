@@ -7,6 +7,7 @@ var CategorySchema = new Schema({
 	parent: {type: Schema.Types.ObjectId, ref: 'Category', default: null},
 	categories: [{type: Schema.Types.ObjectId, ref: 'Category'}],
 	threads: [{type: Schema.Types.ObjectId, ref: 'Thread'}],
+	lastPost: {type: Schema.Types.ObjectId, ref: 'Post'},
 	deletedAt: Date
 });
 

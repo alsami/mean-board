@@ -5,6 +5,8 @@ var router = express.Router();
 /* import mongoose and all needed Models */
 var mongoose = require('mongoose');
 var Post = require('../models/Post.js');
+var Thread = require('../models/Thread.js');
+var Category = require('../models/Category.js');
 
 
 /* routes for post */
@@ -22,17 +24,35 @@ router.get('/:id', function(req, res, next){
 
 // create a post
 router.post('/', function(req, res, next) {
-	Post.create(req.body, function (err, post) {
+	Post.create(req.body, function(err, post) {
 		if (err) return next(err);
+		
+		// update the parent === thread
+		Thread.findByIdAndUpdate(post.parent, { lastPost: post._id }, function(err, thread) {
+			if(err) return next(err);
+			
+			// update all parents of the thread === main-, sub, sub-sub, ... - category
+			setLastPostForAllCategories(thread.parent, post._id);
+		});
+
 		res.header("Content-Type", "application/json; charset=utf-8");
 		res.json(post);
 	});
 });
 
+var setLastPostForAllCategories = function(categoryId, lastPostId){
+	Category.findByIdAndUpdate(categoryId, {lastPost: lastPostId}, function(err, category){
+		if(err) return next(err);
+		if(category.parent !== null){
+			setLastPostForAllCategories(category.parent, lastPostId);
+		}
+	});
+}
+
 // update post by id
 router.put('/:id', function(req, res, next) {
-	Post.findByIdAndUpdate(req.params.id, req.body, function (err, post) {
-		if (err) return next(err);
+	Post.findByIdAndUpdate(req.params.id, req.body, function(err, post) {
+		if(err) return next(err);
 		res.header("Content-Type", "application/json; charset=utf-8");
 		res.json(post);
 	});
@@ -42,7 +62,7 @@ router.put('/:id', function(req, res, next) {
 // ONLY FOR DEBUG AND DEVELOPMENT: get all posts
 router.get('/debug/getall', function(req, res, next) {
 	Post.find(function (err, post) {
-		if (err) return next(err);
+		if(err) return next(err);
 		res.header("Content-Type", "application/json; charset=utf-8");
 		res.json(post);
 	});
