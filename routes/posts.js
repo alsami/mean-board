@@ -27,16 +27,21 @@ router.post('/', function(req, res, next) {
 	Post.create(req.body, function(err, post) {
 		if (err) return next(err);
 		
-		// update the parent === thread
-		Thread.findByIdAndUpdate(post.parent, { lastPost: post._id }, function(err, thread) {
+		// register the new post at the parent thread
+		Thread.findById(post.parent, function(err, thread){
 			if(err) return next(err);
 			
-			// update all parents of the thread === main-, sub, sub-sub, ... - category
-			setLastPostForAllCategories(thread.parent, post._id);
-		});
+			thread.posts.push(post);
+			thread.lastPost = post._id;
 
-		res.header("Content-Type", "application/json; charset=utf-8");
-		res.json(post);
+			// update the parent thread
+			Thread.findByIdAndUpdate(thread._id, thread, function(err, thread) {
+				if(err) return next(err);
+				
+				// update lastPost for all parent threads
+				setLastPostForAllCategories(thread.parent, post._id);
+			});
+		});
 	});
 });
 
