@@ -12,7 +12,7 @@ var Category = require('../models/Category.js');
 // get all main categories
 router.get('/', function(req, res, next){
 	Category.find({parent: null})
-		.deepPopulate('threads categories.categories categories.threads categories.categories.threads')
+		.deepPopulate('categories.categories lastPost.parent threads')
 		.exec(function(err, category){
 			if(err) return next(err);
 			res.header("Content-Type", "application/json; charset=utf-8");
@@ -23,7 +23,7 @@ router.get('/', function(req, res, next){
 // get a specific category by id
 router.get('/:id', function(req, res, next){
 	Category.findById(req.params.id)
-		.deepPopulate('categories.categories')
+		.deepPopulate('categories.categories lastPost.parent threads')
 		.exec(function(err, category){
 			if(err) return next(err);
 			res.header("Content-Type", "application/json; charset=utf-8");
@@ -35,6 +35,15 @@ router.get('/:id', function(req, res, next){
 router.post('/', function(req, res, next) {
 	Category.create(req.body, function (err, category) {
 		if (err) return next(err);
+
+		// if the new category has a parent we will register it
+		if(category.parent !== null){
+			console.log("has a parent");
+			Category.findByIdAndUpdate(category.parent, { $push: { categories: category}}, function(err, category){
+				if(err) return next(err);
+			});
+		}
+
 		res.header("Content-Type", "application/json; charset=utf-8");
 		res.json(category);
 	});
