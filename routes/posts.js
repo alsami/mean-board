@@ -28,19 +28,11 @@ router.post('/', function(req, res, next) {
 		if (err) return next(err);
 		
 		// register the new post at the parent thread
-		Thread.findById(post.parent, function(err, thread){
+		Thread.findByIdAndUpdate(post.parent, { $push : { posts: post}}, function(err, thread){
 			if(err) return next(err);
 			
-			thread.posts.push(post);
-			thread.lastPost = post._id;
-
-			// update the parent thread
-			Thread.findByIdAndUpdate(thread._id, thread, function(err, thread) {
-				if(err) return next(err);
-				
-				// update lastPost for all parent threads
-				setLastPostForAllCategories(thread.parent, post._id);
-			});
+			// update lastPost for all parent threads
+			setLastPostForAllCategories(thread.parent, post._id);
 		});
 
 		res.header("Content-Type", "application/json; charset=utf-8");
