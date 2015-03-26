@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+
 var deepPopulate = require('mongoose-deep-populate');
 
 var CategorySchema = new Schema({
@@ -8,7 +9,7 @@ var CategorySchema = new Schema({
 	categories: [{type: Schema.Types.ObjectId, ref: 'Category'}],
 	threads: [{type: Schema.Types.ObjectId, ref: 'Thread'}],
 	lastPost: {type: Schema.Types.ObjectId, ref: 'Post'},
-	deletedAt: Date
+	deletedAt: {type: Date, default: null}
 });
 
 CategorySchema.plugin(deepPopulate, {});

@@ -17,7 +17,7 @@ var UserSchema = new mongoose.Schema({
 	city: String,
 	zipCode: String,
 
-	deletedAt: Date
+	deletedAt: {type: Date, default: null}
 });
 
 module.exports = mongoose.model('User', UserSchema);
