@@ -45,5 +45,13 @@ router.put('/:id', function(req, res, next) {
 	});
 });
 
+// soft delete by setting actual date for deletedAt
+router.delete('/:id', function(req, res, next) {
+	Category.findByIdAndUpdate(req.params.id, {deletedAt: Date.now()} , function (err, category) {
+		if (err) return next(err);
+		res.header("Content-Type", "application/json; charset=utf-8");
+		res.json(category);
+	});
+});
 
 module.exports = router;
