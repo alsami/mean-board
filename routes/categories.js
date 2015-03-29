@@ -12,8 +12,8 @@ var Category = require('../models/Category.js');
 // get all main categories
 router.get('/', function(req, res, next){
 	Category.find({parent: null, deletedAt: null})
-		.select('_id title categories threads lastPost')
-		.deepPopulate('categories.categories lastPost.parent threads')
+		.select('_id title categories threads')
+		.deepPopulate('categories.lastPost.parent categories.categories.lastPost.parent threads.lastPost')
 		.exec(function(err, category){
 			if(err) return next(err);
 			res.header("Content-Type", "application/json; charset=utf-8");
@@ -24,8 +24,8 @@ router.get('/', function(req, res, next){
 // get a specific category by id
 router.get('/:id', function(req, res, next){
 	Category.findById(req.params.id)
-		.select('parent _id title categories threads lastPost')
-		.deepPopulate('parent categories.categories lastPost.parent threads')
+		.select('parent _id title categories threads')
+		.deepPopulate('parent categories.lastPost.parent categories.categories.lastPost.parent threads')
 		.exec(function(err, category){
 			if(err) return next(err);
 			res.header("Content-Type", "application/json; charset=utf-8");
@@ -60,7 +60,7 @@ router.put('/:id', function(req, res, next) {
 	});
 });
 
-// soft delete by setting actual date for deletedAt
+// soft delete category by setting current date for deletedAt
 router.delete('/:id', function(req, res, next) {
 	Category.findByIdAndUpdate(req.params.id, {deletedAt: Date.now()} , function (err, category) {
 		if (err) return next(err);

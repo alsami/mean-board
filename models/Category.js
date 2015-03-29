@@ -12,30 +12,16 @@ var CategorySchema = new Schema({
 	deletedAt: {type: Date, default: null}
 });
 
-CategorySchema.plugin(deepPopulate, {
-	populate: {
-		'parent': {
-			select: '_id title'
-		},
-		'categories': {
-			match: { deletedAt: null },
-			select: '_id title categories'
-		},
-		'categories.categories': {
-			match: { deletedAt: null },
-			select: '_id title'
-		},
-		'threads': {
-			match: { deletedAt: null },
-			select: '_id title'
-		},
-		'lastPost': {
-			select: 'updatedAt createdBy parent'
-		},
-		'lastPost.parent': {
-			select: '_id title'
-		}
-	}
-});
+CategorySchema.plugin(deepPopulate, {});
+
+// TODO:It ist possible to use an filter object for deepPopulate
+// {
+//	populate: {
+//		'path': {
+//			match: { attribute: value },
+//			select: 'attribute1 atrribute2 ...'
+//		}, ...
+//	}
+//}
 
 module.exports = mongoose.model('Category', CategorySchema);
