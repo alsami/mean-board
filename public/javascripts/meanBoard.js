@@ -5,13 +5,13 @@ app.config(['$routeProvider',
 	$routeProvider
 		.when('/category', {
 			templateUrl: './partials/category.html',
-			controller: 'categoryCtrl'/*,
+			controller: 'categoryCtrl',
 			resolve:{
 				postPromise: ['categoryFactory', function(categoryFactory){
 					return categoryFactory.getAllCategories();
 				}]
 			}
-			*/
+			
 		})
 		.when('/home', {
 			templateUrl: './partials/home.html'
@@ -31,13 +31,13 @@ app.factory('categoryFactory', ['$http',
 		
 		categoryObject.getAllCategories = function(){
 			return $http.get('/api/category').success(function(data){
-					angular.copy(data, o.categories);
+					angular.copy(data, categoryObject.categories);
 			});
 		}
 		
 		categoryObject.createCategory = function(category){
 			return $http.post('api/category', category).success(function(data){
-				categoryObject.push(data, categoryObject.categories)
+				categoryObject.categories.push(data)
 			});
 		}
 		
