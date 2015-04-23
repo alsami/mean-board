@@ -7,4 +7,45 @@
 			Sub Categories
 		</div>
 	</div>
+	<div>
+		Hallo
+	</div>
+	<div class="modal fade" id="modalWindowAddMainCategory" tabindex="-1" role="dialog" aria-labelledby="modalWindowLabelImport" aria-hidden="true">
+		<div class="modal-dialog" style="margin: 20% auto;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="modalWindowLabelImport">Create a new account!</h4>
+				</div>
+				<div class="modal-body">
+					<form ng-submit="createMainCategory()">
+						<div class="form-group">
+							<input 
+								type="text"
+								class="form-control"
+								placeholder="Category Title"
+								ng-model="title">
+							</input>
+						</div>
+						<!---Footer--->
+						<div class="modal-footer">
+							<button 
+								type="button" 
+								class="btn btn-default"
+								style="width:150px;"
+								data-dismiss="modal">Cancel
+							</button>	
+							<button 
+								type="submit" 
+								class="btn btn-success"
+								style="width:150px;"
+								>Register me now!
+							</button>
+						</div>
+						<!---Footer End--->
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

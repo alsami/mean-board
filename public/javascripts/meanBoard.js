@@ -3,17 +3,16 @@ var app = angular.module('meanBoard', ['ngRoute']);
 app.config(['$routeProvider', 
 	function($routeProvider){
 	$routeProvider
-		.when('/', {
+		.when('/category', {
 			templateUrl: './partials/category.html',
-			controller: 'categoryCtrl'
-			/*,
-			resolve: {
-				postPromise: ['categoryFactory'],
-					function(categoryFactory){
-						return categoryFactory.getAllCategories();
-					}
-			}
+			/*
+			resolve:{
+				postPromise: ['categoryFactory', function(categoryFactory){
+					return categoryFactory.getAllCategories();
+				}]
+			},
 			*/
+			controller: 'categoryCtrl'
 		})
 		.otherwise({redirectTo: '/'});
 	}
@@ -22,58 +21,20 @@ app.config(['$routeProvider',
 app.factory('categoryFactory', ['$http', 
 	function($http){
 		var categoryObject = {
-			categories: [
-				{				
-					title: 'Category 1',
-					parent: null,
-					categories: {},
-					threads: {},
-					lastPost: {},
-					deletedAt: null
-				},
-				{				
-					title: 'Category 2',
-					parent: null,
-					categories: {},
-					threads: {},
-					lastPost: {},
-					deletedAt: null
-				},
-				{				
-					title: 'Category 3',
-					parent: null,
-					categories: {},
-					threads: {},
-					lastPost: {},
-					deletedAt: null
-				}
-			]
-		}
-		
-		categoryObject.getCategoryById = function(categoryId){
-			return $http.get('/api/category' + categoryId).then(
-				function(res){
-					return res.data;
-				}
-			)
+			categories : []
 		}
 		
 		categoryObject.getAllCategories = function(){
-			return $http.get('/api/category').success(
-				function(data){
-					angular.copy(data, categoryObject.categories);
-				}
-			)
+				return $http.get('/api/category').success(function(data){
+				angular.copy(data, o.categories);
+			});
 		}
 		
-		categoryObject.updateCategoryById = function(category){
-			$http.put('/api/' + category._id, category);
+		categoryObject.createCategory = function(category){
+			//return $http.post(/')
 		}
 		
-		categoryObject.deleteCategoryById = function(categoryId){
-			return $http.delete('/api/' + categoryId);
-		}
-		
+		console.log(categoryObject)
 		return categoryObject;
 	}
 ])
@@ -96,9 +57,13 @@ app.controller('RegisterCtrl', ['$scope', '$http', function($scope, $http){
 
 app.controller('categoryCtrl', [
 	'$scope', 
-	'$http', 
 	'categoryFactory',
-	function($scope, $http, categoryFactory){
+	function($scope, categoryFactory){
+		console.log("Hallo")
 		$scope.categories = categoryFactory.categories;
+		$scope.title = ''
+		$scope.createMainCategory = function(){
+			categoryFactory.createCategory(null);
+		}
 	}
 ]);
