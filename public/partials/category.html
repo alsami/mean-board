@@ -1,4 +1,7 @@
 <div class="col-md-8 col-md-offset-2">
+	<div ng-hide="categories.length">
+		<h4>NO FUCKING CATEGORIES</h4>
+	</div>
 	<div ng-repeat="category in categories | orderBy : category.title" class="panel panel-default">
 		<div class="panel-heading">
 			<h3 class="panel-title">{{category.title}}</h3>
@@ -7,15 +10,21 @@
 			Sub Categories
 		</div>
 	</div>
-	<div>
-		Hallo
+	<div style="float:right;">
+		<button 
+			type="button" 
+			class="btn btn-primary"
+			data-toggle="modal" 
+			data-target="#modalWindowAddMainCategory"
+			>Create a new Category
+		</button>		
 	</div>
 	<div class="modal fade" id="modalWindowAddMainCategory" tabindex="-1" role="dialog" aria-labelledby="modalWindowLabelImport" aria-hidden="true">
 		<div class="modal-dialog" style="margin: 20% auto;">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="modalWindowLabelImport">Create a new account!</h4>
+					<h4 class="modal-title" id="modalWindowLabelImport">Create a new category!</h4>
 				</div>
 				<div class="modal-body">
 					<form ng-submit="createMainCategory()">
@@ -39,7 +48,7 @@
 								type="submit" 
 								class="btn btn-success"
 								style="width:150px;"
-								>Register me now!
+								>Create Category!
 							</button>
 						</div>
 						<!---Footer End--->

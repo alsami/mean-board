@@ -5,33 +5,40 @@ app.config(['$routeProvider',
 	$routeProvider
 		.when('/category', {
 			templateUrl: './partials/category.html',
-			/*
+			controller: 'categoryCtrl'/*,
 			resolve:{
 				postPromise: ['categoryFactory', function(categoryFactory){
 					return categoryFactory.getAllCategories();
 				}]
-			},
+			}
 			*/
-			controller: 'categoryCtrl'
 		})
-		.otherwise({redirectTo: '/'});
+		.when('/home', {
+			templateUrl: './partials/home.html'
+		})
+		.otherwise({
+			redirectTo: '/home',
+			templateUrl: './partials/home.html'
+		});
 	}
 ]);
 
 app.factory('categoryFactory', ['$http', 
 	function($http){
 		var categoryObject = {
-			categories : []
+			categories : [/*{title: 'hallo'}*/]
 		}
 		
 		categoryObject.getAllCategories = function(){
-				return $http.get('/api/category').success(function(data){
-				angular.copy(data, o.categories);
+			return $http.get('/api/category').success(function(data){
+					angular.copy(data, o.categories);
 			});
 		}
 		
 		categoryObject.createCategory = function(category){
-			//return $http.post(/')
+			return $http.post('api/category', category).success(function(data){
+				categoryObject.push(data, categoryObject.categories)
+			});
 		}
 		
 		console.log(categoryObject)
@@ -63,7 +70,7 @@ app.controller('categoryCtrl', [
 		$scope.categories = categoryFactory.categories;
 		$scope.title = ''
 		$scope.createMainCategory = function(){
-			categoryFactory.createCategory(null);
+			categoryFactory.createCategory({title: $scope.title});
 		}
 	}
 ]);
