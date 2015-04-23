@@ -79,7 +79,7 @@
 		  </div><!-- /.container-fluid -->
 		</nav>
 	</div>
-	<div class="modal fade" id="modalWindowRegister" tabindex="-1" role="dialog" aria-labelledby="modalWindowLabelImport" aria-hidden="true">
+	<div ng-controller="RegisterCtrl" class="modal fade" id="modalWindowRegister" tabindex="-1" role="dialog" aria-labelledby="modalWindowLabelImport" aria-hidden="true">
 		<div class="modal-dialog" style="margin: 20% auto;">
 			<div class="modal-content">
 				<div class="modal-header">
@@ -87,33 +87,45 @@
 					<h4 class="modal-title" id="modalWindowLabelImport">Create a new account!</h4>
 				</div>
 				<div class="modal-body">
-					<form>
+					<form ng-submit="registerUser()">
 						<div class="form-group">
 							<input 
 								type="text"
 								class="form-control"
-								placeholder="First Name">
+								placeholder="First Name"
+								ng-model="newUser.firstName">
 							</input>
 						</div>
 						<div class="form-group">
 							<input 
 								type="text"
 								class="form-control"
-								placeholder="Last Name">
+								placeholder="Last Name"
+								ng-model="newUser.lastName">
 							</input>
 						</div>
 						<div class="form-group">
 							<input 
 								type="text"
 								class="form-control"
-								placeholder="Username">
+								placeholder="Username"
+								ng-model="newUser.userName">
 							</input>
 						</div>
 						<div class="form-group">
 							<input 
 								type="text"
 								class="form-control"
-								placeholder="Password">
+								placeholder="Email Address"
+								ng-model="newUser.email">
+							</input>
+						</div>
+						<div class="form-group">
+							<input 
+								type="text"
+								class="form-control"
+								placeholder="Password"
+								ng-model="newUser.password">
 							</input>
 						</div>
 						<div class="form-group">
@@ -123,6 +135,7 @@
 								placeholder="Repeat Password">
 							</input>
 						</div>
+						<!---Footer--->
 						<div class="modal-footer">
 							<button 
 								type="button" 
@@ -137,6 +150,7 @@
 								>Register me now!
 							</button>
 						</div>
+						<!---Footer End--->
 					</form>
 				</div>
 			</div>

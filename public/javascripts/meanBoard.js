@@ -78,6 +78,22 @@ app.factory('categoryFactory', ['$http',
 	}
 ])
 
+app.controller('RegisterCtrl', ['$scope', '$http', function($scope, $http){
+	$scope.newUser = {};
+	$scope.registerUser = function(){
+		$http({
+			method: 'POST',
+			url: '/api/user',
+			data: $scope.newUser
+		}).success(function (data, status, headers, config) {
+			$scope.newUser = {}
+			console.log(data);
+		}).error(function (data, status, headers, config) {
+			alert(data);
+		});
+	}
+}]);
+
 app.controller('categoryCtrl', [
 	'$scope', 
 	'$http', 
