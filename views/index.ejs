@@ -1,15 +1,83 @@
-<!DOCTYPE html>
 <html ng-app="meanBoard">
 <head>
 	<title>Mean Board</title>
+	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+	<div>
+		<nav class="navbar navbar-default">
+		  <div class="container-fluid">
+			<!-- Brand and toggle get grouped for better mobile display -->
+			<div class="navbar-header">
+			  <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+				<span class="sr-only">Toggle navigation</span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			  </button>
+			  <a class="navbar-brand">Mean Board</a>
+			</div>
+			<!-- Collect the nav links, forms, and other content for toggling -->
+			<div class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li>
+						<a href="#">
+							Home
+						</a>
+					</li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+				<li class="dropdown">
+				  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Login <span class="caret"></span></a>
+				  <ul class="dropdown-menu" style="width:300px;" role="menu">
+					<li>
+						<div style="padding: 3px 20px;">
+							<form>
+								<div class="form-group">
+									<input 
+										type="text" 
+										class="form-control"
+										placeholder="Username"
+									/>
+									<br />
+									<input 
+										type="text" 
+										class="form-control"
+										placeholder="Password"
+									/>
+									<input 
+										id="checkboxLogin"
+										type="checkbox" 
+									/>
+									<label 
+										for="checkboxLogin">Keep me logged in
+									</label>
+									<br />
+									<button 
+										type="submit" 
+										class="btn btn-success" 
+										style="width:100%;">Login
+									</button>
+								</div>
+							</form>
+						</div>
+					</li>
+					<li class="divider"></li>
+					<li><a href="#" style="text-align:center;">Register</a></li>
+				  </ul>
+				</li>
+			  </ul>
+			</div><!-- /.navbar-collapse -->
+		  </div><!-- /.container-fluid -->
+		</nav>
+	</div>
+	<div ng-view></div>
+	<!-- Always! load js in the end of the body tag -->
+	<!-- saves time rendering the page -->
+	<script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
 	<script src="https://code.angularjs.org/1.3.15/angular-route.js"></script>
 	<script src="./javascripts/meanBoard.js"></script>
-</head>
-<body>
-	<a href="#/">home</a>
-	<a href="#/login">login</a>
-	<a href="#/register">register</a>
-	<div ng-view></div>
 </body>
 </html>
