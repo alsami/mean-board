@@ -46,22 +46,6 @@ app.factory('categoryFactory', ['$http',
 					threads: {},
 					lastPost: {},
 					deletedAt: null
-				},
-				{				
-					title: 'Category 4',
-					parent: null,
-					categories: {},
-					threads: {},
-					lastPost: {},
-					deletedAt: null
-				},
-				{				
-					title: 'Category 5',
-					parent: null,
-					categories: {},
-					threads: {},
-					lastPost: {},
-					deletedAt: null
 				}
 			]
 		}
