@@ -2,8 +2,12 @@
 	<div ng-hide="categories.length">
 		<h4>NO FUCKING CATEGORIES</h4>
 	</div>
-	<div ng-repeat="category in categories | orderBy : category.title" class="panel panel-default">
+	<div ng-repeat="category in categories | filter: defaultSearch |orderBy : -category._id" class="panel panel-default">
 		<div class="panel-heading">
+			<div style="float:right;">
+				<span class="glyphicon glyphicon-pencil pointer" title="Change category name" ng-click="updateCategory(category)"></span>
+				<span class="glyphicon glyphicon-trash pointer" title="Delete category!" ng-click="deleteCategory(category)"></span>
+			</div>
 			<h3 class="panel-title">{{category.title}}</h3>
 		</div>
 		<div class="panel-body">

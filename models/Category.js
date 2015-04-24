@@ -14,14 +14,4 @@ var CategorySchema = new Schema({
 
 CategorySchema.plugin(deepPopulate, {});
 
-// TODO:It ist possible to use an filter object for deepPopulate
-// {
-//	populate: {
-//		'path': {
-//			match: { attribute: value },
-//			select: 'attribute1 atrribute2 ...'
-//		}, ...
-//	}
-//}
-
 module.exports = mongoose.model('Category', CategorySchema);
