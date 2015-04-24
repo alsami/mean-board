@@ -71,16 +71,20 @@ app.factory('userFactory', ['$http', function($http){
 		});
 	}
 	
+	userObject.updateUser = function(user){
+	
+	}
+	
 	return userObject;
 }]);
 
 app.controller('RegisterCtrl', ['$scope', 'userFactory', function($scope, userFactory){
 		$scope.users = userFactory.users;
-		$scope.newUser = {};
+		$scope.user = {};
 		
 		$scope.createUser = function(){
-			userFactory.createUser($scope.newUser);
-			$scope.newUser = {};
+			userFactory.createUser($scope.user);
+			$scope.user = {};
 		}
 }]);
 
