@@ -80,19 +80,20 @@ app.factory('userFactory', ['$http', function($http){
 
 app.controller('RegisterCtrl', ['$scope', 'userFactory', function($scope, userFactory){
 		$scope.users = userFactory.users;
-		$scope.user = {};
+		$scope.newUser = {};
 		
 		$scope.createUser = function(){
-			userFactory.createUser($scope.user);
-			$scope.user = {};
+			userFactory.createUser($scope.newUser);
+			$scope.newUser = {};
 		}
 }]);
 
 app.controller('categoryCtrl', ['$scope', 'categoryFactory',function($scope, categoryFactory){
 	$scope.categories = categoryFactory.categories;
-	$scope.title = ''
+	$scope.newCategory = {};
 	$scope.createMainCategory = function(){
-		categoryFactory.createCategory({title: $scope.title});
+		categoryFactory.createCategory($scope.newCategory);
+		$scope.newCategory = {};
 	}
 	$scope.updateCategory = function(category){
 		categoryFactory.updateCategory(category);
