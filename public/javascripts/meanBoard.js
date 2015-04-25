@@ -1,6 +1,8 @@
 var app = angular.module('meanBoard', ['ui.router']);
 
 app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider){
+	$urlRouterProvider.otherwise('/home');
+	
 	$stateProvider
 		.state('/category', {
 			url: '/category',
@@ -17,12 +19,6 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 			url: '/home',
 			templateUrl: './partials/home.html'
 		})
-		/*
-		.state("otherwise", { 
-			url : '/home',
-			templateUrl: './partials/home.html'
-		})
-		*/
 }]);
 
 app.factory('categoryFactory', ['$http', function($http){
