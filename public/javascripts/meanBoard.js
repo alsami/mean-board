@@ -1,8 +1,9 @@
-var app = angular.module('meanBoard', ['ngRoute']);
+var app = angular.module('meanBoard', ['ui.router']);
 
-app.config(['$routeProvider', function($routeProvider){
-	$routeProvider
-		.when('/category', {
+app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider){
+	$stateProvider
+		.state('/category', {
+			url: '/category',
 			templateUrl: './partials/category.html',
 			controller: 'categoryCtrl',
 			resolve:{
@@ -12,13 +13,16 @@ app.config(['$routeProvider', function($routeProvider){
 			}
 			
 		})
-		.when('/home', {
+		.state('/home', {
+			url: '/home',
 			templateUrl: './partials/home.html'
 		})
-		.otherwise({
-			redirectTo: '/home',
+		/*
+		.state("otherwise", { 
+			url : '/home',
 			templateUrl: './partials/home.html'
-		});
+		})
+		*/
 }]);
 
 app.factory('categoryFactory', ['$http', function($http){
