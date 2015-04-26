@@ -1,7 +1,7 @@
 var app = angular.module('meanBoard', ['ui.router']);
 
 app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider){
-	//$urlRouterProvider.otherwise('/home');
+	$urlRouterProvider.otherwise('/home');
 	
 	$stateProvider
 		.state('board', {
