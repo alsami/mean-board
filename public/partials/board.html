@@ -3,21 +3,24 @@
 		<li><a href="/#/home">Home</a></li>
 		<li class="active">Board</li>
 	</ol>
-	<div ng-repeat="category in categoryJSON | filter: defaultSearch | orderBy :'title'" class="panel panel-primary">
+	<div ng-repeat="category in category | filter: defaultSearch | orderBy :'title'" class="panel panel-primary">
 		<div class="panel-heading">
 			<h3 class="panel-title">{{category.title}}</h3>
-			<!--<button 
+			<button 
 				class="btn btn-default" 
 				ng-click="deleteCategory(category)">
 				Delete
-			</button>-->
+			</button>
 		</div>
 		<div class="panel-body">
 			<div class="list-group">
 				<a ng-repeat="category in category.categories" href="/#/category/{{category._id}}" class="list-group-item">
 					<div>
-						<img src="/images/placeholder.png" class="img-rounded" alt="Cinque Terre" style="width:50px; height:50px;" /> 
+						<img src="/images/placeholder.png" class="img-rounded" alt="an image" style="width:50px; height:50px;" /> 
 						{{category.title}}
+						<div ng-repeat="category in category.categories">
+							{{category.title}}
+						</div>
 					</div>
 				</a>
 			</div>
@@ -43,13 +46,24 @@
 			</div>
 			<div class="modal-body">
 				<form ng-submit="createCategory()">
-					<div class="form-group">
+					<div ng-show="category.length" class="form-group">
 						<label for="selectCategory">Parent Category</label>
 						<select
 							id="selectCategory"
 							class="form-control"
 							ng-model="newCategory.parent"
-							ng-options="category as category.title for category in categoryJSON">
+							ng-options="category as category.title for category in category | orderBy : 'title'">
+							<option value=""></option>
+						</select>
+					</div>
+					<div ng-show="newCategory.parent.categories.length" class="form-group">
+						<label for="selectSubCategory">Sub Category</label>
+						<select
+							id="selectSubCategory"
+							class="form-control"
+							ng-model="subParent"
+							ng-options="category as category.title for category in newCategory.parent.categories | orderBy : 'title'">
+							<option value=""></option>
 						</select>
 					</div>
 					<div class="form-group">

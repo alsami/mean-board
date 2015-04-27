@@ -2,9 +2,19 @@
 	<ol class="breadcrumb" style="background-color:#fff;">
 		<li><a href="/#/home">Home</a></li>
 		<li><a href="/#/board">Board</a></li>
-		<li class="active">{{category.data.parent.title}}</li>
+		<li ng-hide="category.parent == null"><a href="/#/category/{{category.parent._id}}">{{category.parent.title}}</a></li>
+		<li class="active">{{category.title}}</li>
 	</ol>
-	<div ng-repeat="category in category.categories">
-		Hallo
+	<div ng-show="category.categories.length" class="panel panel-primary">
+		<div class="panel-heading">
+			<h3 class="panel-title">{{category.title}}</h3>
+		</div>
+		<div class="panel-body">
+			<div ng-repeat="category in category.categories">
+				<a href="/#/category/{{category._id}}">
+					{{category.title}}
+				</a>
+			</div>
+		</div>
 	</div>
 </div>

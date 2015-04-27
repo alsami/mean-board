@@ -20,7 +20,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 			controller: 'categoryCtrl',
 			resolve: {
 				category: ['$stateParams', 'categoryFactory', function($stateParams, categoryFactory) {
-					return categoryFactory.getCategory($stateParams.id);
+					return categoryFactory.getSingleCategory($stateParams.id);
 				}]
 			}
 		})
@@ -32,15 +32,18 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 
 app.factory('categoryFactory', ['$http', function($http){
 	var categoryObject = {
-		categoryJSON : [/*{title: 'hallo'}*/]
+		category : []
 	}
 	
 	categoryObject.createCategory = function(category){
 		return $http.post('/api/category', category).success(function(data){
 			if(category.parent == null){
-				categoryObject.categoryJSON.push(data)
+				categoryObject.category.push(data)
+			}else if(category.parent != null && category.parent.parent == null){
+				categoryObject.category[categoryObject.category.indexOf(category.parent)].categories.push(category);
 			}else{
-				categoryObject.categoryJSON[0].categories.push(data)
+				console.log(category.parent)
+				//console.log(categoryObject.category[categoryObject.category.indexOf(category.parent)]);
 			}
 		});
 	}
@@ -53,22 +56,19 @@ app.factory('categoryFactory', ['$http', function($http){
 	
 	categoryObject.deleteCategory = function(category){
 		return $http.delete('/api/category/' + category._id, category).success(function(data){
-			return true;
-		})
-		.error(function(){
-			return false;
+			categoryObject.category.splice(categoryObject.category.indexOf(category), 1);
 		});
 	}
 	
-	categoryObject.getCategory = function(categoryId){
-		return $http.get('/api/category/' + categoryId).success(function(res){
-			return res.data;
+	categoryObject.getSingleCategory = function(categoryId){
+		return $http.get('/api/category/' + categoryId).success(function(data, status, headers, config){
+			return data;
 		});
 	}
 	
 	categoryObject.getAllCategories = function(){
 		return $http.get('/api/category').success(function(data){
-			angular.copy(data, categoryObject.categoryJSON);
+			angular.copy(data, categoryObject.category);
 		});
 	}
 
@@ -114,22 +114,41 @@ app.controller('RegisterCtrl', ['$scope', 'userFactory', function($scope, userFa
 }]);
 
 app.controller('boardCtrl', ['$scope', 'categoryFactory', function($scope, categoryFactory){
-	$scope.categoryJSON = categoryFactory.categoryJSON;
+	$scope.category = categoryFactory.category;
+	$scope.subParent = null;
 	$scope.newCategory = {};
 	$scope.createCategory = function(){
+		if($scope.subParent != null){
+			$scope.newCategory.parent = $scope.subParent;
+			$scope.subParent = null;
+		}
 		categoryFactory.createCategory($scope.newCategory);
+		/*
+		if(categoryFactory.createCategory($scope.newCategory)){
+			if($scope.newCategory.parent == null){
+				$scope.category.push($scope.newCategory);
+			}else{
+				//console.log($scope.category.indexOf($scope.newCategory.parent));
+				$scope.category[$scope.category.indexOf($scope.newCategory.parent)].categories.push($scope.newCategory);
+			}
+		}
+		*/
 		$scope.newCategory = {};
 	}
 	$scope.updateCategory = function(category){
 		categoryFactory.updateCategory(category);
 	}
 	$scope.deleteCategory = function(category){
+		categoryFactory.deleteCategory(category);
+		/*
 		if(categoryFactory.deleteCategory(category)){
-			$scope.categoryJSON.splice($scope.categoryJSON.indexOf(category), 1);
+			$scope.category.splice($scope.category.indexOf(category), 1);
 		}
+		*/
 	}
 }]);
 
 app.controller('categoryCtrl', ['$scope', 'categoryFactory', 'category', function($scope, categoryFactory, category){
-	$scope.category = category;
+	$scope.category = category.data;
+	console.log(category)
 }]);
