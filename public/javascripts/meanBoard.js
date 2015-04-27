@@ -42,7 +42,7 @@ app.factory('categoryFactory', ['$http', function($http){
 			}else if(category.parent != null && category.parent.parent == null){
 				categoryObject.category[categoryObject.category.indexOf(category.parent)].categories.push(category);
 			}else{
-				console.log(category.parent)
+				//console.log(category.parent)
 				//console.log(categoryObject.category[categoryObject.category.indexOf(category.parent)]);
 			}
 		});
@@ -123,6 +123,7 @@ app.controller('boardCtrl', ['$scope', 'categoryFactory', function($scope, categ
 			$scope.subParent = null;
 		}
 		categoryFactory.createCategory($scope.newCategory);
+		$scope.newCategory = {};
 		/*
 		if(categoryFactory.createCategory($scope.newCategory)){
 			if($scope.newCategory.parent == null){
@@ -133,7 +134,6 @@ app.controller('boardCtrl', ['$scope', 'categoryFactory', function($scope, categ
 			}
 		}
 		*/
-		$scope.newCategory = {};
 	}
 	$scope.updateCategory = function(category){
 		categoryFactory.updateCategory(category);
@@ -150,5 +150,5 @@ app.controller('boardCtrl', ['$scope', 'categoryFactory', function($scope, categ
 
 app.controller('categoryCtrl', ['$scope', 'categoryFactory', 'category', function($scope, categoryFactory, category){
 	$scope.category = category.data;
-	console.log(category)
+	console.log($scope.category)
 }]);

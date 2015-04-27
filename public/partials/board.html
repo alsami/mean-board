@@ -6,25 +6,45 @@
 	<div ng-repeat="category in category | filter: defaultSearch | orderBy :'title'" class="panel panel-primary">
 		<div class="panel-heading">
 			<h3 class="panel-title">{{category.title}}</h3>
-			<button 
+			<!--<button 
 				class="btn btn-default" 
 				ng-click="deleteCategory(category)">
 				Delete
-			</button>
+			</button>-->
 		</div>
-		<div class="panel-body">
-			<div class="list-group">
-				<a ng-repeat="category in category.categories" href="/#/category/{{category._id}}" class="list-group-item">
-					<div>
-						<img src="/images/placeholder.png" class="img-rounded" alt="an image" style="width:50px; height:50px;" /> 
-						{{category.title}}
-						<div ng-repeat="category in category.categories">
-							{{category.title}}
-						</div>
-					</div>
-				</a>
+		<div ng-show="category.categories.length" ng-repeat="category in category.categories | orderBy :'title'" class="panel-body" style="margin-bottom:0px;">
+			<div class="panel panel-primary">
+				<div class="panel-heading">
+					<h3 class="panel-title">{{category.title}}</h3>
+				</div>
+				<div  ng-repeat="category in category.categories | orderBy :'title'" class="panel-body" style="border-bottom:1px solid gainsboro;">
+					<img src="/images/placeholder.png" class="img-rounded" alt="an image" style="width:50px; height:50px;" />
+					{{category.title}}
+				</div>
 			</div>
 		</div>
+		<div ng-hide="category.categories.length" ng-repeat="category in category.categories | orderBy :'title'" class="panel panel-default">
+			<div class="panel-body pointer" style="padding-left:30px;">
+				<img src="/images/placeholder.png" class="img-rounded" alt="an image" style="width:50px; height:50px;" />
+				{{category.title}}
+			</div>
+		</div>
+		
+		
+		
+		
+		<!---
+		<div ng-repeat="category in category.categories | orderBy : 'title'" class="panel panel-primary" style="border-top: 1px solid grey;">
+			<div class="panel-heading">
+				<h3 class="panel-title">{{category.title}}</h3>
+			</div>
+			<div class="panel-body">
+				<img src="/images/placeholder.png" class="img-rounded" alt="an image" style="width:50px; height:50px;" />
+				<div ng-repeat="category in category.categories | orderBy : 'title'" class="panel-body">
+					{{category.title}}
+				</div>
+			</div>
+		--->
 	</div>
 	<div style="float:right;">
 		<button 
