@@ -94,12 +94,6 @@ app.factory('userFactory', ['$http', function($http){
 		});
 	}
 	
-	userObject.getAllUsers = function(){
-		return $http.get('/api/user').success(function(data){
-			angular.copy(data, userObject.users);
-		});
-	}
-	
 	return userObject;
 }]);
 
