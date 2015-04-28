@@ -4,7 +4,7 @@ authElements.controller('authCtrl', ['$scope', 'userFactory', function($scope, u
 		$scope.user = userFactory.user;
 		$scope.newUser = {};
 		$scope.existingUser = {};
-		console.log(userFactory.user);
+		//console.log(userFactory.user);
 
 		$scope.createUser = function(){
 				userFactory.createUser($scope.newUser);

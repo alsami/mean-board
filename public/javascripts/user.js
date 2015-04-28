@@ -8,14 +8,20 @@ userElements.factory('userFactory', ['$http', function($http){
   userObject.loginUser = function(user){
     $http.post('/api/user/login', user)
     .success(function(data){
+        console.log("I am in");
         userObject.user.push(data);
+    })
+    .error(function(error){
+      console.log(error)
     });
   }
 
   userObject.createUser = function(user){
     return $http.post('/api/user', user)
     .success(function(data){
-        userObject.loginUser(user);
+        userToLogin = {userName : user.userName, password : user.password};
+        console.log(data.password);
+        userObject.loginUser(userToLogin);
     });
   }
 

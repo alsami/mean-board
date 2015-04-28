@@ -4,6 +4,7 @@ var router = express.Router();
 
 /* import all needed Models */
 var mongoose = require('mongoose');
+var bcrypt = require('bcryptjs');
 var User = require('../models/User.js');
 
 
@@ -15,7 +16,12 @@ router.post('/login', function(req, res, next){
 		if(err){
 			return next(err);
 		} else if(user){
+			console.log(user.password)
 			if(bcrypt.compareSync(req.body.password, user.password)){
+				console.log("user found and is :" + user);
+				// HERE IT CRASHES
+				// "Cannot set property of 'undefined'"
+				// Something missing?
 				user.password = '';
 				req.session.user = user;
 				res.header("Content-Type", "application/json; charset=utf-8");
@@ -55,12 +61,30 @@ router.get('/:id', function(req, res, next){
 
 // create a user
 router.post('/', function(req, res, next) {
-	User.create(req.body, function (err, user) {
-		if (err) return next(err);
-		res.header("Content-Type", "application/json; charset=utf-8");
-		res.json(user);
+	User.findOne({userName: req.body.userName}, function(err, user){
+		if(err){
+			return next(err);
+		} else if(user){
+			res.status(400).end('Error: Username is already taken!');
+		} else {
+			var newUser = req.body;
+			var hash = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
+			newUser.password = hash; // avoid saving password as plain text
+			User.create(newUser, function(err, user){
+				if(err){
+					return next(err);
+				} else {
+					user.password = '';
+					res.header("Content-Type", "application/json; charset=utf-8");
+					res.status(201).json(user);
+				}
+			});
+		}
 	});
 });
+
+
+
 
 // update user by id
 router.put('/:id', function(req, res, next) {
