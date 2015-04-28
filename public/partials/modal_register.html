@@ -1,0 +1,79 @@
+<div class="modal fade" id="modalWindowRegister" tabindex="-1" role="dialog" aria-labelledby="modalWindowLabelImport" aria-hidden="true">
+  <div class="modal-dialog" style="margin: 20% auto;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="modalWindowLabelImport">Create a new account!</h4>
+      </div>
+      <div class="modal-body">
+        <form ng-submit="createUser()">
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="First Name"
+              ng-model="newUser.firstName">
+            </input>
+          </div>
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Last Name"
+              ng-model="newUser.lastName">
+            </input>
+          </div>
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Username"
+              ng-model="newUser.userName">
+            </input>
+          </div>
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Email Address"
+              ng-model="newUser.email">
+            </input>
+          </div>
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Password"
+              ng-model="newUser.password">
+            </input>
+          </div>
+          <div class="form-group">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Repeat Password">
+            </input>
+          </div>
+          <div class="modal-footer">
+            <div class="btn-group btn-group-justified float right" style="width:30%;">
+              <div class="btn-group" role="group">
+                <button
+                  type="button"
+                  class="btn btn-default"
+                  data-dismiss="modal">Cancel
+                </button>
+              </div>
+              <div class="btn-group" role="group">
+                <button
+                  type="submit"
+                  class="btn btn-success"
+                  >Register
+                </button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

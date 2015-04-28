@@ -5,182 +5,21 @@
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
 	<link href="stylesheets/style.css" rel="stylesheet">
 </head>
-<body style="background-color:rgb(35, 28, 42);">
-	<nav class="navbar navbar-default">
-		<div class="container-fluid">
-		<!-- Brand and toggle get grouped for better mobile display -->
-			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navigationbar">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
-				<a class="navbar-brand">Mean Board</a>
-			</div>
-		<!-- Collect the nav links, forms, and other content for toggling -->
-		<div class="collapse navbar-collapse"  id="navigationbar">
-				<ul class="nav navbar-nav">
-					<li>
-						<a href="/#/home">
-							Home
-						</a>
-					</li>
-					<li>
-						<a href="/#/board">
-							Board
-						</a>
-					</li>
-				</ul>
-			<ul class="nav navbar-nav navbar-right">
-				<div class="navbar-form navbar-left" role="search">
-					<div class="form-group">
-						<input type="text" ng-model="defaultSearch" class="form-control" placeholder="Search">
-					</div>
-				</div>
-				<li class="dropdown">
-					<a class="dropdown-toggle" style="cursor:pointer;" data-toggle="dropdown" role="button" aria-expanded="false">Login <span class="caret"></span></a>
-					<ul class="dropdown-menu" style="width:300px;" role="menu">
-						<li role="presentation" class="dropdown-header">Login</li>
-						<li>
-							<div style="padding: 3px 20px; clear: both; font-weight: 400; line-height:1.42857143; color:#333; white-space:nowrap;">
-								<form>
-									<div class="form-group">
-										<input 
-											type="text" 
-											class="form-control"
-											placeholder="Username"
-										/>
-									</div>
-									<div class="form-group">
-										<input 
-											type="text" 
-											class="form-control"
-											placeholder="Password"
-										/>
-										<input id="checkboxKeepMeLoggedIn" type="checkbox" />
-										<label for="checkboxKeepMeLoggedIn">
-											Keep me logged in
-										</label>
-									</div>
-									<div class="form-group">
-										<button 
-											type="submit" 
-											class="btn btn-success" 
-											style="width:100%;">Login
-										</button>
-									</div>
-								</form>
-							</a>
-						</li>
-						<li class="divider"></li>
-						<li>
-							<a 
-								style="text-align:center; cursor:pointer;"
-								data-toggle="modal" 
-								data-target="#modalWindowRegister"
-							>
-								Register
-							</a>
-						</li>
-					</ul>
-				</li>
-			</ul>
-			</div><!-- /.navbar-collapse -->
-		</div><!-- /.container-fluid -->
-	</nav>
-	<div ng-controller="RegisterCtrl" class="modal fade" id="modalWindowRegister" tabindex="-1" role="dialog" aria-labelledby="modalWindowLabelImport" aria-hidden="true">
-		<div class="modal-dialog" style="margin: 20% auto;">
-			<div class="modal-content">
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="modalWindowLabelImport">Create a new account!</h4>
-				</div>
-				<div class="modal-body">
-					<form ng-submit="createUser()">
-						<div class="form-group">
-							<input 
-								type="text"
-								class="form-control"
-								placeholder="First Name"
-								ng-model="newUser.firstName">
-							</input>
-						</div>
-						<div class="form-group">
-							<input 
-								type="text"
-								class="form-control"
-								placeholder="Last Name"
-								ng-model="newUser.lastName">
-							</input>
-						</div>
-						<div class="form-group">
-							<input 
-								type="text"
-								class="form-control"
-								placeholder="Username"
-								ng-model="newUser.userName">
-							</input>
-						</div>
-						<div class="form-group">
-							<input 
-								type="text"
-								class="form-control"
-								placeholder="Email Address"
-								ng-model="newUser.email">
-							</input>
-						</div>
-						<div class="form-group">
-							<input 
-								type="text"
-								class="form-control"
-								placeholder="Password"
-								ng-model="newUser.password">
-							</input>
-						</div>
-						<div class="form-group">
-							<input 
-								type="text"
-								class="form-control"
-								placeholder="Repeat Password">
-							</input>
-						</div>
-						<!---Footer--->
-						<div class="modal-footer">
-							<div class="btn-group btn-group-justified float right" style="width:30%;">
-								<div class="btn-group" role="group">
-									<button 
-										type="button" 
-										class="btn btn-default"
-										data-dismiss="modal">Cancel
-									</button>
-								</div>
-								<div class="btn-group" role="group">
-									<button 
-										type="submit" 
-										class="btn btn-success"
-										>Register
-									</button>
-								</div>
-							</div>
-						</div>
-						<!---Footer End--->
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
-	
-	
-	
-	<div class="container-fluid" ui-view></div>
-				
+<body  ng-controller="authCtrl" style="background-color:rgb(35, 28, 42);">
+	<div ui-view="navbar"></div>
+	<div class="container-fluid"  ui-view="body"></div>
+	<div ui-view="modal-register"></div>
+
 	<!-- Always! load js right before the closing body tag -->
 	<!-- saves time rendering the page -->
 	<script src="http://code.jquery.com/jquery-2.1.3.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.14/angular-ui-router.js"></script>
+	<script src="./javascripts/user.js"></script>
+	<script src="./javascripts/auth.js"></script>
+	<script src="./javascripts/board.js"></script>
+	<script src="./javascripts/category.js"></script>
 	<script src="./javascripts/meanBoard.js"></script>
 	<script src="./javascripts/default.js"></script>
 </body>

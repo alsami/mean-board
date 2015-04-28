@@ -1,0 +1,85 @@
+<nav class="navbar navbar-default">
+  <div class="container-fluid">
+  <!-- Brand and toggle get grouped for better mobile display -->
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navigationbar">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand">Mean Board</a>
+    </div>
+  <!-- Collect the nav links, forms, and other content for toggling -->
+  <div class="collapse navbar-collapse"  id="navigationbar">
+      <ul class="nav navbar-nav">
+        <li>
+          <a href="/#/home">
+            Home
+          </a>
+        </li>
+        <li>
+          <a href="/#/board">
+            Board
+          </a>
+        </li>
+      </ul>
+    <ul class="nav navbar-nav navbar-right">
+      <div class="navbar-form navbar-left" role="search">
+        <div class="form-group">
+          <input type="text" ng-model="defaultSearch" class="form-control" placeholder="Search">
+        </div>
+      </div>
+      <li class="dropdown">
+        <a class="dropdown-toggle" style="cursor:pointer;" data-toggle="dropdown" role="button" aria-expanded="false">Login <span class="caret"></span></a>
+        <ul class="dropdown-menu" style="width:300px;" role="menu">
+          <li role="presentation" class="dropdown-header">Login</li>
+          <li>
+            <div style="padding: 3px 20px; clear: both; font-weight: 400; line-height:1.42857143; color:#333; white-space:nowrap;">
+              <form>
+                <div class="form-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Username"
+                  />
+                </div>
+                <div class="form-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Password"
+                  />
+                  <input id="checkboxKeepMeLoggedIn" type="checkbox" />
+                  <label for="checkboxKeepMeLoggedIn">
+                    Keep me logged in
+                  </label>
+                </div>
+                <div class="form-group">
+                  <button
+                    ng-click="loginUser();"
+                    type="submit"
+                    class="btn btn-success"
+                    style="width:100%;"
+                    >Login
+                  </button>
+                </div>
+              </form>
+            </a>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <a
+              style="text-align:center; cursor:pointer;"
+              data-toggle="modal"
+              data-target="#modalWindowRegister"
+            >
+              Register
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    </div><!-- /.navbar-collapse -->
+  </div><!-- /.container-fluid -->
+</nav>
