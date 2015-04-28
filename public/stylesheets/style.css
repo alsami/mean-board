@@ -7,3 +7,8 @@
 .pointer{
 	cursor:pointer;
 }
+
+.category-header{
+	padding: 10px 15px;
+	background-color:lightgray;
+}

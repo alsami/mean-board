@@ -1,62 +1,67 @@
 <div class="col-md-8 col-md-offset-2">
 	<div class="container">
-		<ol class="breadcrumb" style="background-color:#fff;">
+		<ol class="breadcrumb" style="background-color: rgb(35, 28, 42);">
 			<li><a href="/#/home">Home</a></li>
 			<li class="active">Board</li>
 		</ol>
 		<!--MAIN CATEGORY-->
-		<ul ng-repeat="category in category | filter: defaultSearch | orderBy :'title'" class="list-group">
-			<li class="list-group-item"  style="background-color:lightgray;">{{category.title}}</li>
-			<!--SUB CATEGORY W/O CHILD ELEMENTS-->
-			<li ng-hide="category.categories.length" ng-repeat="category in category.categories | orderBy :'title'" class="list-group-item pointer">
-				<img src="/images/placeholder.png" class="img-rounded" alt="an image" style="width:50px; height:50px;" />
-				{{category.title}}
-			</li>
-			<li ng-show="category.categories.length" ng-repeat="category in category.categories | orderBy :'title'"  class="list-group-item">
-				<ul class="list-group" style="margin-bottom:0px;">
-					<li class="list-group-item" style="background-color:lightgray;">
-						{{category.title}}
+		<div ng-repeat="category in category | filter: defaultSearch | orderBy :'title'">
+			<div>
+				<div class="category-header">
+					<a href="/#/category/{{category._id}}">{{category.title}}</a>
+				</div>
+				<ul class="list-group">
+					<!--<li class="list-group-item pointer"  style="background-color:lightgray;">{{category.title}}</li>-->
+					<li id="category{{category._id}}{{category._id}}" ng-hide="category.categories.length" ng-repeat="category in category.categories | orderBy :'title'" class="list-group-item">
+							<a href="/#/category/{{category._id}}" class="list-group-item">
+								<img src="/images/placeholder.png" class="img-rounded" alt="an image" style="width:50px; height:50px;" />
+								{{category.title}}
+							</a>
 					</li>
-					<li ng-repeat="category in category.categories | orderBy :'title'"  class="list-group" style="list-style:none; margin-bottom:0px;">
-						<a href="#" class="list-group-item">
-							<img src="/images/placeholder.png" class="img-rounded" alt="an image" style="width:50px; height:50px;" />
-							{{category.title}}
-						</a>
+					<li ng-show="category.categories.length" ng-repeat="category in category.categories | orderBy :'title'"  class="list-group-item">
+						<ul class="list-group" style="margin-bottom:0px;">
+							<li class="list-group-item" style="background-color:lightgray;">
+								{{category.title}}
+							</li>
+							<li ng-repeat="category in category.categories | orderBy :'title'"  class="list-group" style="list-style:none; margin-bottom:0px;">
+								<a href="/#/category/{{category._id}}" class="list-group-item">
+									<img src="/images/placeholder.png" class="img-rounded" alt="an image" style="width:50px; height:50px;" />
+									{{category.title}}
+								</a>
+							</li>
+						</ul>
 					</li>
 				</ul>
-			</li>
-		</ul>
-		<!---
-		<div ng-repeat="category in category | filter: defaultSearch | orderBy :'title'" class="panel panel-primary">
-			<div class="panel-heading">
-				<h3 class="panel-title">{{category.title}}</h3>
-				<button 
-					class="btn btn-default" 
-					ng-click="deleteCategory(category)">
-					Delete
-				</button>
-			</div>
-			
-			<div ng-show="category.categories.length" ng-repeat="category in category.categories | orderBy :'title'" class="panel-body" style="margin-bottom:0px;">
-				<div class="panel panel-primary">
-					<div class="panel-heading">
-						<h3 class="panel-title">{{category.title}}</h3>
-					</div>
-					<div  ng-repeat="category in category.categories | orderBy :'title'" class="panel-body" style="border-bottom:1px solid gainsboro;">
-						<img src="/images/placeholder.png" class="img-rounded" alt="an image" style="width:50px; height:50px;" />
-						{{category.title}}
-					</div>
-				</div>
-			</div>
-			
-			<div ng-hide="category.categories.length" ng-repeat="category in category.categories | orderBy :'title'" class="panel-body">
-				<div class="panel-body pointer">
-					<img src="/images/placeholder.png" class="img-rounded" alt="an image" style="width:50px; height:50px;" />
-					{{category.title}}
-				</div>
 			</div>
 		</div>
-		--->
+		<!---
+		<div  ng-repeat="category in category | filter: defaultSearch | orderBy :'title'">
+			<div>
+				<ul class="list-group" onClick="console.log($((this):first-child));">
+					<li class="list-group-item pointer"  style="background-color:lightgray;">{{category.title}}</li>
+					<li id="category{{category._id}}{{category._id}}" ng-hide="category.categories.length" ng-repeat="category in category.categories | orderBy :'title'" class="list-group-item">
+							<a href="/#/category/{{category._id}}" class="list-group-item">
+								<img src="/images/placeholder.png" class="img-rounded" alt="an image" style="width:50px; height:50px;" />
+								{{category.title}}
+							</a>
+					</li>
+					<li ng-show="category.categories.length" ng-repeat="category in category.categories | orderBy :'title'"  class="list-group-item">
+						<ul class="list-group" style="margin-bottom:0px;">
+							<li class="list-group-item" style="background-color:lightgray;">
+								{{category.title}}
+							</li>
+							<li ng-repeat="category in category.categories | orderBy :'title'"  class="list-group" style="list-style:none; margin-bottom:0px;">
+								<a href="/#/category/{{category._id}}" class="list-group-item">
+									<img src="/images/placeholder.png" class="img-rounded" alt="an image" style="width:50px; height:50px;" />
+									{{category.title}}
+								</a>
+							</li>
+						</ul>
+					</li>
+				</ul>
+			</div>
+		</div>
+		-->
 		<div style="float:right;">
 			<button 
 				type="button" 
@@ -98,8 +103,10 @@
 							<option value=""></option>
 						</select>
 					</div>
+					<label for="textFieldCategoryTitle">Category Title</label>
 					<div class="form-group">
 						<input 
+							id="textFieldCategoryTitle"
 							type="text"
 							class="form-control"
 							placeholder="Category Title"

@@ -1,3 +1,3 @@
-function switchClass(objectId, className){
-	$('#'+objectId).toggleClass(className);
+function switchClass(object, className){
+	$('#'+object).toggleClass(className);
 }

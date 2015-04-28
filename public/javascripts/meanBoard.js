@@ -61,7 +61,7 @@ app.factory('categoryFactory', ['$http', function($http){
 	}
 	
 	categoryObject.getSingleCategory = function(categoryId){
-		return $http.get('/api/category/' + categoryId).success(function(data, status, headers, config){
+		return $http.get('/api/category/' + categoryId).success(function(data){
 			return data;
 		});
 	}
@@ -117,6 +117,7 @@ app.controller('boardCtrl', ['$scope', 'categoryFactory', function($scope, categ
 			$scope.subParent = null;
 		}
 		categoryFactory.createCategory($scope.newCategory);
+		console.log("I am here");
 		$scope.newCategory = {};
 		/*
 		if(categoryFactory.createCategory($scope.newCategory)){
