@@ -10,7 +10,28 @@ var User = require('../models/User.js');
 
 /* routes for user */
 
-// login: aka get a specific user by userName and password
+
+// get all users
+router.get('/', function(req, res, next) {
+	User.find(function (err, user) {
+		if (err) return next(err);
+		res.header("Content-Type", "application/json; charset=utf-8");
+		res.json(user);
+	});
+});
+
+
+// get a specific user by id
+router.get('/:id', function(req, res, next){
+	User.findById(req.params.id, function(err, user){
+		if(err) return next(err);
+		res.header("Content-Type", "application/json; charset=utf-8");
+		res.json(user);
+	});
+});
+
+
+// get a specific user by userName and password aka LOGIN
 router.post('/login', function(req, res, next){
 	User.findOne({userName: req.body.userName}, function(err, user){
 		if(err){
@@ -35,31 +56,15 @@ router.post('/login', function(req, res, next){
 	});
 });
 
+
 // logout:
 router.get('/logout', function(req, res, next){
 	req.session.reset();
 	res.status(200).end('Successfully logged out!');
 });
 
-// get all users
-router.get('/', function(req, res, next) {
-	User.find(function (err, user) {
-		if (err) return next(err);
-		res.header("Content-Type", "application/json; charset=utf-8");
-		res.json(user);
-	});
-});
 
-// get a specific user by id
-router.get('/:id', function(req, res, next){
-	User.findById(req.params.id, function(err, user){
-		if(err) return next(err);
-		res.header("Content-Type", "application/json; charset=utf-8");
-		res.json(user);
-	});
-});
-
-// create a user
+// create a user aka REGISTER
 router.post('/', function(req, res, next) {
 	User.findOne({userName: req.body.userName}, function(err, user){
 		if(err){
@@ -84,8 +89,6 @@ router.post('/', function(req, res, next) {
 });
 
 
-
-
 // update user by id
 router.put('/:id', function(req, res, next) {
 	User.findByIdAndUpdate(req.params.id, req.body, function (err, user) {
@@ -95,6 +98,7 @@ router.put('/:id', function(req, res, next) {
 	});
 });
 
+
 // soft delete user by setting current date for deletedAt
 router.delete('/:id', function(req, res, next) {
 	User.findByIdAndUpdate(req.params.id, {deletedAt: Date.now()} , function (err, user) {
@@ -103,5 +107,6 @@ router.delete('/:id', function(req, res, next) {
 		res.json(user);
 	});
 });
+
 
 module.exports = router;
