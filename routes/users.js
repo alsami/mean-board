@@ -33,17 +33,11 @@ router.get('/:id', function(req, res, next){
 
 // get a specific user by userName and password aka LOGIN
 router.post('/login', function(req, res, next){
-	console.log(req.body);
 	User.findOne({userName: req.body.userName}, function(err, user){
 		if(err){
 			return next(err);
 		} else if(user){
-			console.log(user.password)
 			if(bcrypt.compareSync(req.body.password, user.password)){
-				console.log("user found and is :" + user);
-				// HERE IT CRASHES
-				// "Cannot set property of 'undefined'"
-				// Something missing?
 				user.password = '';
 				req.session.user = user;
 				res.header("Content-Type", "application/json; charset=utf-8");
