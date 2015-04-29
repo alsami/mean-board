@@ -41,26 +41,26 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
 // START -> middleware
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({ extended: true }));
 
 // middleware: handle session
 app.use(session({
 	cookieName: 'session',
-	secret: 'kjdsafkj898jjiusd2de45rtfddwerr356663swq',
+	secret: 'sdgfzdcgsabvdez65t6ds5t38fgd6563q84r6dgdvc876q4w', // later we will change it
 	duration: 30 * 60 * 1000, // 30minutes
-	activeDuration: 5 * 60 * 1000, // 5 minutes
-	httpOnly: true, // don't let javascript access cookie
+	activeDuration: 5 * 60 * 1000, // 5minutes
+	httpOnly: true, // don't let javascript access the cookie
 	secure: true, // only use cookies over https
-	ephemeral: true // delte cookie when browser closed
+	ephemeral: true // delte cookie when browser close
 }));
 
 app.use(function(req, res, next){
 	if(req.session && req.session.user){
-		User.findOne({email: req.session.user.email}, function(err, user){
+		User.findOne({userName: req.session.user.userName}, function(err, user){
 			if(err){
 				return next(err);
 			} else if(user){
-				user.password = ''; // overwrite pass
+				user.password = ''; //overwrite pass
 				req.user = user;
 				req.session.user = user;
 				res.locals.user = user;
@@ -97,6 +97,7 @@ app.use(function(req, res, next) {
 });
 
 // error handlers
+
 // development error handler
 // will print stacktrace
 if (app.get('env') === 'development') {
