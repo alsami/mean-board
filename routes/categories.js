@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var permission = require('./lib/permission');
 
 
 /* import mongoose and all needed Models */
@@ -34,13 +35,12 @@ router.get('/:id', function(req, res, next){
 });
 
 // create a category
-router.post('/', function(req, res, next) {
+router.post('/', permission.loginRequired, function(req, res, next) {
 	Category.create(req.body, function (err, category) {
 		if (err) return next(err);
 
 		// if the new category has a parent we will register it
 		if(category.parent !== null){
-			console.log("has a parent");
 			Category.findByIdAndUpdate(category.parent, { $push: { categories: category}}, function(err, category){
 				if(err) return next(err);
 			});
