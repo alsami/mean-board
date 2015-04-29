@@ -33,6 +33,7 @@ router.get('/:id', function(req, res, next){
 
 // get a specific user by userName and password aka LOGIN
 router.post('/login', function(req, res, next){
+	console.log(req.body);
 	User.findOne({userName: req.body.userName}, function(err, user){
 		if(err){
 			return next(err);
