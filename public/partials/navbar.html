@@ -30,7 +30,7 @@
           <input type="text" ng-model="defaultSearch" class="form-control" placeholder="Search">
         </div>
       </div>
-      <li class="dropdown">
+      <li class="dropdown" ng-hide="user.length">
         <a class="dropdown-toggle" style="cursor:pointer;" data-toggle="dropdown" role="button" aria-expanded="false">Login <span class="caret"></span></a>
         <ul class="dropdown-menu" style="width:300px;" role="menu">
           <li role="presentation" class="dropdown-header">Login</li>
@@ -42,6 +42,7 @@
                     type="text"
                     class="form-control"
                     placeholder="Username"
+                    ng-model="existingUser.userName"
                   />
                 </div>
                 <div class="form-group">
@@ -49,6 +50,7 @@
                     type="text"
                     class="form-control"
                     placeholder="Password"
+                    ng-model="existingUser.password"
                   />
                   <input id="checkboxKeepMeLoggedIn" type="checkbox" />
                   <label for="checkboxKeepMeLoggedIn">

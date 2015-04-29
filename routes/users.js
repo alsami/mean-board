@@ -16,12 +16,7 @@ router.post('/login', function(req, res, next){
 		if(err){
 			return next(err);
 		} else if(user){
-			console.log(user.password)
 			if(bcrypt.compareSync(req.body.password, user.password)){
-				console.log("user found and is :" + user);
-				// HERE IT CRASHES
-				// "Cannot set property of 'undefined'"
-				// Something missing?
 				user.password = '';
 				req.session.user = user;
 				res.header("Content-Type", "application/json; charset=utf-8");
