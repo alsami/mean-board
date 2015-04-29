@@ -18,6 +18,7 @@ userElements.factory('userFactory', ['$http', function($http){
   userObject.logout = function(){
 	$http.get('/api/user/logout')
 	.success(function(data){
+		userObject.user = null;
 		alert(data);
 	});
   }
