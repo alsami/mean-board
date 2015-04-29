@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var permission = require('./lib/permission');
 
 
 /* import mongoose and all needed Models */
@@ -23,14 +24,14 @@ router.get('/:id', function(req, res, next){
 });
 
 // create a post
-router.post('/', function(req, res, next) {
+router.post('/', permission.loginRequired, function(req, res, next) {
 	Post.create(req.body, function(err, post) {
 		if (err) return next(err);
-		
+
 		// register the new post at the parent thread
 		Thread.findByIdAndUpdate(post.parent, { lastPost: post._id, $push : { posts: post}}, function(err, thread){
 			if(err) return next(err);
-			
+
 			// update lastPost for all parent categories
 			setLastPostForAllCategories(thread.parent, post._id);
 		});

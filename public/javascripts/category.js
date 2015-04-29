@@ -17,7 +17,7 @@ $stateProvider
 						}]
 					}
 				},
-				'modal-register' : {
+				'modal' : {
 					templateUrl: './partials/modal_register.html',
 				}
 			}

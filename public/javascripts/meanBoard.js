@@ -16,7 +16,7 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 				'body' : {
 					templateUrl: './partials/home.html',
 				},
-				'modal-register' : {
+				'modal' : {
 					templateUrl: './partials/modal_register.html',
 				}
 			}

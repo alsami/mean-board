@@ -17,7 +17,7 @@ boardElements.config(['$stateProvider', '$urlRouterProvider', function($statePro
 						}]
 					}
 				},
-				'modal-register' : {
+				'modal' : {
 					templateUrl: './partials/modal_register.html'
 				}
 			}

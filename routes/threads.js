@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var permission = require('./lib/permission');
 
 
 /* import mongoose and all needed Models */
@@ -30,7 +31,7 @@ router.get('/:id', function(req, res, next){
 });
 
 // create a thread
-router.post('/', function(req, res, next) {
+router.post('/', permission.loginRequired, function(req, res, next) {
 	Thread.create(req.body, function (err, thread) {
 		if (err) return next(err);
 
