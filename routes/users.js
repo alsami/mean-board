@@ -22,7 +22,7 @@ router.get('/', function(req, res, next) {
 
 
 // get a specific user by id
-router.get('/:id', function(req, res, next){
+router.get('/byID/:id', function(req, res, next){
 	User.findById(req.params.id, function(err, user){
 		if(err) return next(err);
 		res.header("Content-Type", "application/json; charset=utf-8");
@@ -51,6 +51,17 @@ router.post('/login', function(req, res, next){
 	});
 });
 
+// isLoggedIn? Check if there is a cookie
+// if true return user
+// else return error
+router.get('/login', function(req, res, next){ 
+	res.header("Content-Type", "application/json; charset=utf-8");
+	if(req.user){
+		res.json(req.user).end();
+	} else {
+		res.status(400).end('Status: Not logged in!');
+	}
+});
 
 // logout:
 router.get('/logout', function(req, res, next){
@@ -85,7 +96,7 @@ router.post('/', function(req, res, next) {
 
 
 // update user by id
-router.put('/:id', function(req, res, next) {
+router.put('/byID/:id', function(req, res, next) {
 	User.findByIdAndUpdate(req.params.id, req.body, function (err, user) {
 		if (err) return next(err);
 		res.header("Content-Type", "application/json; charset=utf-8");
@@ -95,7 +106,7 @@ router.put('/:id', function(req, res, next) {
 
 
 // soft delete user by setting current date for deletedAt
-router.delete('/:id', function(req, res, next) {
+router.delete('/byID/:id', function(req, res, next) {
 	User.findByIdAndUpdate(req.params.id, {deletedAt: Date.now()} , function (err, user) {
 		if (err) return next(err);
 		res.header("Content-Type", "application/json; charset=utf-8");

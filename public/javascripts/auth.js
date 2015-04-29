@@ -1,7 +1,11 @@
 var authElements = angular.module("auth", []);
 
 authElements.controller('authCtrl', ['$scope', 'userFactory', function($scope, userFactory){
-	$scope.user = userFactory.user;
+	userFactory.getUser(function(data){
+		console.log(data)
+		$scope.user = data;
+	});
+
 	$scope.newUser = {};
 	$scope.existingUser = {};
 

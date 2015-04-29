@@ -1,9 +1,23 @@
 var userElements = angular.module('user', [])
 
 userElements.factory('userFactory', ['$http', function($http){
-  var userObject = {
-    user : null
+  userObject = {
+  	user: {}
   }
+
+  // please use this function to get the user
+  // otherwise you will lose your user when
+  // you are reloading your page
+  userObject.getUser = function(callback){
+  	$http.get('/api/user/login')
+  	.success(function(data){
+  		userObject.user = data;
+  		callback(data);
+  	})
+	.error(function(error){
+		userObject.user = null;
+	});
+  };
 
   userObject.login = function(user, callback){
     $http.post('/api/user/login', user)
