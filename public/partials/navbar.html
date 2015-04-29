@@ -23,6 +23,11 @@
             Board
           </a>
         </li>
+        <li>
+          <a href="#">
+            {{user}}
+          </a>
+        </li>
       </ul>
     <ul class="nav navbar-nav navbar-right">
       <div class="navbar-form navbar-left" role="search">
@@ -30,6 +35,59 @@
           <input type="text" ng-model="defaultSearch" class="form-control" placeholder="Search">
         </div>
       </div>
+
+      <li class="dropdown" ng-show="user.length">
+        <a class="dropdown-toggle" style="cursor:pointer;" data-toggle="dropdown" role="button" aria-expanded="false">Hallo:{{user.userName}} <span class="caret"></span></a>
+        <ul class="dropdown-menu" style="width:300px;" role="menu">
+          <li role="presentation" class="dropdown-header">Test</li>
+          <li>
+            <div style="padding: 3px 20px; clear: both; font-weight: 400; line-height:1.42857143; color:#333; white-space:nowrap;">
+              <form>
+                <div class="form-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Username"
+                    ng-model="existingUser.userName"
+                  />
+                </div>
+                <div class="form-group">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Password"
+                    ng-model="existingUser.password"
+                  />
+                  <input id="checkboxKeepMeLoggedIn" type="checkbox" />
+                  <label for="checkboxKeepMeLoggedIn">
+                    Keep me logged in
+                  </label>
+                </div>
+                <div class="form-group">
+                  <button
+                    ng-click="loginUser();"
+                    type="submit"
+                    class="btn btn-success"
+                    style="width:100%;"
+                    >Login
+                  </button>
+                </div>
+              </form>
+            </a>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <a
+              style="text-align:center; cursor:pointer;"
+              data-toggle="modal"
+              data-target="#modalWindowRegister"
+            >
+              Register
+            </a>
+          </li>
+        </ul>
+      </li>
+
       <li class="dropdown" ng-hide="user.length">
         <a class="dropdown-toggle" style="cursor:pointer;" data-toggle="dropdown" role="button" aria-expanded="false">Login <span class="caret"></span></a>
         <ul class="dropdown-menu" style="width:300px;" role="menu">

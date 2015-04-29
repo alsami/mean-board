@@ -13,6 +13,8 @@ authElements.controller('authCtrl', ['$scope', 'userFactory', function($scope, u
 		$scope.loginUser = function(){
 				userFactory.loginUser($scope.existingUser);
 				$scope.existingUser = {};
+				$scope.user = userFactory.user;
+				console.log($scope.user);
 		};
 
 		$scope.logout = function(){

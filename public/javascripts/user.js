@@ -8,6 +8,7 @@ userElements.factory('userFactory', ['$http', function($http){
   userObject.loginUser = function(user){
     $http.post('/api/user/login', user)
     .success(function(data){
+        console.log("data is " + data);
         userObject.user.push(data);
     })
     .error(function(error){
