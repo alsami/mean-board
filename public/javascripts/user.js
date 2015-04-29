@@ -5,10 +5,11 @@ userElements.factory('userFactory', ['$http', function($http){
     user : null
   }
 
-  userObject.login = function(user){
+  userObject.login = function(user, scopeUser){
     $http.post('/api/user/login', user)
     .success(function(data){
         userObject.user = data;
+        scopeUser = data;
     })
     .error(function(error){
 		alert(error);
@@ -23,20 +24,22 @@ userElements.factory('userFactory', ['$http', function($http){
 	});
   }
 
-  userObject.create = function(user){
+  userObject.create = function(user, scopeUser){
     $http.post('/api/user', user)
     .success(function(data){
     	userObject.user = data;
+    	scopeUser = data;
     })
 	.error(function(error){
 		alert(error);
 	});
   };
 
-  userObject.update = function(user){
+  userObject.update = function(user, scopeUser){
     return $http.put('/api/user/' + user._id, user)
     .success(function(data){
         userObject.user = data;
+        scopeUser = data;
     })
     .error(function(error){
     	alert(error);

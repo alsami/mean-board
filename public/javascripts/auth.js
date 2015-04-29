@@ -6,14 +6,12 @@ authElements.controller('authCtrl', ['$scope', 'userFactory', function($scope, u
 	$scope.existingUser = {};
 
 	$scope.createUser = function(){
-		userFactory.create($scope.newUser);
-		$scope.user = userFactory.user; // catch the new user
+		userFactory.create($scope.newUser, $scope.user);
 		$scope.newUser = {};
 	};
 
 	$scope.loginUser = function(){
-		userFactory.login($scope.existingUser);
-		$scope.user = userFactory.user; // catch the user
+		userFactory.login($scope.existingUser, $scope.user);
 		$scope.existingUser = {};
 	};
 
