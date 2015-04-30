@@ -28,16 +28,3 @@ categoryElements.controller('categoryCtrl', ['$scope', 'categoryFactory', 'categ
 	$scope.category = category.data;
 	console.log($scope.category)
 }]);
-
-categoryElements.factory('User', function(){
-	var user = null;
-
-	return {
-		getUser: function(){
-			return user;
-		},
-		setUser: function(newUser){
-			user = newUser;
-		}
-	};
-});

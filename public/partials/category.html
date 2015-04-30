@@ -2,7 +2,7 @@
 	<ol class="breadcrumb" style="background-color:rgb(35, 28, 42);">
 		<li><a href="/#/home">Home</a></li>
 		<li><a href="/#/board">Board</a></li>
-		<li ng-hide="category.parent.parent == null"><a href="/#/category/{{category.parent.parent}}">{{ category.parent.parent}}</a></li>
+		<li ng-hide="category.parent.parent == null"><a href="/#/category/{{category.parent.parent._id}}">{{ category.parent.parent.title}}</a></li>
 		<li ng-hide="category.parent == null"><a href="/#/category/{{category.parent._id}}">{{category.parent.title}}</a></li>
 		<li class="active">{{category.title}}</li>
 	</ol>
