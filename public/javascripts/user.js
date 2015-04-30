@@ -20,8 +20,6 @@ userElements.factory('userFactory', ['$http', function($http){
   };
 
   userObject.login = function(user, callback){
-
-    	console.log("I am here dawg")
     $http.post('/api/user/login', user)
     .success(function(data){
         userObject.user = data;

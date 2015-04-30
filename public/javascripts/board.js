@@ -34,9 +34,14 @@ boardElements.factory('categoryFactory', ['$http', function($http){
 			if(category.parent == null){
 				categoryObject.category.push(data)
 			}else if(category.parent != null && category.parent.parent == null){
-				//console.log("board.js, factory.createCategory: Here");
-				console.log("board.js, factory.createCategory: Index is:"  + categoryObject.category[0].title);
-				categoryObject.category[categoryObject.category.indexOf(category)].categories.push(category);
+				var index = categoryObject.category.indexOf(category.parent);
+				//console.log(categoryObject.category.indexOf(category.parent));
+				console.log(categoryObject.category[categoryObject.category.indexOf(category.parent)].categories);
+				categoryObject.category[categoryObject.category.indexOf(category.parent)].categories.push(data);
+
+				//categoryObject.category[categoryObject.category.indexOf(category.parent)].categories.push(category);
+				//console.log("board.js, factory.createCategory: Index is:"  + categoryObject.category[0].title);
+				//categoryObject.category[categoryObject.category.indexOf(category)].categories.push(category);
 			}else{
 				// TODO find out how to push a sub-sub item to it's parent
 			}
