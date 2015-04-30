@@ -26,25 +26,40 @@ boardElements.config(['$stateProvider', '$urlRouterProvider', function($statePro
 
 boardElements.factory('categoryFactory', ['$http', function($http){
 	var categoryObject = {
-		category : []
+		categoryJSON : []
 	}
 
 	categoryObject.createCategory = function(category){
 		return $http.post('/api/category', category).success(function(data){
-			if(category.parent == null){
-				categoryObject.category.push(data)
-			}else if(category.parent != null && category.parent.parent == null){
-				var index = categoryObject.category.indexOf(category.parent);
-				//console.log(categoryObject.category.indexOf(category.parent));
-				console.log(categoryObject.category[categoryObject.category.indexOf(category.parent)].categories);
-				categoryObject.category[categoryObject.category.indexOf(category.parent)].categories.push(data);
-
-				//categoryObject.category[categoryObject.category.indexOf(category.parent)].categories.push(category);
-				//console.log("board.js, factory.createCategory: Index is:"  + categoryObject.category[0].title);
-				//categoryObject.category[categoryObject.category.indexOf(category)].categories.push(category);
-			}else{
-				// TODO find out how to push a sub-sub item to it's parent
-			}
+				// no parents at all
+				if(category.parent == null){
+					categoryObject.categoryJSON.push(data)
+				// we have a single parent category
+				}else if(category.parent != null && category.parent.parent == null){
+					categoryObject.categoryJSON[categoryObject.categoryJSON.indexOf(category.parent)].categories.push(data);
+				// we have two parent categories
+				}else{
+					// with the first loop we will find all subparent of our root parent category
+					var parentFound = false;
+					for(var i = 0; i < categoryObject.categoryJSON.length; i++){
+						if(categoryObject.categoryJSON[i]._id == category.parent.parent){
+							// we found the root category
+							// "parentFound" is set true. it will break the outerloop when we have finished pushing the new data
+							parentFound = true;
+							// this inner loop will iterate through all Subparent category
+							for(var j = 0; j < categoryObject.categoryJSON[i].categories.length; j++){
+								// we have now found the actual parent ob our new data
+								if(categoryObject.categoryJSON[i].categories[j]._id == category.parent._id){
+									// push it and break this loop too
+									categoryObject.categoryJSON[i].categories[j].categories.push(data);
+									break;
+								}
+							}
+							if(parentFound)
+								break;
+						}
+					}
+				}
 		});
 	}
 
@@ -56,7 +71,7 @@ boardElements.factory('categoryFactory', ['$http', function($http){
 
 	categoryObject.deleteCategory = function(category){
 		return $http.delete('/api/category/' + category._id, category).success(function(data){
-			categoryObject.category.splice(categoryObject.category.indexOf(category), 1);
+			categoryObject.categoryJSON.splice(categoryObject.categoryJSON.indexOf(category), 1);
 		});
 	}
 
@@ -68,7 +83,7 @@ boardElements.factory('categoryFactory', ['$http', function($http){
 
 	categoryObject.getAllCategories = function(){
 		return $http.get('/api/category').success(function(data){
-			angular.copy(data, categoryObject.category);
+			angular.copy(data, categoryObject.categoryJSON);
 		});
 	}
 
@@ -76,7 +91,7 @@ boardElements.factory('categoryFactory', ['$http', function($http){
 }]);
 
 boardElements.controller('boardCtrl', ['$scope', 'categoryFactory', function($scope, categoryFactory){
-	$scope.category = categoryFactory.category;
+	$scope.category = categoryFactory.categoryJSON;
 	$scope.subParent = null;
 	$scope.newCategory = {};
 	$scope.createCategory = function(){
