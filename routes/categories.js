@@ -14,7 +14,11 @@ var Category = require('../models/Category.js');
 router.get('/', function(req, res, next){
 	Category.find({parent: null, deletedAt: null})
 		.select('_id title categories threads')
-		.deepPopulate('categories.lastPost.parent categories.categories.lastPost.parent threads.lastPost')
+		.deepPopulate(
+			'categories.lastPost.parent' +
+			' categories.categories.lastPost.parent' +
+			' threads.lastPost'
+			)
 		.exec(function(err, category){
 			if(err) return next(err);
 			res.header("Content-Type", "application/json; charset=utf-8");
@@ -26,7 +30,13 @@ router.get('/', function(req, res, next){
 router.get('/:id', function(req, res, next){
 	Category.findById(req.params.id)
 		.select('parent _id title categories threads')
-		.deepPopulate('parent categories.lastPost.parent categories.categories.lastPost.parent threads')
+		.deepPopulate(
+			'parent' +
+			' categories.lastPost.parent' +
+			' categories.categories.lastPost.parent' +
+			' categories.parent.parent' +
+			' threads'
+			)
 		.exec(function(err, category){
 			if(err) return next(err);
 			res.header("Content-Type", "application/json; charset=utf-8");
