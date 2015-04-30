@@ -16,6 +16,7 @@ userElements.factory('userFactory', ['$http', function($http){
   	})
 	.error(function(error){
 		userObject.user = null;
+
 	});
   };
 
