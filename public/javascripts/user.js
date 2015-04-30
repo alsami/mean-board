@@ -12,11 +12,11 @@ userElements.factory('userFactory', ['$http', function($http){
   	$http.get('/api/user/login')
   	.success(function(data){
   		userObject.user = data;
-  		callback(data);
+  		callback(userObject.user);
   	})
 	.error(function(error){
 		userObject.user = null;
-
+		callback(null);
 	});
   };
 

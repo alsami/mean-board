@@ -2,7 +2,7 @@ var authElements = angular.module("auth", []);
 
 authElements.controller('authCtrl', ['$scope', 'userFactory', function($scope, userFactory){
 	userFactory.getUser(function(data){
-		console.log(data)
+		console.log('I am inside the auth.js: ', data);
 		$scope.user = data;
 	});
 
