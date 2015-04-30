@@ -55,10 +55,10 @@ userElements.factory('userFactory', ['$http', function($http){
     return $http.put('/api/user/' + user._id, user)
     .success(function(data){
         userObject.user = data;
-        callback(data);
+        callback(userObject.user);
     })
     .error(function(error){
-    	alert(error);
+      callback(null);
     });
   };
 
