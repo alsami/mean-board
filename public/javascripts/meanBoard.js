@@ -1,4 +1,4 @@
-var app = angular.module('meanBoard', ['ui.router', 'auth', 'user', 'board', 'category']);
+var app = angular.module('meanBoard', ['ui.router', 'auth', 'user', 'category']);
 
 // Global config
 // everything that is not defined in any module used above as dependency, leeds us back home

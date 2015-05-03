@@ -1,45 +1,79 @@
 <div class="col-md-8 col-md-offset-2">
-	<ol class="breadcrumb">
-		<li><a href="/#/home">Home</a></li>
-		<li><a href="/#/board">Board</a></li>
-		<li ng-hide="category.parent.parent == null"><a href="/#/category/{{category.parent.parent._id}}">{{ category.parent.parent.title}}</a></li>
-		<li ng-hide="category.parent == null"><a href="/#/category/{{category.parent._id}}">{{category.parent.title}}</a></li>
-		<li class="active">{{category.title}}</li>
-	</ol>
+	<div class="container-fluid" ng-show="!isSingleCategorySelected">
+		<ol class="breadcrumb">
+			<li><a href="/#/home">Home</a></li>
+			<li class="active">Board</li>
+		</ol>
 
-	<div ng-hide="category.categories.length == 0" class="panel panel-primary">
-		<div class="panel-heading">
-			{{category.title}}
+		<div ng-repeat="category in category | orderBy : 'title'" class="panel panel-primary">
+		  <div class="panel-heading">
+		    {{category.title}}
+		  </div>
+		  <div class="panel-body">
+		    <div ng-show="category.categories.length == 0" ng-repeat="category in category.categories | orderBy : 'title'"  class="container-fluid category-simple">
+		      <img src="/images/placeholder.png" class="img-rounded" alt="an image" style="width:50px; height:50px;" />
+		      <a href="/#/board/{{category._id}}">
+		        {{category.title}}
+		      </a>
+		    </div>
+
+		    <div ng-show="category.categories.length > 0" ng-repeat="category in category.categories | orderBy: 'title'" class="panel panel-primary"  style="margin-top:5px; margin-bottom:0px;">
+		      <div class="panel-heading">
+		        <h3 class="panel-title inner-category-head">{{category.title}}</h3>
+		      </div>
+		      <div>
+		        <div ng-repeat="category in category.categories | orderBy : 'title'" class="container-fluid category-subcategory" style="padding:10px 15px;">
+		          <img src="/images/placeholder.png" class="img-rounded" alt="an image" style="width:50px; height:50px;" />
+							<a href="/#/board/{{category._id}}">
+		            {{category.title}}
+		          </a>
+		        </div>
+		      </div>
+		    </div>
+
+		  </div>
 		</div>
-		<div class="panel-body">
-			<div ng-show="category.categories.length == 0"  ng-repeat="category in category.categories | orderBy : 'title'"  class="container-fluid category-simple">
-				<img src="/images/placeholder.png" class="img-rounded" alt="an image" style="width:50px; height:50px;" />
-				<a href="/#/category/{{category._id}}">
-					{{category.title}}
-				</a>
+	</div>
+
+	<div class="container-fluid" ng-show="isSingleCategorySelected">
+		<ol class="breadcrumb">
+			<li><a href="/#/home">Home</a></li>
+			<li><a href="/#/board">Board</a></li>
+			<li ng-hide="category.parent.parent == null"><a href="/#/board/{{category.parent.parent._id}}">{{ category.parent.parent.title}}</a></li>
+			<li ng-hide="category.parent == null"><a href="/#/board/{{category.parent._id}}">{{category.parent.title}}</a></li>
+			<li class="active">{{category.title}}</li>
+		</ol>
+
+		<div ng-hide="category.categories.length == 0" class="panel panel-primary">
+			<div class="panel-heading">
+				{{category.title}}
 			</div>
-			<div ng-show="category.categories.length > 0" ng-repeat="category in category.categories | orderBy: 'title'" class="panel panel-primary"  style="margin-top:5px; margin-bottom:0px;">
-				<div class="panel-heading">
-					<h3 class="panel-title inner-category-head">{{category.title}}</h3>
+			<div class="panel-body">
+				<div ng-show="category.categories.length == 0"  ng-repeat="category in category.categories | orderBy : 'title'"  class="container-fluid category-simple">
+					<img src="/images/placeholder.png" class="img-rounded" alt="an image" style="width:50px; height:50px;" />
+					<a href="/#/board/{{category._id}}">
+						{{category.title}}
+					</a>
 				</div>
-				<div>
-					<div ng-repeat="category in category.categories | orderBy : 'title'" class="container-fluid category-subcategory" style="padding:10px 15px;">
-						<img src="/images/placeholder.png" class="img-rounded" alt="an image" style="width:50px; height:50px;" />
-						<a href="/#/category/{{category._id}}">
-							{{category.title}}
-						</a>
+				<div ng-show="category.categories.length > 0" ng-repeat="category in category.categories | orderBy: 'title'" class="panel panel-primary"  style="margin-top:5px; margin-bottom:0px;">
+					<div class="panel-heading">
+						<h3 class="panel-title inner-category-head">{{category.title}}</h3>
+					</div>
+					<div>
+						<div ng-repeat="category in category.categories | orderBy : 'title'" class="container-fluid category-subcategory" style="padding:10px 15px;">
+							<img src="/images/placeholder.png" class="img-rounded" alt="an image" style="width:50px; height:50px;" />
+							<a href="/#/board/{{category._id}}">
+								{{category.title}}
+							</a>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 
-	<div ng-hide="category.parent.parent == null">
-			{{category.categories.title}}
-	</div>
-
-	<!-- Create Category Dialog -->
-	<div class="container-fluid" ng-hide="category.parent.parent == null">
+<div ng-show=" category.parent == null || category.parent.parent != null" class="container-fluid">
+		<!-- Create Category Dialog -->
 		<div class="modal fade" id="modalWindowAddMainCategory" tabindex="-1" role="dialog" aria-labelledby="modalWindowLabelImport" aria-hidden="true">
 			<div class="modal-dialog" style="margin: 20% auto;">
 				<div class="modal-content">
@@ -49,7 +83,26 @@
 					</div>
 					<div class="modal-body">
 						<form ng-submit="createCategory()">
-							<input type="hidden" ng-model="newCategory.parent" ng-value="category.parent._id" ng-init="newCategory.parent=category.parent._id" />
+							<div ng-show="category.length" class="form-group">
+								<label for="selectCategory">Parent Category</label>
+								<select
+									id="selectCategory"
+									class="form-control"
+									ng-model="newCategory.parent"
+									ng-options="category as category.title for category in category | orderBy : 'title'">
+									<option value=""></option>
+								</select>
+							</div>
+							<div ng-show="newCategory.parent.categories.length" class="form-group">
+								<label for="selectSubCategory">Sub Category</label>
+								<select
+									id="selectSubCategory"
+									class="form-control"
+									ng-model="subParent"
+									ng-options="category as category.title for category in newCategory.parent.categories | orderBy : 'title'">
+									<option value=""></option>
+								</select>
+							</div>
 							<label for="textFieldCategoryTitle">Category Title</label>
 							<div class="form-group">
 								<input
@@ -83,6 +136,7 @@
 				</div>
 			</div>
 		</div>
+
 
 		<div class="container-fluid float right" style="margin-bottom:20px;">
 				<button
