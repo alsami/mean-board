@@ -22,7 +22,7 @@ categoryModule.config(['$stateProvider', '$urlRouterProvider', function($statePr
 				}
 			}
 		})
-		.state('category', {
+		.state('categoryById', {
 			url: '/board/{id}',
 			views : {
 				'navbar' : {
@@ -49,38 +49,39 @@ categoryModule.factory('categoryFactory', ['$http', function($http){
 		categoryJSON : []
 	}
 
-	categoryObject.createCategory = function(category){
+	categoryObject.createCategory = function(category, callback){
 		return $http.post('/api/category', category).success(function(data){
-				if(category.parent == null || category.parent.categories == undefined){
-					//console.log("board.js - factory - createCategory() data is:");
-					console.log(category);
-					categoryObject.categoryJSON.push(data)
-				// we have a single parent category
-				}else if(category.parent != null && category.parent.parent == null){
-					categoryObject.categoryJSON[categoryObject.categoryJSON.indexOf(category.parent)].categories.push(data);
-				// we have two parent categories
-				}else{
-					// with the first loop we will find all subparent of our root parent category
-					var parentFound = false;
-					for(var i = 0; i < categoryObject.categoryJSON.length; i++){
-						if(categoryObject.categoryJSON[i]._id == category.parent.parent){
-							// we found the root category
-							// "parentFound" is set true. it will break the outerloop when we have finished pushing the new data
-							parentFound = true;
-							// this inner loop will iterate through all Subparent category
-							for(var j = 0; j < categoryObject.categoryJSON[i].categories.length; j++){
-								// we have now found the actual parent ob our new data
-								if(categoryObject.categoryJSON[i].categories[j]._id == category.parent._id){
-									// push it and break this loop too
-									categoryObject.categoryJSON[i].categories[j].categories.push(data);
-									break;
-								}
-							}
-							if(parentFound)
+			if(category.parent == null || category.parent.categories == undefined){
+				//console.log("board.js - factory - createCategory() data is:");
+				console.log(category);
+				categoryObject.categoryJSON.push(data)
+			// we have a single parent category
+			}else if(category.parent != null && category.parent.parent == null){
+				categoryObject.categoryJSON[categoryObject.categoryJSON.indexOf(category.parent)].categories.push(data);
+			// we have two parent categories
+			}else{
+				// with the first loop we will find all subparent of our root parent category
+				var parentFound = false;
+				for(var i = 0; i < categoryObject.categoryJSON.length; i++){
+					if(categoryObject.categoryJSON[i]._id == category.parent.parent){
+						// we found the root category
+						// "parentFound" is set true. it will break the outerloop when we have finished pushing the new data
+						parentFound = true;
+						// this inner loop will iterate through all Subparent category
+						for(var j = 0; j < categoryObject.categoryJSON[i].categories.length; j++){
+							// we have now found the actual parent ob our new data
+							if(categoryObject.categoryJSON[i].categories[j]._id == category.parent._id){
+								// push it and break this loop too
+								categoryObject.categoryJSON[i].categories[j].categories.push(data);
 								break;
+							}
 						}
+						if(parentFound)
+							break;
 					}
 				}
+			}
+			callback(categoryObject.categoryJSON);
 		});
 	}
 
@@ -104,7 +105,6 @@ categoryModule.factory('categoryFactory', ['$http', function($http){
 
 	categoryObject.getAllCategories = function(){
 		return $http.get('/api/category').success(function(data){
-			console.log(data);
 			angular.copy(data, categoryObject.categoryJSON);
 		});
 	}
@@ -112,10 +112,9 @@ categoryModule.factory('categoryFactory', ['$http', function($http){
 	return categoryObject;
 }]);
 
-categoryModule.controller('categoryCtrl', ['$scope', '$stateParams', 'categoryFactory', 'category', function($scope, $stateParams, categoryFactory, category){
+categoryModule.controller('categoryCtrl', ['$scope', '$location', '$stateParams', 'categoryFactory', 'category', function($scope, $location, $stateParams, categoryFactory, category){
 	$scope.isSingleCategorySelected = ($stateParams.id == undefined ? false : true)
 	$scope.category = category.data;
-	categoryFactory.categoryJSON = $scope.category;
 	$scope.subParent = null;
 	$scope.newCategory = {};
 	$scope.createCategory = function(){
@@ -123,9 +122,16 @@ categoryModule.controller('categoryCtrl', ['$scope', '$stateParams', 'categoryFa
 			$scope.newCategory.parent = $scope.subParent;
 			$scope.subParent = null;
 		}
-		categoryFactory.createCategory($scope.newCategory);
-		$scope.newUser = {};
+		categoryFactory.createCategory($scope.newCategory, function(data){
+			$scope.category = data;
+			$scope.newCategory = {};
+		});
 	}
+
+	$scope.redirectTo = function(url, categoryId){
+		$location.search('categoryId', 'test').path(url);
+	}
+
 	$scope.updateCategory = function(category){
 		categoryFactory.updateCategory(category);
 	}

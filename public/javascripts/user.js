@@ -1,6 +1,6 @@
-var userElements = angular.module('user', [])
+var userModule = angular.module('user', [])
 
-userElements.factory('userFactory', ['$http', function($http){
+userModule.factory('userFactory', ['$http', function($http){
   userObject = {
   	user: {}
   }
