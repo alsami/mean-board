@@ -3,7 +3,7 @@ var threadModule = angular.module("thread", []);
 threadModule.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider){
 	$stateProvider
 		.state('create-thread', {
-			url: '/create-thread/test',
+			url: '/create-thread?categoryId',
 			views: {
 				'navbar' : {
 						templateUrl: './partials/navbar.html'

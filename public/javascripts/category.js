@@ -129,7 +129,7 @@ categoryModule.controller('categoryCtrl', ['$scope', '$location', '$stateParams'
 	}
 
 	$scope.redirectTo = function(url, categoryId){
-		$location.search('categoryId', 'test').path(url);
+		$location.search('categoryId', categoryId).path(url);
 	}
 
 	$scope.updateCategory = function(category){
