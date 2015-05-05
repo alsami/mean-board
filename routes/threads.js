@@ -32,6 +32,9 @@ router.get('/:id', function(req, res, next){
 
 // create a thread
 router.post('/', permission.loginRequired, function(req, res, next) {
+	// add the user ID to the thread before creating it
+	req.body.createdBy = req.user._id;
+
 	Thread.create(req.body, function (err, thread) {
 		if (err) return next(err);
 
@@ -46,7 +49,8 @@ router.post('/', permission.loginRequired, function(req, res, next) {
 });
 
 // update thread by id
-router.put('/:id', function(req, res, next) {
+router.put('/:id', permission.hasPermissionToUpdate, function(req, res, next) {
+	req.body.updatedAt = Date.now();
 	Thread.findByIdAndUpdate(req.params.id, req.body, function (err, thread) {
 		if (err) return next(err);
 		res.header("Content-Type", "application/json; charset=utf-8");

@@ -25,6 +25,9 @@ router.get('/:id', function(req, res, next){
 
 // create a post
 router.post('/', permission.loginRequired, function(req, res, next) {
+	// add the user ID to the post before creating it
+	req.body.createdBy = req.user._id;
+	
 	Post.create(req.body, function(err, post) {
 		if (err) return next(err);
 
@@ -51,7 +54,7 @@ var setLastPostForAllCategories = function(categoryId, lastPostId){
 }
 
 // update post by id
-router.put('/:id', function(req, res, next) {
+router.put('/:id', permission.hasPermissionToUpdate, function(req, res, next) {
 	req.body.updatedAt = Date.now();
 	Post.findByIdAndUpdate(req.params.id, req.body, function(err, post) {
 		if(err) return next(err);
