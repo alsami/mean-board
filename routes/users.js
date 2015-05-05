@@ -37,22 +37,27 @@ router.get('/byID/:id', function(req, res, next){
 
 // get a specific user by userName and password aka LOGIN
 router.post('/login', function(req, res, next){
-	User.findOne({userName: req.body.userName}, function(err, user){
-		if(err){
-			return next(err);
-		} else if(user){
-			if(bcrypt.compareSync(req.body.password, user.password)){
-				user.password = '';
-				req.session.user = user;
-				res.header("Content-Type", "application/json; charset=utf-8");
-				res.json(user).end();
+	User.findOne({userName: req.body.userName})
+		.deepPopulate(
+			'subscribed_categories' +
+			' subscribed_threads'
+		)
+		.exec(function(err, user){
+			if(err){
+				return next(err);
+			} else if(user){
+				if(bcrypt.compareSync(req.body.password, user.password)){
+					user.password = '';
+					req.session.user = user;
+					res.header("Content-Type", "application/json; charset=utf-8");
+					res.json(user).end();
+				} else {
+					res.status(400).end('Incorrect password');
+				}
 			} else {
-				res.status(400).end('Incorrect password');
+				res.status(400).end('Error: Did not find a user for this username!');
 			}
-		} else {
-			res.status(400).end('Error: Did not find a user for this username!');
-		}
-	});
+		});
 });
 
 // isLoggedIn? Check if there is a cookie
@@ -101,11 +106,18 @@ router.post('/', function(req, res, next) {
 
 // update user by id
 router.put('/byID/:id', function(req, res, next) {
-	User.findByIdAndUpdate(req.params.id, req.body, function (err, user) {
-		if (err) return next(err);
-		res.header("Content-Type", "application/json; charset=utf-8");
-		res.json(user);
-	});
+	User.findByIdAndUpdate(req.params.id, req.body)
+		.deepPopulate(
+			'subscribed_categories' +
+			' subscribed_threads'
+		)
+		.exec(function (err, user) {
+			if (err) return next(err);
+			res.header("Content-Type", "application/json; charset=utf-8");
+			user.password = '';
+			req.session.user = user;
+			res.json(user).end();
+		});
 });
 
 
@@ -114,6 +126,7 @@ router.delete('/byID/:id', function(req, res, next) {
 	User.findByIdAndUpdate(req.params.id, {deletedAt: Date.now()} , function (err, user) {
 		if (err) return next(err);
 		res.header("Content-Type", "application/json; charset=utf-8");
+		user.password = '';
 		res.json(user);
 	});
 });
