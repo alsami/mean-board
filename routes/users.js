@@ -11,19 +11,23 @@ var User = require('../models/User.js');
 /* routes for user */
 
 
-// get all users
+// get all users, but only return some information
 router.get('/', function(req, res, next) {
-	User.find(function (err, user) {
-		if (err) return next(err);
-		res.header("Content-Type", "application/json; charset=utf-8");
-		res.json(user);
+	User.find()
+		.select('firstName lastName birthday gender userName country')
+		.exec(function (err, user) {
+			if (err) return next(err);
+			res.header("Content-Type", "application/json; charset=utf-8");
+			res.json(user);
 	});
 });
 
 
 // get a specific user by id
 router.get('/byID/:id', function(req, res, next){
-	User.findById(req.params.id, function(err, user){
+	User.findById(req.params.id)
+		.select('firstName lastName birthday gender userName country')
+		.exec(function(err, user){
 		if(err) return next(err);
 		res.header("Content-Type", "application/json; charset=utf-8");
 		res.json(user);
