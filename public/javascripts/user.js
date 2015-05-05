@@ -1,6 +1,6 @@
-var userElements = angular.module('user', [])
+var userModule = angular.module('user', [])
 
-userElements.factory('userFactory', ['$http', function($http){
+userModule.factory('userFactory', ['$http', function($http){
   userObject = {
   	user: {}
   }
@@ -54,10 +54,11 @@ userElements.factory('userFactory', ['$http', function($http){
     return $http.put('/api/user/' + user._id, user)
     .success(function(data){
         userObject.user = data;
-        callback(data);
+        callback(userObject.user);
     })
-    .error(function(error){
-    	alert(error);
+	.error(function(error){
+		alert(error);
+		callback(null);
     });
   };
 

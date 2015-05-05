@@ -54,7 +54,7 @@ router.post('/login', function(req, res, next){
 // isLoggedIn? Check if there is a cookie
 // if true return user
 // else return error
-router.get('/login', function(req, res, next){ 
+router.get('/login', function(req, res, next){
 	res.header("Content-Type", "application/json; charset=utf-8");
 	if(req.user){
 		res.json(req.user).end();

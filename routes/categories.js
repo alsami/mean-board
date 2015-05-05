@@ -17,7 +17,6 @@ router.get('/', function(req, res, next){
 		.deepPopulate(
 			'categories.lastPost.parent' +
 			' categories.categories.lastPost.parent' +
-			' categories.categories.categories.parent' +
 			' threads.lastPost'
 			)
 		.exec(function(err, category){
@@ -35,7 +34,7 @@ router.get('/:id', function(req, res, next){
 			'parent' +
 			' categories.lastPost.parent' +
 			' categories.categories.lastPost.parent' +
-			' categories.categories.categories.parent' +
+			' parent.parent' +
 			' threads'
 			)
 		.exec(function(err, category){
