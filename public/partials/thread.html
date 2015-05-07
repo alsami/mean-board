@@ -1,3 +1,33 @@
 <div class="col-md-8 col-md-offset-2">
-  Hallo
+  <ol class="breadcrumb">
+    <li><a href="/#/home">Home</a></li>
+    <li><a href="/#/board">Board</a></li>
+    <li><a href="/#/board/{{category.parent.parent._id}}">{{ category.parent.parent.title}}</a></li>
+    <li><a href="/#/board/{{category.parent._id}}">{{category.parent.title}}</a></li>
+    <li><a href="/#/board/{{category._id}}">{{category.title}}</a></li>
+    <li ng-show="thread == null" class="active">Create new Thread</li>
+  </ol>
+  <!-- VIEW FOR CREATING THREADS -->
+  <div ng-show="thread == null"class="panel panel-primary">
+    <div class="panel-heading">
+      New Thread
+    </div>
+    <div class="panel-body">
+      <div class="container-fluid">
+        <form ng-submit="createThread()">
+          <div class="form-group">
+            <input
+              ng-model="newThread.title"
+              type="text"
+              class="form-control"
+              placeholder="Thread Title"
+             />
+          </div>
+          <div class="form-group">
+            <textarea class="form-control" style="resize:vertical;" rows="10" placeholder="Starting Post" ng-model="description"></textarea>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
 </div>

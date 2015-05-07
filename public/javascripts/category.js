@@ -1,4 +1,4 @@
-var categoryModule = angular.module("category", []);
+var categoryModule = angular.module('category', []);
 
 categoryModule.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider){
 	$stateProvider
