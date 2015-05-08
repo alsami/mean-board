@@ -1,6 +1,39 @@
 var Post = require('../../models/Post');
 var Thread = require('../../models/Thread');
+var ACL = require('./acl');
 var permission = {};
+
+
+permission.secureApiWithAcl = function(req, res, next){
+	var role = getRole(req);
+	console.log('permission.js - role: ', role);
+	var method = req.method.toLowerCase();
+	console.log('permission.js - method: ', method);
+	var model = getModel(req);
+	console.log('permission.js - model: ', model);
+	
+	var isPermitted = ACL(role, method, model);
+	console.log('permission.js - isPermitted: ', isPermitted);
+
+	next();
+};
+
+
+function getRole(req){
+	console.log('req.user: ', req.user);
+	if(req.user){
+		return req.user.role;
+	} else {
+		return 'guest';
+	}
+};
+
+
+function getModel(req){
+	root_model_id = req.url.split('/');
+	model = root_model_id[1];
+	return model;
+};
 
 
 permission.loginRequired = function(req, res, next){
