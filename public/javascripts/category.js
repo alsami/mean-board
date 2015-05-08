@@ -115,6 +115,7 @@ categoryModule.factory('categoryFactory', ['$http', function($http){
 categoryModule.controller('categoryCtrl', ['$scope', '$location', '$stateParams', 'categoryFactory', 'category', function($scope, $location, $stateParams, categoryFactory, category){
 	$scope.isSingleCategorySelected = ($stateParams.id == undefined ? false : true)
 	$scope.category = category.data;
+	console.log($scope.category);
 	$scope.subParent = null;
 	$scope.newCategory = {};
 	$scope.createCategory = function(){
