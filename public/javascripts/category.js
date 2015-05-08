@@ -99,6 +99,7 @@ categoryModule.factory('categoryFactory', ['$http', function($http){
 
 	categoryObject.getSingleCategory = function(categoryId){
 		return $http.get('/api/category/' + categoryId).success(function(data){
+			console.log(data);
 			return data;
 		});
 	}

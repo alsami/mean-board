@@ -6,7 +6,7 @@
     <li><a href="/#/board/{{category.parent._id}}">{{category.parent.title}}</a></li>
     <li><a href="/#/board/{{category._id}}">{{category.title}}</a></li>
     <li ng-show="thread == null" class="active">Create new Thread</li>
-    <li ng-show="thread != null" class="active">{{Thread.title}}</li>
+    <li ng-show="thread != null" class="active">{{thread.title}}</li>
   </ol>
   <!-- VIEW FOR CREATING THREADS -->
   <div ng-show="thread == null"class="panel panel-primary">
@@ -16,6 +16,7 @@
     <div class="panel-body">
       <div class="container-fluid">
         <form ng-submit="createThread()">
+          <input type="hidden" ng-model="newPost.createdBy" ng-init="newPost.createdBy=authUser.userName" ng-value="authUser.userName"/>
           <div class="form-group">
             <input
               ng-model="newThread.title"
