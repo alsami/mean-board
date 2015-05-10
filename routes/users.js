@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var permission = require('./lib/permission');
 
 
 /* import all needed Models */
@@ -106,7 +107,7 @@ router.post('/', function(req, res, next) {
 
 
 // update user by id
-router.put('/byID/:id', function(req, res, next) {
+router.put('/byID/:id', permission.check, function(req, res, next) {
 	req.body.updatedBy = req.user._id;
 	req.body.updatedAt = Date.now();
 	User.findByIdAndUpdate(req.params.id, req.body)
@@ -125,7 +126,7 @@ router.put('/byID/:id', function(req, res, next) {
 
 
 // soft delete user by setting current date for deletedAt
-router.delete('/byID/:id', function(req, res, next) {
+router.delete('/byID/:id', permission.check, function(req, res, next) {
 	delete_info = {
 		deletedAt: Date.now(),
 		updatedBy: req.user._id

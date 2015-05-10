@@ -1,5 +1,6 @@
 var Post = require('../../models/Post');
 var Thread = require('../../models/Thread');
+var User = require('../../models/User');
 var ACL = require('./acl');
 var permission = {};
 
@@ -19,7 +20,7 @@ permission.secureApi = function(req, res, next){
 	if(isPermitted){
 		next();
 	} else {
-		res.status(403).end('Error: You do not have the permission to acces this route!');
+		res.status(403).end('Error: No permission to access this route!');
 	}
 };
 
@@ -64,7 +65,7 @@ function getUri(req){
 // * user, category, thread, post: *
 
 
-permission.hasPermission = function(req, res, next){
+permission.check = function(req, res, next){
 	if(req.user.role === 'admin'){
 		next();
 	} else if(req.user.role === 'moderator' && req.url.indexOf('category') === -1){
@@ -74,7 +75,7 @@ permission.hasPermission = function(req, res, next){
 			if(id.equals(req.user._id)){
 				next();
 			} else {
-				res.status(403).end('Error: This user do not have the permission to access this route.');
+				res.status(403).end('Error: No permission to access this route!');
 			}
 		});
 	}
