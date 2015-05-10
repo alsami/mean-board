@@ -4,9 +4,10 @@ var ACL = require('./acl');
 var permission = {};
 
 
-permission.secureApiWithAcl = function(req, res, next){
+permission.secureApi = function(req, res, next){
 	var role = getRole(req);
 	console.log('permission.js - role: ', role);
+	
 	var method = req.method.toLowerCase();
 	console.log('permission.js - method: ', method);
 	var uri = getUri(req);
@@ -15,7 +16,7 @@ permission.secureApiWithAcl = function(req, res, next){
 	var isPermitted = ACL(role, method, uri);
 	console.log('permission.js - isPermitted: ', isPermitted);
 
-	if(isPermitted){	
+	if(isPermitted){
 		next();
 	} else {
 		res.status(403).end('Error: You do not have the permission to acces this route!');
@@ -42,34 +43,35 @@ function getUri(req){
 
 // TODO:
 // guest:
-// * user: get
-// * category: get
-// * thread: get
-// * post: get
+// OK - * user: get
+// OK - * category: get
+// OK - * thread: get
+// OK - * post: get
 //
 // user:
-// * user: get, update, delete
-// * category: get
-// * thread: get, post, update
-// * post: get, post, update
+// OK - * user: get, update, --> delete
+// OK - * category: get
+// OK - * thread: get, post, update
+// OK - * post: get, post, update
 //
 // moderator:
-// * user: get, update, delete
-// * category: get
-// * thread: get, post, update, delete
-// * post: get, post, update, delete
+// OK - * user: get, update, --> delete
+// OK - * category: get
+// OK - * thread: get, post, update, --> delete
+// OK - * post: get, post, update, --> delete
 //
 // admin: 
 // * user, category, thread, post: *
 
-permission.hasPermissionToUpdate = function(req, res, next){
-	if(!req.user){
-		res.status(403).end('Error: Please login to access this route');
+
+permission.hasPermission = function(req, res, next){
+	if(req.user.role === 'admin'){
+		next();
+	} else if(req.user.role === 'moderator' && req.url.indexOf('category') === -1){
+		next();
 	} else {
-		get_requested_object(req.params.id, function(obj){
-			if(!obj){
-				res.status(404).end('Error: Did not find requested object');
-			} else if(obj.createdBy.equals(req.user._id)){
+		get_requested_object(req.params.id, function(id){
+			if(id.equals(req.user._id)){
 				next();
 			} else {
 				res.status(403).end('Error: This user do not have the permission to access this route.');
@@ -80,17 +82,21 @@ permission.hasPermissionToUpdate = function(req, res, next){
 
 
 function get_requested_object(id, callback){
+	User.findById(id, function(err, user){
+		if(user){
+			callback(user._id);
+		}
+	});
+	
 	Post.findById(id, function(err, post){
 		if(post){
-			callback(post);
-		} else {
-			Thread.findById(id, function(err, thread){
-				if(thread){
-					callback(thread);
-				} else {
-					callback(null);
-				}
-			});
+			callback(post.createdBy);
+		}
+	});
+	
+	Thread.findById(id, function(err, thread){
+		if(thread){
+			callback(thread.createdBy);
 		}
 	});
 };

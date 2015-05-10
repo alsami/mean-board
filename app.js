@@ -76,7 +76,7 @@ app.use(function(req, res, next){
 });
 
 // secure API with ACLs
-app.use('/api', permission.secureApiWithAcl);
+app.use('/api', permission.secureApi);
 
 // use default express middleware
 // uncomment after placing your favicon in /public
