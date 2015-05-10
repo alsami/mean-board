@@ -132,9 +132,9 @@ var acl = {
 };
 
 
-var isPermitted = function(role, method, model){
+var isPermitted = function(role, method, uri){
 	try {
-		return acl[role][model][method];
+		return acl[role][uri][method];
 	} catch(err) {
 		console.log('ACL Error: ', err);
 		return false;

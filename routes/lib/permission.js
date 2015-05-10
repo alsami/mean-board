@@ -9,13 +9,17 @@ permission.secureApiWithAcl = function(req, res, next){
 	console.log('permission.js - role: ', role);
 	var method = req.method.toLowerCase();
 	console.log('permission.js - method: ', method);
-	var model = getModel(req);
-	console.log('permission.js - model: ', model);
+	var uri = getUri(req);
+	console.log('permission.js - uri: ', uri);
 	
-	var isPermitted = ACL(role, method, model);
+	var isPermitted = ACL(role, method, uri);
 	console.log('permission.js - isPermitted: ', isPermitted);
 
-	next();
+	if(isPermitted){	
+		next();
+	} else {
+		res.status(403).end('Error: You do not have the permission to acces this route!');
+	}
 };
 
 
@@ -29,19 +33,10 @@ function getRole(req){
 };
 
 
-function getModel(req){
+function getUri(req){
 	root_model_id = req.url.split('/');
-	model = root_model_id[1];
-	return model;
-};
-
-
-permission.loginRequired = function(req, res, next){
-	if(!req.user){
-		res.status(403).end('Error: Please login!');
-	} else {
-		next();
-	}
+	uri = root_model_id[1];
+	return uri;
 };
 
 
