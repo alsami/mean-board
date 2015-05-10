@@ -45,7 +45,7 @@ router.get('/:id', function(req, res, next){
 });
 
 // create a category
-router.post('/', permission.loginRequired, function(req, res, next) {
+router.post('/', function(req, res, next) {
 	Category.create(req.body, function (err, category) {
 		if (err) return next(err);
 
