@@ -5,6 +5,7 @@ var PostSchema = new Schema({
 	body: String,
 	parent: {type: Schema.Types.ObjectId, ref: 'Thread', required: true},
 	createdBy: {type: Schema.Types.ObjectId, ref: 'User', default: null},
+	createdAt: {type: Date, default: Date.now},
 	updatedBy: {type: Schema.Types.ObjectId, ref: 'User', default: null},
 	updatedAt: {type: Date, default: Date.now},
 	deletedAt: {type: Date, default: null}

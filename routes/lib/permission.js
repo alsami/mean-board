@@ -25,11 +25,11 @@ permission.secureApiWithAcl = function(req, res, next){
 
 function getRole(req){
 	console.log('req.user: ', req.user);
-	if(req.user){
-		return req.user.role;
-	} else {
-		return 'guest';
+	if(!req.user){
+		req.user = { role: 'guest'};
 	}
+	
+	return req.user.role;
 };
 
 
@@ -39,6 +39,28 @@ function getUri(req){
 	return uri;
 };
 
+
+// TODO:
+// guest:
+// * user: get
+// * category: get
+// * thread: get
+// * post: get
+//
+// user:
+// * user: get, update, delete
+// * category: get
+// * thread: get, post, update
+// * post: get, post, update
+//
+// moderator:
+// * user: get, update, delete
+// * category: get
+// * thread: get, post, update, delete
+// * post: get, post, update, delete
+//
+// admin: 
+// * user, category, thread, post: *
 
 permission.hasPermissionToUpdate = function(req, res, next){
 	if(!req.user){

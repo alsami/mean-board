@@ -3,25 +3,25 @@ var acl = {
 		user: {
 			get: true,
 			post: true,
-			update: false,
+			put: false,
 			delete: false
 		},
 		category: {
 			get: true,
 			post: false,
-			update: false,
+			put: false,
 			delete: false
 		},
 		thread: {
 			get: true,
 			post: false,
-			update: false,
+			put: false,
 			delete: false
 		},
 		post: {
 			get: true,
 			post: false,
-			update: false,
+			put: false,
 			delete: false
 		}
 	},
@@ -29,51 +29,25 @@ var acl = {
 		user: {
 			get: true,
 			post: false,
-			update: true,
+			put: true,
 			delete: true
 		},
 		category: {
 			get: true,
 			post: false,
-			update: false,
+			put: false,
 			delete: false
 		},
 		thread: {
 			get: true,
 			post: true,
-			update: true,
+			put: true,
 			delete: false
 		},
 		post: {
 			get: true,
 			post: true,
-			update: true,
-			delete: false
-		}
-	},
-	user: {
-		user: {
-			get: true,
-			post: false,
-			update: true,
-			delete: true
-		},
-		category: {
-			get: true,
-			post: false,
-			update: false,
-			delete: false
-		},
-		thread: {
-			get: true,
-			post: true,
-			update: true,
-			delete: false
-		},
-		post: {
-			get: true,
-			post: true,
-			update: true,
+			put: true,
 			delete: false
 		}
 	},
@@ -81,25 +55,25 @@ var acl = {
 		user: {
 			get: true,
 			post: false,
-			update: true,
+			put: true,
 			delete: true
 		},
 		category: {
 			get: true,
 			post: false,
-			update: false,
+			put: false,
 			delete: false
 		},
 		thread: {
 			get: true,
 			post: true,
-			update: true,
+			put: true,
 			delete: true
 		},
 		post: {
 			get: true,
 			post: true,
-			update: true,
+			put: true,
 			delete: true
 		}
 	},
@@ -107,25 +81,25 @@ var acl = {
 		user: {
 			get: true,
 			post: true,
-			update: true,
+			put: true,
 			delete: true
 		},
 		category: {
 			get: true,
 			post: true,
-			update: true,
+			put: true,
 			delete: true
 		},
 		thread: {
 			get: true,
 			post: true,
-			update: true,
+			put: true,
 			delete: true
 		},
 		post: {
 			get: true,
 			post: true,
-			update: true,
+			put: true,
 			delete: true
 		}
 	}

@@ -60,12 +60,12 @@ router.post('/login', function(req, res, next){
 		});
 });
 
-// isLoggedIn? Check if there is a cookie
+// isLoggedIn? Check if there is a cookie and if role is not guest
 // if true return user
 // else return error
 router.get('/login', function(req, res, next){
 	res.header("Content-Type", "application/json; charset=utf-8");
-	if(req.user){
+	if(req.user && req.user.role !== 'guest'){
 		res.json(req.user).end();
 	} else {
 		res.status(400).end('Status: Not logged in!');
@@ -96,6 +96,7 @@ router.post('/', function(req, res, next) {
 				} else {
 					user.password = '';
 					res.header("Content-Type", "application/json; charset=utf-8");
+					req.session.user = user;
 					res.status(201).json(user);
 				}
 			});
@@ -106,6 +107,8 @@ router.post('/', function(req, res, next) {
 
 // update user by id
 router.put('/byID/:id', function(req, res, next) {
+	req.body.updatedBy = req.user._id;
+	req.body.updatedAt = Date.now();
 	User.findByIdAndUpdate(req.params.id, req.body)
 		.deepPopulate(
 			'subscribed_categories' +
@@ -123,7 +126,12 @@ router.put('/byID/:id', function(req, res, next) {
 
 // soft delete user by setting current date for deletedAt
 router.delete('/byID/:id', function(req, res, next) {
-	User.findByIdAndUpdate(req.params.id, {deletedAt: Date.now()} , function (err, user) {
+	delete_info = {
+		deletedAt: Date.now(),
+		updatedBy: req.user._id
+	};
+
+	User.findByIdAndUpdate(req.params.id, delete_info, function (err, user) {
 		if (err) return next(err);
 		res.header("Content-Type", "application/json; charset=utf-8");
 		user.password = '';

@@ -50,6 +50,7 @@ router.post('/', function(req, res, next) {
 
 // update thread by id
 router.put('/:id', function(req, res, next) {
+	req.body.updatedBy = req.user._id;
 	req.body.updatedAt = Date.now();
 	Thread.findByIdAndUpdate(req.params.id, req.body, function (err, thread) {
 		if (err) return next(err);
@@ -60,7 +61,12 @@ router.put('/:id', function(req, res, next) {
 
 // soft delete thread by setting current date for deletedAt
 router.delete('/:id', function(req, res, next) {
-	Thread.findByIdAndUpdate(req.params.id, {deletedAt: Date.now()} , function (err, thread) {
+	delete_info = {
+		deletedAt: Date.now(),
+		updatedBy: req.user._id
+	};
+
+	Thread.findByIdAndUpdate(req.params.id, delete_info , function (err, thread) {
 		if (err) return next(err);
 		res.header("Content-Type", "application/json; charset=utf-8");
 		res.json(thread);
