@@ -61,7 +61,7 @@ threadModule.factory('threadFactory', ['$http', function($http){
 	return threadObject;
 }]);
 
-threadModule.controller('createThreadCtrl', ['$scope', 'threadFactory', 'postFactory', 'category', function($scope, threadFactory, postFactory, category){
+threadModule.controller('createThreadCtrl', ['$scope', '$location', 'threadFactory', 'postFactory', 'category', function($scope, $location, threadFactory, postFactory, category){
 	$scope.category = category.data;
 	$scope.newThread = {};
 	$scope.newPost = {};
@@ -69,17 +69,25 @@ threadModule.controller('createThreadCtrl', ['$scope', 'threadFactory', 'postFac
 		$scope.newThread.parent = $scope.category;
 		threadFactory.createThread($scope.newThread, function(data){
 			$scope.newPost.parent = data;
-			console.log($scope.newPost.createdBy);
-			postFactory.createPost($scope.newPost);
+			postFactory.createPost($scope.newPost, function(data){
+				// TODO: We want to redirect on success
+			});
 		});
 	}
 }]);
 
-threadModule.controller('basicThreadCtrl', ['$scope', '$stateParams', 'categoryFactory', 'threadFactory', 'thread', function($scope, $stateParams, categoryFactory, threadFactory, thread){
+threadModule.controller('basicThreadCtrl', ['$scope', '$stateParams', 'categoryFactory', 'threadFactory', 'postFactory', 'thread', function($scope, $stateParams, categoryFactory, threadFactory, postFactory, thread){
 	var promise = categoryFactory.getSingleCategory(thread.data.parent._id);
 	promise.then(function(result){
 		$scope.thread = thread.data;
 		$scope.category = result.data;
 	});
-	//console.log($scope.thread);
+	$scope.newPost = {};
+	$scope.createPost = function(){
+
+	}
+
+	$scope.replacePostLf = function(post){
+		return post.replace('\n', '<br /><br />');
+	}
 }]);

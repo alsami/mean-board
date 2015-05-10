@@ -1,42 +1,40 @@
 <div class="col-md-8 col-md-offset-2">
-
-	<div class="container-fluid">
+	<div class="container-fluid"  ng-show="!isSingleCategorySelected">
 		<!-- Breadcrumb -->
-		<div class="container-fluid" ng-show="!isSingleCategorySelected">
-			<ol class="breadcrumb">
+		<ol class="breadcrumb">
 				<li><a href="/#/home">Home</a></li>
 				<li class="active">Board</li>
-			</ol>
+		</ol>
 
-			<div ng-repeat="category in category | orderBy : 'title'" class="panel panel-primary">
-			  <div class="panel-heading">
-			    {{category.title}}
-			  </div>
-			  <div class="panel-body">
-			    <div ng-show="category.categories.length == 0" ng-repeat="category in category.categories | orderBy : 'title'"  class="container-fluid category-simple">
-			      <img src="/images/placeholder.png" class="img-rounded" alt="an image" style="width:50px; height:50px;" />
-			      <a href="/#/board/{{category._id}}">
-			        {{category.title}}
-			      </a>
-			    </div>
+		<div ng-repeat="category in category | orderBy : 'title'" class="panel panel-primary">
+		  <div class="panel-heading">
+		    {{category.title}}
+		  </div>
+		  <div class="panel-body">
+		    <div ng-show="category.categories.length == 0" ng-repeat="category in category.categories | orderBy : 'title'"  class="container-fluid category-simple">
+		      <img src="/images/placeholder.png" class="img-rounded" alt="an image" style="width:50px; height:50px;" />
+		      <a href="/#/board/{{category._id}}">
+		        {{category.title}}
+		      </a>
+		    </div>
 
-			    <div ng-show="category.categories.length > 0" ng-repeat="category in category.categories | orderBy: 'title'" class="panel panel-primary"  style="margin-top:5px; margin-bottom:0px;">
-			      <div class="panel-heading">
-			        <h3 class="panel-title inner-category-head">{{category.title}}</h3>
-			      </div>
-			      <div>
-			        <div ng-repeat="category in category.categories | orderBy : 'title'" class="container-fluid category-subcategory" style="padding:10px 15px;">
-			          <img src="/images/placeholder.png" class="img-rounded" alt="an image" style="width:50px; height:50px;" />
-								<a href="/#/board/{{category._id}}">
-			            {{category.title}}
-			          </a>
-			        </div>
-			      </div>
-			    </div>
+		    <div ng-show="category.categories.length > 0" ng-repeat="category in category.categories | orderBy: 'title'" class="panel panel-primary"  style="margin-top:5px; margin-bottom:0px;">
+		      <div class="panel-heading">
+		        <h3 class="panel-title inner-category-head">{{category.title}}</h3>
+		      </div>
+		      <div>
+		        <div ng-repeat="category in category.categories | orderBy : 'title'" class="container-fluid category-subcategory" style="padding:10px 15px;">
+		          <img src="/images/placeholder.png" class="img-rounded" alt="an image" style="width:50px; height:50px;" />
+							<a href="/#/board/{{category._id}}">
+		            {{category.title}}
+		          </a>
+		        </div>
+		      </div>
+		    </div>
 
-			  </div>
-			</div>
+		  </div>
 		</div>
+	</div>
 
 		<div class="container-fluid" ng-show="isSingleCategorySelected">
 			<ol class="breadcrumb">
@@ -88,7 +86,7 @@
 								<div class="container-fluid">
 									<a href="/#/view-thread/{{thread._id}}">{{thread.title}}</a>
 									<span class="float right">
-											{{thread.lastPost.createdBy}}
+											{{thread.lastPost}}
 									</span>
 									<span class="badge float right">{{thread.posts.length}} {{thread.posts.length == 1 ? "Post" : "Posts"}}</span>
 								</div>
@@ -176,7 +174,7 @@
 					&nbsp;Create a new Category
 				</button>
 				<button
-					ng-show="category.parent.parent !=  null || category.parent.parent.parent != null"
+					ng-show="category.parent != null"
 					ng-click="redirectTo('/create-thread', category._id)"
 					type="button"
 					class="btn btn-primary"

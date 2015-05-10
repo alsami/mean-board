@@ -17,6 +17,9 @@ categoryModule.config(['$stateProvider', '$urlRouterProvider', function($statePr
 						}]
 					}
 				},
+				'breadcrumb@board' : {
+					templateUrl: './partials/breadcrumb.html'
+				},
 				'modal' : {
 					templateUrl: './partials/modal_register.html'
 				}

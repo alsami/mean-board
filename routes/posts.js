@@ -24,7 +24,10 @@ router.get('/:id', function(req, res, next){
 });
 
 // create a post
-router.post('/', permission.loginRequired, function(req, res, next) {
+router.post('/', function(req, res, next) {
+	// add the user ID to the post before creating it
+	req.body.createdBy = req.user._id;
+
 	Post.create(req.body, function(err, post) {
 		if (err) return next(err);
 
@@ -52,6 +55,7 @@ var setLastPostForAllCategories = function(categoryId, lastPostId){
 
 // update post by id
 router.put('/:id', function(req, res, next) {
+	req.body.updatedBy = req.user._id;
 	req.body.updatedAt = Date.now();
 	Post.findByIdAndUpdate(req.params.id, req.body, function(err, post) {
 		if(err) return next(err);
@@ -62,7 +66,12 @@ router.put('/:id', function(req, res, next) {
 
 // soft delete post by setting current date for deletedAt
 router.delete('/:id', function(req, res, next) {
-	Post.findByIdAndUpdate(req.params.id, {deletedAt: Date.now()} , function (err, post) {
+	delete_info = {
+		deletedAt: Date.now(),
+		updatedBy: req.user._id
+	};
+
+	Post.findByIdAndUpdate(req.params.id, delete_info , function (err, post) {
 		if (err) return next(err);
 		res.header("Content-Type", "application/json; charset=utf-8");
 		res.json(post);
