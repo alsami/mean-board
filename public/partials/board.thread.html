@@ -1,0 +1,28 @@
+<!-- Thread Section -->
+<div ng-show="category.threads.length > 0"  class="panel panel-primary">
+  <div class="panel-heading">
+    {{category.title}} - Threads
+  </div>
+  <div class="panel-body">
+    <ul class="list-group">
+      <li ng-repeat="thread in category.threads" class="list-group-item">
+        <div class="container-fluid">
+          <a href="/#/view-thread/{{thread._id}}">{{thread.title}}</a>
+          <span class="float right">
+              {{thread.lastPost.createdBy.userName}}<br />
+          </span>
+          <span class="badge float right">{{thread.posts.length}} {{thread.posts.length == 1 ? "Post" : "Posts"}}</span>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+<div class="container-fluid float right" style="margin-bottom:20px;">
+  <button
+    ng-click="redirectTo('/create-thread', category._id)"
+    type="button"
+    class="btn btn-primary"
+    ><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+    &nbsp;Create a new Thread
+  </button>
+</div>

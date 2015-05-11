@@ -16,13 +16,8 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 				'body': {
 					templateUrl: './partials/home.html',
 				},
-				/*
-				'breadcrumb@home' : {
-					templateUrl: './partials/breadcrumb.html'
-				},
-				*/
 				'modal': {
-					templateUrl: './partials/modal_register.html',
+					templateUrl: './partials/user.register.html',
 				}
 			}
 		})

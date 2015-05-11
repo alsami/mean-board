@@ -54,7 +54,7 @@ var setLastPostForAllCategories = function(categoryId, lastPostId){
 }
 
 // update post by id
-router.put('/:id', function(req, res, next) {
+router.put('/:id', permission.check, function(req, res, next) {
 	req.body.updatedBy = req.user._id;
 	req.body.updatedAt = Date.now();
 	Post.findByIdAndUpdate(req.params.id, req.body, function(err, post) {
@@ -65,7 +65,7 @@ router.put('/:id', function(req, res, next) {
 });
 
 // soft delete post by setting current date for deletedAt
-router.delete('/:id', function(req, res, next) {
+router.delete('/:id', permission.check, function(req, res, next) {
 	delete_info = {
 		deletedAt: Date.now(),
 		updatedBy: req.user._id
@@ -95,5 +95,6 @@ router.delete('/debug/delete/:id', function(req, res, next) {
 		res.json(post);
 	});
 });
+
 
 module.exports = router;

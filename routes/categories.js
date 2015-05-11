@@ -17,7 +17,9 @@ router.get('/', function(req, res, next){
 		.deepPopulate(
 			'categories.lastPost.parent' +
 			' categories.categories.lastPost.parent' +
-			' threads.lastPost'
+			' threads.lastPost' +
+			' categories.createdBy.userName' +
+			' threads.createdBy.userName'
 			)
 		.exec(function(err, category){
 			if(err) return next(err);
@@ -35,7 +37,9 @@ router.get('/:id', function(req, res, next){
 			' categories.lastPost.parent' +
 			' categories.categories.lastPost.parent' +
 			' parent.parent' +
-			' threads.lastPost'
+			' threads.lastPost.createdBy.userName' +
+			' categories.createdBy.userName' +
+			' threads.createdBy.userName'
 			)
 		.exec(function(err, category){
 			if(err) return next(err);
@@ -63,7 +67,7 @@ router.post('/', function(req, res, next) {
 });
 
 // update category by id
-router.put('/:id', function(req, res, next) {
+router.put('/:id', permission.check, function(req, res, next) {
 	req.body.updatedBy = req.user._id;
 	req.body.updatedAt = Date.now();
 	Category.findByIdAndUpdate(req.params.id, req.body, function (err, category) {
@@ -74,7 +78,7 @@ router.put('/:id', function(req, res, next) {
 });
 
 // soft delete category by setting current date for deletedAt
-router.delete('/:id', function(req, res, next) {
+router.delete('/:id', permission.check, function(req, res, next) {
 	Category.findByIdAndUpdate(req.params.id, {deletedAt: Date.now()} , function (err, category) {
 		if (err) return next(err);
 		res.header("Content-Type", "application/json; charset=utf-8");

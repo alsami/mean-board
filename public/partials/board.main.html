@@ -1,0 +1,37 @@
+<!-- Main Board-View -->
+<ol class="breadcrumb">
+  <li><a href="/#/home">Home</a></li>
+  <li class="active">Board</li>
+</ol>
+
+<div ng-repeat="category in category | orderBy : 'title'" class="panel panel-primary">
+  <div class="panel-heading">
+    {{category.title}}
+  </div>
+  <div class="panel-body">
+    <div ng-show="category.categories.length == 0" ng-repeat="category in category.categories | orderBy : 'title'"  class="container-fluid category-simple">
+      <img src="/images/placeholder.png" class="img-rounded" alt="an image" style="width:50px; height:50px;" />
+      <a href="/#/board/{{category._id}}">
+        {{category.title}}
+      </a>
+    </div>
+
+    <div ng-show="category.categories.length > 0" ng-repeat="category in category.categories | orderBy: 'title'" class="panel panel-primary"  style="margin-top:5px; margin-bottom:0px;">
+      <div class="panel-heading">
+        <h3 class="panel-title inner-category-head">{{category.title}}</h3>
+      </div>
+      <div>
+        <div ng-repeat="category in category.categories | orderBy : 'title'" class="container-fluid category-subcategory" style="padding:10px 15px;">
+          <img src="/images/placeholder.png" class="img-rounded" alt="an image" style="width:50px; height:50px;" />
+          <a href="/#/board/{{category._id}}">
+            {{category.title}}
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<div class="container-fluid">
+
+</div>

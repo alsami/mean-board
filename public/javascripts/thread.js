@@ -1,4 +1,4 @@
-var threadModule = angular.module('thread', ['category', 'post']);
+var threadModule = angular.module('thread', ['board', 'post']);
 
 threadModule.config(['$stateProvider', function($stateProvider){
 	$stateProvider

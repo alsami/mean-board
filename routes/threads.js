@@ -14,14 +14,11 @@ var Category = require('../models/Category.js');
 // get a specific thread by id
 router.get('/:id', function(req, res, next){
 	Thread.findById(req.params.id)
-		.populate({
-			path: 'posts',
-			match: { deletedAt: null }
-		})
-		.populate({
-			path: 'parent',
-			select: 'title _id'
-		})
+		.deepPopulate(
+			'posts.createdBy' +
+			' parent.title' +
+			' createdBy.userName'
+		)
 		.exec(function(err, thread){
 			if(err) return next(err);
 			res.header("Content-Type", "application/json; charset=utf-8");
@@ -48,7 +45,7 @@ router.post('/', function(req, res, next) {
 });
 
 // update thread by id
-router.put('/:id', function(req, res, next) {
+router.put('/:id', permission.check, function(req, res, next) {
 	req.body.updatedBy = req.user._id;
 	req.body.updatedAt = Date.now();
 	Thread.findByIdAndUpdate(req.params.id, req.body, function (err, thread) {
@@ -59,7 +56,7 @@ router.put('/:id', function(req, res, next) {
 });
 
 // soft delete thread by setting current date for deletedAt
-router.delete('/:id', function(req, res, next) {
+router.delete('/:id', permission.check, function(req, res, next) {
 	delete_info = {
 		deletedAt: Date.now(),
 		updatedBy: req.user._id

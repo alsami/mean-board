@@ -2,11 +2,10 @@
   <ol class="breadcrumb">
     <li><a href="/#/home">Home</a></li>
     <li><a href="/#/board">Board</a></li>
-    <li><a href="/#/board/{{category.parent.parent._id}}">{{ category.parent.parent.title}}</a></li>
-    <li><a href="/#/board/{{category.parent._id}}">{{category.parent.title}}</a></li>
+    <li ng-hide="category.parent.parent == null"><a href="/#/board/{{category.parent.parent._id}}">{{ category.parent.parent.title}}</a></li>
+    <li ng-hide="category.parent == null"><a href="/#/board/{{category.parent._id}}">{{category.parent.title}}</a></li>
     <li><a href="/#/board/{{category._id}}">{{category.title}}</a></li>
-    <li ng-show="thread == null" class="active">Create new Thread</li>
-    <li ng-show="thread != null" class="active">{{thread.title}}</li>
+    <li class="active">{{thread == null ? "Create a new Thread" : thread.title}}</li>
   </ol>
 
   <!-- VIEW FOR CREATING THREADS -->
