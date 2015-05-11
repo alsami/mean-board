@@ -47,13 +47,18 @@ router.post('/login', function(req, res, next){
 			if(err){
 				return next(err);
 			} else if(user){
-				if(bcrypt.compareSync(req.body.password, user.password)){
+				// check if user is banned aka soft-deleted
+				if(user.deletedAt){
+					res.status(400).end('Error: User is banned/deleted!');
+
+				} else if(bcrypt.compareSync(req.body.password, user.password)){
 					user.password = '';
 					req.session.user = user;
 					res.header("Content-Type", "application/json; charset=utf-8");
 					res.json(user).end();
+
 				} else {
-					res.status(400).end('Incorrect password');
+					res.status(400).end('Error: Incorrect password');
 				}
 			} else {
 				res.status(400).end('Error: Did not find a user for this username!');
@@ -75,6 +80,7 @@ router.get('/login', function(req, res, next){
 
 // logout:
 router.get('/logout', function(req, res, next){
+	req.user = null;
 	req.session.reset();
 	res.status(200).end('Successfully logged out!');
 });
@@ -119,7 +125,14 @@ router.put('/byID/:id', permission.check, function(req, res, next) {
 			if (err) return next(err);
 			res.header("Content-Type", "application/json; charset=utf-8");
 			user.password = '';
-			req.session.user = user;
+			
+			// check if the updated user is the user logged in
+			// true: add the changes to the cookie
+			// false: stay with the current user
+			if(user._id.equals(req.user._id)){
+				req.session.user = user;
+			}
+
 			res.json(user).end();
 		});
 });
@@ -135,8 +148,17 @@ router.delete('/byID/:id', permission.check, function(req, res, next) {
 	User.findByIdAndUpdate(req.params.id, delete_info, function (err, user) {
 		if (err) return next(err);
 		res.header("Content-Type", "application/json; charset=utf-8");
-		user.password = '';
-		res.json(user);
+
+		// check if user deleted him-/herself
+		// true: logout
+		// false: stay with current user
+		if(user._id.equals(req.user._id)){
+			req.session.reset();
+			req.user = null;
+		} else {
+			user.password = '';
+			res.json(user);
+		}
 	});
 });
 

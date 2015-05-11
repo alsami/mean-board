@@ -4,7 +4,7 @@ var acl = {
 			get: true,
 			post: true,
 			put: false,
-			delete: false
+			delete: false,
 		},
 		category: {
 			get: true,
