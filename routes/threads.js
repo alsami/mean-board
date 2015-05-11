@@ -16,7 +16,8 @@ router.get('/:id', function(req, res, next){
 	Thread.findById(req.params.id)
 		.deepPopulate(
 			'posts.createdBy' +
-			' parent.title'
+			' parent.title' +
+			' createdBy.userName'
 		)
 		.exec(function(err, thread){
 			if(err) return next(err);
