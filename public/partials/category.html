@@ -86,7 +86,7 @@
 								<div class="container-fluid">
 									<a href="/#/view-thread/{{thread._id}}">{{thread.title}}</a>
 									<span class="float right">
-											{{thread.lastPost}}
+											{{thread.lastPost.createdBy}}
 									</span>
 									<span class="badge float right">{{thread.posts.length}} {{thread.posts.length == 1 ? "Post" : "Posts"}}</span>
 								</div>

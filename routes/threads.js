@@ -16,8 +16,7 @@ router.get('/:id', function(req, res, next){
 	Thread.findById(req.params.id)
 		.populate({
 			path: 'posts',
-			match: { deletedAt: null },
-			select: 'body _id'
+			match: { deletedAt: null }
 		})
 		.populate({
 			path: 'parent',

@@ -69,6 +69,7 @@ threadModule.controller('createThreadCtrl', ['$scope', '$location', 'threadFacto
 		$scope.newThread.parent = $scope.category;
 		threadFactory.createThread($scope.newThread, function(data){
 			$scope.newPost.parent = data;
+			console.log($scope.newPost.createdBy);
 			postFactory.createPost($scope.newPost, function(data){
 				// TODO: We want to redirect on success
 			});
@@ -81,6 +82,7 @@ threadModule.controller('basicThreadCtrl', ['$scope', '$stateParams', 'categoryF
 	promise.then(function(result){
 		$scope.thread = thread.data;
 		$scope.category = result.data;
+		console.log($scope.thread);
 	});
 	$scope.newPost = {};
 	$scope.createPost = function(){
