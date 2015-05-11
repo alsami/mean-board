@@ -8,9 +8,10 @@
 <body  ng-controller="authCtrl">
 
 	<div ui-view="navbar"></div>
-	<div class="container-fluid" ui-view="breadcrumb"></div>
-	<div class="container-fluid" ui-view="body"></div>
-	<div ui-view="modal"></div>
+	<div class="col-md-8 col-md-offset-2">
+		<div class="container-fluid" ui-view="body"></div>
+		<div ui-view="modal"></div>
+	</div>
 
 	<!-- Always! load js right before the closing body tag -->
 	<!-- saves time rendering the page -->

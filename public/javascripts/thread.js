@@ -2,19 +2,22 @@ var threadModule = angular.module('thread', ['board', 'post']);
 
 threadModule.config(['$stateProvider', function($stateProvider){
 	$stateProvider
-		.state('create-thread', {
+		.state('createThread', {
 			url: '/create-thread?categoryId',
 			views: {
-				'navbar' : {
+				'navbar': {
 						templateUrl: './partials/navbar.html'
 					},
-				'body' : {
+				'body': {
 					templateUrl: './partials/thread.html',
 					controller: 'createThreadCtrl',
+				},
+				'create-thread@createThread': {
+					templateUrl: './partials/thread.create.html',
 				}
 			},
-			resolve : {
-				category : ['$stateParams', 'categoryFactory', function($stateParams, categoryFactory){
+			resolve: {
+				category: ['$stateParams', 'categoryFactory', function($stateParams, categoryFactory){
 					return categoryFactory.getSingleCategory($stateParams.categoryId)
 				}]
 			}
@@ -22,12 +25,15 @@ threadModule.config(['$stateProvider', function($stateProvider){
 		.state('threadById', {
 			url: '/view-thread/{threadId}',
 			views: {
-				'navbar' : {
+				'navbar': {
 						templateUrl: './partials/navbar.html'
 					},
-				'body' : {
+				'body': {
 					templateUrl: './partials/thread.html',
 					controller: 'basicThreadCtrl',
+				},
+				'view-thread@threadById': {
+					templateUrl: './partials/thread.view.html',
 				}
 			},
 			resolve : {
