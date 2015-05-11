@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+var deepPopulate = require('mongoose-deep-populate');
+
 var ThreadSchema = new Schema({
 	title: String,
 	parent: {type: Schema.Types.ObjectId, ref: 'Category', required: true},
@@ -12,5 +14,7 @@ var ThreadSchema = new Schema({
 	updatedAt: {type: Date, default: Date.now},
 	deletedAt: {type: Date, default: null}
 });
+
+ThreadSchema.plugin(deepPopulate, {});
 
 module.exports = mongoose.model('Thread', ThreadSchema);
