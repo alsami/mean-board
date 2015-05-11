@@ -35,7 +35,7 @@ router.get('/:id', function(req, res, next){
 			' categories.lastPost.parent' +
 			' categories.categories.lastPost.parent' +
 			' parent.parent' +
-			' threads'
+			' threads.lastPost'
 			)
 		.exec(function(err, category){
 			if(err) return next(err);

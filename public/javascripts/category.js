@@ -17,6 +17,9 @@ categoryModule.config(['$stateProvider', '$urlRouterProvider', function($statePr
 						}]
 					}
 				},
+				'breadcrumb@board' : {
+					templateUrl: './partials/breadcrumb.html'
+				},
 				'modal' : {
 					templateUrl: './partials/modal_register.html'
 				}
@@ -99,6 +102,7 @@ categoryModule.factory('categoryFactory', ['$http', function($http){
 
 	categoryObject.getSingleCategory = function(categoryId){
 		return $http.get('/api/category/' + categoryId).success(function(data){
+			console.log(data);
 			return data;
 		});
 	}
@@ -115,6 +119,7 @@ categoryModule.factory('categoryFactory', ['$http', function($http){
 categoryModule.controller('categoryCtrl', ['$scope', '$location', '$stateParams', 'categoryFactory', 'category', function($scope, $location, $stateParams, categoryFactory, category){
 	$scope.isSingleCategorySelected = ($stateParams.id == undefined ? false : true)
 	$scope.category = category.data;
+	console.log($scope.category);
 	$scope.subParent = null;
 	$scope.newCategory = {};
 	$scope.createCategory = function(){

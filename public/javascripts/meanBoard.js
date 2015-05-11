@@ -9,16 +9,21 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 	$stateProvider
 		.state('home', {
 			url: '/home',
-			views : {
-				'navbar' : {
+			views: {
+				'navbar': {
 					templateUrl: './partials/navbar.html'
 				},
-				'body' : {
+				'body': {
 					templateUrl: './partials/home.html',
 				},
-				'modal' : {
+				/*
+				'breadcrumb@home' : {
+					templateUrl: './partials/breadcrumb.html'
+				},
+				*/
+				'modal': {
 					templateUrl: './partials/modal_register.html',
 				}
 			}
-		});
+		})
 }]);

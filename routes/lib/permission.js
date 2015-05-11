@@ -13,7 +13,7 @@ permission.secureApi = function(req, res, next){
 	console.log('permission.js - method: ', method);
 	var uri = getUri(req);
 	console.log('permission.js - uri: ', uri);
-	
+
 	var isPermitted = ACL(role, method, uri);
 	console.log('permission.js - isPermitted: ', isPermitted);
 

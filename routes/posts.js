@@ -27,7 +27,7 @@ router.get('/:id', function(req, res, next){
 router.post('/', function(req, res, next) {
 	// add the user ID to the post before creating it
 	req.body.createdBy = req.user._id;
-	
+
 	Post.create(req.body, function(err, post) {
 		if (err) return next(err);
 
