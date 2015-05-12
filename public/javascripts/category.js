@@ -1,5 +1,37 @@
 var categoryModule = angular.module('category', []);
 
+
+categoryModule.config(['$stateProvider', function($stateProvider){
+	$stateProvider
+		.state('categoryById', {
+			url: '/board/{id}',
+			views: {
+				'navbar': {
+						templateUrl: './partials/navbar.html'
+					},
+				'body': {
+					templateUrl: './partials/board.html',
+					controller: 'categoryCtrl'
+				},
+				'category@categoryById': {
+					templateUrl: './partials/board.category.html'
+				},
+				'thread@categoryById': {
+					templateUrl: './partials/board.thread.html'
+				},
+				'modal': {
+					templateUrl: './partials/user.register.html'
+				}
+			},
+			resolve: {
+					category: ['$stateParams', 'categoryFactory', function($stateParams, categoryFactory) {
+						return categoryFactory.getSingleCategory($stateParams.id);
+					}]
+				}
+		});
+}]);
+
+
 categoryModule.factory('categoryFactory', ['$http', function($http){
 	var categoryFactory = {};
 
@@ -9,7 +41,7 @@ categoryModule.factory('categoryFactory', ['$http', function($http){
       callback();
 		})
     .error(function(error){
-      console.log(error);
+      alert(error);
     });
 	}
 
@@ -39,4 +71,11 @@ categoryModule.factory('categoryFactory', ['$http', function($http){
 	}
 
 	return categoryFactory;
+}]);
+
+categoryModule.controller('categoryCtrl', ['$scope', '$location', 'category', function($scope, $location, category){
+	$scope.category = category.data;
+	$scope.redirectTo = function(url, categoryId){
+		$location.search('categoryId', categoryId).path(url);
+	}
 }]);

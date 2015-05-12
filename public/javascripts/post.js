@@ -6,8 +6,8 @@ postModule.factory('postFactory', ['$http', function($http){
 	var postObject = {};
 
 	postObject.createPost = function(post, callback){
-		return $http.post('/api/post', post).success(function(data){
-			callback(data);
+		return $http.post('/api/post', post).success(function(){
+			callback();
 		});
 	}
 

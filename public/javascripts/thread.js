@@ -23,7 +23,7 @@ threadModule.config(['$stateProvider', function($stateProvider){
 			}
 		})
 		.state('threadById', {
-			url: '/view-thread/{threadId}',
+			url: '/view-thread?categoryId&threadId',
 			views: {
 				'navbar': {
 						templateUrl: './partials/navbar.html'
@@ -36,8 +36,12 @@ threadModule.config(['$stateProvider', function($stateProvider){
 					templateUrl: './partials/thread.view.html',
 				}
 			},
-			resolve : {
-				thread : ['$stateParams', 'threadFactory', function($stateParams, threadFactory){
+			resolve: {
+				category: ['$stateParams', 'categoryFactory', function($stateParams, categoryFactory){
+					console.log("I am in dawg");
+					return categoryFactory.getSingleCategory($stateParams.categoryId);
+				}],
+				thread: ['$stateParams', 'threadFactory', function($stateParams, threadFactory){
 					return threadFactory.getThread($stateParams.threadId);
 				}]
 			}
@@ -73,29 +77,26 @@ threadModule.controller('createThreadCtrl', ['$scope', '$location', 'threadFacto
 	$scope.newPost = {};
 	$scope.createThread = function(){
 		$scope.newThread.parent = $scope.category;
-		threadFactory.createThread($scope.newThread, function(data){
-			$scope.newPost.parent = data;
-			console.log($scope.newPost.createdBy);
-			postFactory.createPost($scope.newPost, function(data){
-				// TODO: We want to redirect on success
+		threadFactory.createThread($scope.newThread, function(thread){
+			console.log(thread);
+			$scope.newPost.parent = thread;
+			postFactory.createPost($scope.newPost, function(){
+				$location.path('/view-thread').search('threadId', thread._id);
 			});
 		});
 	}
 }]);
 
-threadModule.controller('basicThreadCtrl', ['$scope', '$stateParams', 'categoryFactory', 'threadFactory', 'postFactory', 'thread', function($scope, $stateParams, categoryFactory, threadFactory, postFactory, thread){
-	var promise = categoryFactory.getSingleCategory(thread.data.parent._id);
-	promise.then(function(result){
-		$scope.thread = thread.data;
-		$scope.category = result.data;
-		console.log($scope.thread);
-	});
+threadModule.controller('basicThreadCtrl', ['$scope', 'categoryFactory', 'threadFactory', 'postFactory', 'category', 'thread', function($scope, categoryFactory, threadFactory, postFactory, category, thread){
+	$scope.thread = thread.data;
+	$scope.category = category.data;
 	$scope.newPost = {};
+
 	$scope.createPost = function(){
-
-	}
-
-	$scope.replacePostLf = function(post){
-		return post.replace('\n', '<br /><br />');
+		$scope.newPost.parent = $scope.thread;
+		postFactory.createPost($scope.newPost, function(){
+			$scope.thread.posts.push($scope.newPost);
+			$scope.newPost = {};
+		});
 	}
 }]);

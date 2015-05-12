@@ -1,6 +1,6 @@
 var boardModule = angular.module('board', ['category']);
 
-boardModule.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider){
+boardModule.config(['$stateProvider', function($stateProvider){
 	$stateProvider
 		.state('board', {
 			url: '/board',
@@ -22,35 +22,8 @@ boardModule.config(['$stateProvider', '$urlRouterProvider', function($stateProvi
 					templateUrl: './partials/user.register.html'
 				}
 			}
-		})
-		.state('categoryById', {
-			url: '/board/{id}',
-			views: {
-				'navbar': {
-						templateUrl: './partials/navbar.html'
-					},
-				'body': {
-					templateUrl: './partials/board.html',
-					controller: 'sCategoryCtrl'
-				},
-				'category@categoryById': {
-					templateUrl: './partials/board.category.html'
-				},
-				'thread@categoryById': {
-					templateUrl: './partials/board.thread.html'
-				},
-				'modal': {
-					templateUrl: './partials/user.register.html'
-				}
-			},
-			resolve: {
-					category: ['$stateParams', 'categoryFactory', function($stateParams, categoryFactory) {
-						return categoryFactory.getSingleCategory($stateParams.id);
-					}]
-				}
 		});
 }]);
-
 
 boardModule.controller('mBoardCtrl', ['$scope', 'categoryFactory', function($scope, categoryFactory){
 	$scope.category = {};
@@ -65,7 +38,6 @@ boardModule.controller('mBoardCtrl', ['$scope', 'categoryFactory', function($sco
 		var promise = categoryFactory.getAllCategories();
 		promise.then(function(result){
 			$scope.category = result.data;
-			console.log($scope.category);
 		});
 	}
 
@@ -84,13 +56,6 @@ boardModule.controller('mBoardCtrl', ['$scope', 'categoryFactory', function($sco
 			$scope.setCategory();
 			$scope.newCategory = {};
 		});
-	}
-}]);
-
-boardModule.controller('sCategoryCtrl', ['$scope', '$location', 'category', function($scope, $location, category){
-	$scope.category = category.data;
-	$scope.redirectTo = function(url, categoryId){
-		$location.search('categoryId', categoryId).path(url);
 	}
 }]);
 

@@ -8,39 +8,37 @@
 </ol>
 
 <!-- VIEW FOR CREATING THREADS -->
-<div class="container-fluid">
-  <div class="panel panel-primary">
-    <div class="panel-heading">
-      New Thread
-    </div>
-    <div class="panel-body">
-      <div class="container-fluid">
-        <form ng-submit="createThread()">
-          <input type="hidden" ng-model="newPost.createdBy" ng-init="newPost.createdBy=authUser" ng-value="authUser"/>
-          <div class="form-group">
-            <input
-              ng-model="newThread.title"
-              type="text"
-              class="form-control"
-              placeholder="Thread Title"
-             />
-          </div>
-          <div class="form-group">
-            <textarea
-              class="form-control"
-              style="resize:vertical;"
-              rows="10"
-              placeholder="Starting Post"
-              ng-model="newPost.body"></textarea>
-          </div>
-          <div class="container-fluid float right">
-            <button
-              type="submit"
-              class="btn btn-success"
-            ><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;Create Thread</button>
-          </div>
-        </form>
-      </div>
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    New Thread
+  </div>
+  <div class="panel-body">
+    <div class="container-fluid">
+      <form ng-submit="createThread()">
+        <input type="hidden" ng-model="newPost.createdBy" ng-init="newPost.createdBy=authUser" ng-value="authUser"/>
+        <div class="form-group">
+          <input
+            ng-model="newThread.title"
+            type="text"
+            class="form-control"
+            placeholder="Thread Title"
+           />
+        </div>
+        <div class="form-group">
+          <textarea
+            class="form-control"
+            style="resize:vertical;"
+            rows="10"
+            placeholder="Starting Post"
+            ng-model="newPost.body"></textarea>
+        </div>
+        <div class="container-fluid float right">
+          <button
+            type="submit"
+            class="btn btn-success"
+          ><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;Create Thread</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
