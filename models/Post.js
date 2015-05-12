@@ -7,7 +7,7 @@ var PostSchema = new Schema({
 	createdBy: {type: Schema.Types.ObjectId, ref: 'User'},
 	createdAt: {type: Date, default: Date.now},
 	updatedBy: {type: Schema.Types.ObjectId, ref: 'User'},
-	updatedAt: {type: Date, default: Date.now},
+	updatedAt: {type: Date, default: null},
 	deletedAt: {type: Date, default: null}
 });
 

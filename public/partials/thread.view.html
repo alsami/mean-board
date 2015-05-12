@@ -27,7 +27,6 @@
             </div>
             <div ng-show="isEditationEnabled" class="post-edit-vie">
               <form ng-submit="updatePost(post)">
-                <input type="hidden" ng-model="post.updatedBy" ng-init="post.updatedBy=authUser" ng-value="authUser"/>
                 <div class="form-group">
                   <textarea
                     class="form-control"
