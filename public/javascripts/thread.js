@@ -87,11 +87,12 @@ threadModule.controller('createThreadCtrl', ['$scope', '$location', 'threadFacto
 	}
 }]);
 
-threadModule.controller('basicThreadCtrl', ['$scope', 'categoryFactory', 'threadFactory', 'postFactory', 'category', 'thread', function($scope, categoryFactory, threadFactory, postFactory, category, thread){
+threadModule.controller('basicThreadCtrl', ['$scope', 'threadFactory', 'postFactory', 'category', 'thread', function($scope, threadFactory, postFactory, category, thread){
+	// TODO: update post(s), delete  post(s) and move post(s)
 	$scope.thread = thread.data;
 	$scope.category = category.data;
 	$scope.newPost = {};
-	$scope.isPostEditingEnabled = false;
+	$scope.isEditationEnabled = false;
 
 	$scope.createPost = function(){
 		$scope.newPost.parent = $scope.thread;
@@ -102,10 +103,12 @@ threadModule.controller('basicThreadCtrl', ['$scope', 'categoryFactory', 'thread
 	}
 
 	$scope.updatePost = function(post){
-		console.log(post);
+		postFactory.updatePost(post);
+		//$scope.enableEditation(false);
 	}
 
-	$scope.setPostEditingEnabled(){
-		$scope.isPostEditingEnabled = !$scope.isPostEditingEnabled;
+	$scope.enableEditation = function(boolEnable){
+		// We will reuse this variable and function for every possibility of editing posts
+		$scope.isEditationEnabled = boolEnable;
 	}
 }]);

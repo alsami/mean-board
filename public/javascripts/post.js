@@ -11,6 +11,15 @@ postModule.factory('postFactory', ['$http', function($http){
 		});
 	}
 
+	postObject.updatePost = function(post, callback){
+		return $http.put('/api/post/' + post._id, post).success(function(data){
+			console.log(data);
+		})
+		.error(function(error){
+			alert(error);
+		});
+	}
+
 	return postObject;
 }]);
 
