@@ -91,6 +91,7 @@ threadModule.controller('basicThreadCtrl', ['$scope', 'categoryFactory', 'thread
 	$scope.thread = thread.data;
 	$scope.category = category.data;
 	$scope.newPost = {};
+	$scope.isPostEditingEnabled = false;
 
 	$scope.createPost = function(){
 		$scope.newPost.parent = $scope.thread;
@@ -98,5 +99,13 @@ threadModule.controller('basicThreadCtrl', ['$scope', 'categoryFactory', 'thread
 			$scope.thread.posts.push($scope.newPost);
 			$scope.newPost = {};
 		});
+	}
+
+	$scope.updatePost = function(post){
+		console.log(post);
+	}
+
+	$scope.setPostEditingEnabled(){
+		$scope.isPostEditingEnabled = !$scope.isPostEditingEnabled;
 	}
 }]);
