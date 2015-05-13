@@ -14,6 +14,9 @@ threadModule.config(['$stateProvider', function($stateProvider){
 				},
 				'create-thread@createThread': {
 					templateUrl: './partials/thread.create.html',
+				},
+				'modal': {
+					templateUrl: './partials/user.register.html'
 				}
 			},
 			resolve: {
@@ -34,11 +37,13 @@ threadModule.config(['$stateProvider', function($stateProvider){
 				},
 				'view-thread@threadById': {
 					templateUrl: './partials/thread.view.html',
+				},
+				'modal': {
+					templateUrl: './partials/user.register.html'
 				}
 			},
 			resolve: {
 				category: ['$stateParams', 'categoryFactory', function($stateParams, categoryFactory){
-					console.log("I am in dawg");
 					return categoryFactory.getSingleCategory($stateParams.categoryId);
 				}],
 				thread: ['$stateParams', 'threadFactory', function($stateParams, threadFactory){
@@ -78,7 +83,6 @@ threadModule.controller('createThreadCtrl', ['$scope', '$location', 'threadFacto
 	$scope.createThread = function(){
 		$scope.newThread.parent = $scope.category;
 		threadFactory.createThread($scope.newThread, function(thread){
-			console.log(thread);
 			$scope.newPost.parent = thread;
 			postFactory.createPost($scope.newPost, function(){
 				$location.path('/view-thread').search('threadId', thread._id);
@@ -92,23 +96,42 @@ threadModule.controller('basicThreadCtrl', ['$scope', 'threadFactory', 'postFact
 	$scope.thread = thread.data;
 	$scope.category = category.data;
 	$scope.newPost = {};
+	$scope.editPost = {};
 	$scope.isEditationEnabled = false;
+	$scope.editItemId = null;
+
+	console.log($scope.thread);
+
+	$scope.$watch('editPost', function(newValue, oldValue){
+
+	});
 
 	$scope.createPost = function(){
 		$scope.newPost.parent = $scope.thread;
-		postFactory.createPost($scope.newPost, function(){
-			$scope.thread.posts.push($scope.newPost);
+		postFactory.createPost($scope.newPost, function(data){
+			$scope.thread.posts.push(data);
 			$scope.newPost = {};
 		});
 	}
 
 	$scope.updatePost = function(post){
-		postFactory.updatePost(post);
-		//$scope.enableEditation(false);
+		postFactory.updatePost(post, function(){
+			$scope.enableEditation(false, null);
+		});
 	}
 
-	$scope.enableEditation = function(boolEnable){
-		// We will reuse this variable and function for every possibility of editing posts
+	$scope.deletePost = function(post){
+		postFactory.deletePost(post._id, function(){
+			//console.log($scope.thread.posts[$scope.thread.posts.indexOf(post)]);
+			$scope.thread.posts[$scope.thread.posts.indexOf(post)].deletedAt = Date.Now;
+			// splice(position, numberOfItemsToRemove, item)
+			$scope.thread.posts.splice($scope.thread.posts[$scope.thread.posts.indexOf(post)], 1, post);
+			//console.log($scope.thread.posts[$scope.thread.posts.indexOf(post)]);
+		});
+	}
+
+	$scope.enableEditation = function(boolEnable, itemId){
 		$scope.isEditationEnabled = boolEnable;
+		$scope.editItemId = itemId;
 	}
 }]);
