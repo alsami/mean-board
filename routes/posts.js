@@ -55,12 +55,15 @@ var setLastPostForAllCategories = function(categoryId, lastPostId){
 
 // update post by id
 router.put('/:id', permission.check, function(req, res, next) {
-	req.body.updatedBy = req.user._id;
-	req.body.updatedAt = Date.now();
-	Post.findByIdAndUpdate(req.params.id, req.body, function(err, post) {
+	Post.findById(req.params.id, function(err, post) {
 		if(err) return next(err);
 		res.header("Content-Type", "application/json; charset=utf-8");
-		res.json(post);
+		post.body = req.body.body;
+		post.updatedBy = req.user._id;
+		post.updatedAt = Date.now();
+		post.save(function(err){
+			if(!err) res.json(post);
+		});
 	});
 });
 
