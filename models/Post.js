@@ -13,6 +13,18 @@ var PostSchema = new Schema({
 	deletedAt: {type: Date, default: null}
 });
 
-PostSchema.plugin(deepPopulate, {});
+PostSchema.plugin(deepPopulate, {
+	populate : {
+		'parent' : {
+			select : '_id title'
+		},
+		'createdBy' : {
+			select: '_id userName'
+		},
+		'updatedBy' : {
+			select: '_id userName'
+		}
+	}
+});
 
 module.exports = mongoose.model('Post', PostSchema);

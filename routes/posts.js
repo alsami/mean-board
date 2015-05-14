@@ -15,8 +15,9 @@ var Category = require('../models/Category.js');
 // get a specific post by id
 router.get('/:id', function(req, res, next){
 	Post.findById(req.params.id)
+		.select('_id parent body createdBy updatedBy')
 		.deepPopulate(
-			'parent' + // check if we need this
+			'parent' +
 			' createdBy' +
 			' updatedBy'
 		)
