@@ -15,6 +15,24 @@ var ThreadSchema = new Schema({
 	deletedAt: {type: Date, default: null}
 });
 
-ThreadSchema.plugin(deepPopulate, {});
+ThreadSchema.plugin(deepPopulate, {
+	populate: {
+		'parent' : {
+			select : '_id title'
+		},
+		'createdBy' : {
+			select : '_id userName'
+		},
+		'posts' : {
+			select : '_id body createdBy updatedBy'
+		},
+		'posts.createdBy' : {
+			select : '_id userName'
+		},
+		'posts.updatedBy' : {
+			select : '_id userName'
+		}
+	}
+});
 
 module.exports = mongoose.model('Thread', ThreadSchema);

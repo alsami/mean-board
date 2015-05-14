@@ -14,10 +14,13 @@ var Category = require('../models/Category.js');
 // get a specific thread by id
 router.get('/:id', function(req, res, next){
 	Thread.findById(req.params.id)
+		.select('_id title parent createdBy updatedBy posts')
 		.deepPopulate(
-			'posts.createdBy' +
-			' parent.title' +
-			' createdBy.userName'
+			'parent' +
+			' createdBy' +
+			' posts' +
+			' posts.createdBy' +
+			' posts.updatedBy'
 		)
 		.exec(function(err, thread){
 			if(err) return next(err);
