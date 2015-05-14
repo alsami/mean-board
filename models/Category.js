@@ -18,6 +18,12 @@ var CategorySchema = new Schema({
 
 CategorySchema.plugin(deepPopulate, {
 	populate: {
+		'parent' : {
+			select: '_id title parent'
+		},
+		'parent.parent' : {
+			select: '_id title'
+		},
 		'lastPost' : {
 			select: '_id createdBy parent'
 		},

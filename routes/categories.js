@@ -42,7 +42,9 @@ router.get('/:id', function(req, res, next){
 	Category.findById(req.params.id)
 		.select('_id title lastPost parent categories threads')
 		.deepPopulate(
-			'lastPost' +
+			'parent' +
+			' parent.parent' +
+			' lastPost' +
 			' lastPost.createdBy' +
 			' lastPost.parent' +
 			' threads' +
