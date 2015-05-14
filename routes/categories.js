@@ -42,14 +42,21 @@ router.get('/:id', function(req, res, next){
 	Category.findById(req.params.id)
 		.select('_id title lastPost parent categories threads')
 		.deepPopulate(
-			'parent' +
+			'lastPost' +
+			' lastPost.createdBy' +
+			' lastPost.parent' +
+			' threads' +
+			' threads.lastPost' +
+			' threads.lastPost.createdBy' +
+			' categories' +
+			' categories.lastPost' +
+			' categories.lastPost.createdBy' +
 			' categories.lastPost.parent' +
-			' categories.categories.lastPost.parent' +
-			' parent.parent' +
-			' threads.lastPost.createdBy.userName' +
-			' categories.createdBy.userName' +
-			' threads.createdBy.userName'
-			)
+			' categories.categories' +
+			' categories.categories.lastPost' +
+			' categories.categories.lastPost.createdBy' +
+			' categories.categories.lastPost.parent'
+		)
 		.exec(function(err, category){
 			if(err) return next(err);
 			res.header("Content-Type", "application/json; charset=utf-8");
