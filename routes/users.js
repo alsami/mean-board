@@ -125,7 +125,6 @@ router.put('/byID/:id', permission.check, function(req, res, next) {
 			if (err) return next(err);
 			res.header("Content-Type", "application/json; charset=utf-8");
 			user.password = '';
-			
 			// check if the updated user is the user logged in
 			// true: add the changes to the cookie
 			// false: stay with the current user

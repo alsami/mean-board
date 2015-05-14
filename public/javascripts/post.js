@@ -11,6 +11,27 @@ postModule.factory('postFactory', ['$http', function($http){
 		});
 	}
 
+	postObject.getPost = function(postId, callback){
+		return $http.get('/api/post/' + postId).success(function(data){
+			alert(data);
+		});
+	}
+
+	postObject.updatePost = function(post, callback){
+		return $http.put('/api/post/' + post._id, post).success(function(){
+			callback();
+		})
+		.error(function(error){
+			alert(error);
+		});
+	}
+
+	postObject.deletePost = function(postId, callback){
+		return $http.delete('/api/post/' + postId).success(function(){
+			callback();
+		})
+	}
+
 	return postObject;
 }]);
 

@@ -8,9 +8,10 @@
 <body  ng-controller="authCtrl">
 
 	<div ui-view="navbar"></div>
-	<div class="container-fluid" ui-view="breadcrumb"></div>
-	<div class="container-fluid" ui-view="body"></div>
-	<div ui-view="modal"></div>
+	<div class="col-md-8 col-md-offset-2">
+		<div class="container-fluid" ui-view="body"></div>
+		<div ui-view="modal"></div>
+	</div>
 
 	<span style="background-color:white;">Hallo&nbsp;{{user.userName}}</span>
 
@@ -25,6 +26,7 @@
 	<script src="./javascripts/category.js"></script>
 	<script src="./javascripts/thread.js"></script>
 	<script src="./javascripts/post.js"></script>
+	<script src="./javascripts/board.js"></script>
 	<script src="./javascripts/meanBoard.js"></script>
 </body>
 </html>

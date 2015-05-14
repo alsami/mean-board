@@ -44,3 +44,10 @@ body{
     font-size: 14px;
     line-height: 1.42857143;
 }
+
+.div-right{
+	position:absolute;
+	right:10px;
+	bottom:0px;
+	margin-bottom:10px;
+}

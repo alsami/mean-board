@@ -8,7 +8,6 @@ var permission = {};
 permission.secureApi = function(req, res, next){
 	var role = getRole(req);
 	console.log('permission.js - role: ', role);
-	
 	var method = req.method.toLowerCase();
 	console.log('permission.js - method: ', method);
 	var uri = getUri(req);
@@ -88,13 +87,11 @@ function get_requested_object(id, callback){
 			callback(user._id);
 		}
 	});
-	
 	Post.findById(id, function(err, post){
 		if(post){
 			callback(post.createdBy);
 		}
 	});
-	
 	Thread.findById(id, function(err, thread){
 		if(thread){
 			callback(thread.createdBy);

@@ -1,37 +1,52 @@
-var threadModule = angular.module('thread', ['category', 'post']);
+var threadModule = angular.module('thread', ['board', 'post']);
 
 threadModule.config(['$stateProvider', function($stateProvider){
 	$stateProvider
-		.state('create-thread', {
+		.state('createThread', {
 			url: '/create-thread?categoryId',
 			views: {
-				'navbar' : {
+				'navbar': {
 						templateUrl: './partials/navbar.html'
 					},
-				'body' : {
+				'body': {
 					templateUrl: './partials/thread.html',
 					controller: 'createThreadCtrl',
+				},
+				'create-thread@createThread': {
+					templateUrl: './partials/thread.create.html',
+				},
+				'modal': {
+					templateUrl: './partials/user.register.html'
 				}
 			},
-			resolve : {
-				category : ['$stateParams', 'categoryFactory', function($stateParams, categoryFactory){
+			resolve: {
+				category: ['$stateParams', 'categoryFactory', function($stateParams, categoryFactory){
 					return categoryFactory.getSingleCategory($stateParams.categoryId)
 				}]
 			}
 		})
 		.state('threadById', {
-			url: '/view-thread/{threadId}',
+			url: '/view-thread?categoryId&threadId',
 			views: {
-				'navbar' : {
+				'navbar': {
 						templateUrl: './partials/navbar.html'
 					},
-				'body' : {
+				'body': {
 					templateUrl: './partials/thread.html',
 					controller: 'basicThreadCtrl',
+				},
+				'view-thread@threadById': {
+					templateUrl: './partials/thread.view.html',
+				},
+				'modal': {
+					templateUrl: './partials/user.register.html'
 				}
 			},
-			resolve : {
-				thread : ['$stateParams', 'threadFactory', function($stateParams, threadFactory){
+			resolve: {
+				category: ['$stateParams', 'categoryFactory', function($stateParams, categoryFactory){
+					return categoryFactory.getSingleCategory($stateParams.categoryId);
+				}],
+				thread: ['$stateParams', 'threadFactory', function($stateParams, threadFactory){
 					return threadFactory.getThread($stateParams.threadId);
 				}]
 			}
@@ -67,27 +82,56 @@ threadModule.controller('createThreadCtrl', ['$scope', '$location', 'threadFacto
 	$scope.newPost = {};
 	$scope.createThread = function(){
 		$scope.newThread.parent = $scope.category;
-		threadFactory.createThread($scope.newThread, function(data){
-			$scope.newPost.parent = data;
-			postFactory.createPost($scope.newPost, function(data){
-				// TODO: We want to redirect on success
+		threadFactory.createThread($scope.newThread, function(thread){
+			$scope.newPost.parent = thread;
+			postFactory.createPost($scope.newPost, function(){
+				$location.path('/view-thread').search('threadId', thread._id);
 			});
 		});
 	}
 }]);
 
-threadModule.controller('basicThreadCtrl', ['$scope', '$stateParams', 'categoryFactory', 'threadFactory', 'postFactory', 'thread', function($scope, $stateParams, categoryFactory, threadFactory, postFactory, thread){
-	var promise = categoryFactory.getSingleCategory(thread.data.parent._id);
-	promise.then(function(result){
-		$scope.thread = thread.data;
-		$scope.category = result.data;
-	});
+threadModule.controller('basicThreadCtrl', ['$scope', 'threadFactory', 'postFactory', 'category', 'thread', function($scope, threadFactory, postFactory, category, thread){
+	// TODO: update post(s), delete  post(s) and move post(s)
+	$scope.thread = thread.data;
+	$scope.category = category.data;
 	$scope.newPost = {};
-	$scope.createPost = function(){
+	$scope.editPost = {};
+	$scope.isEditationEnabled = false;
+	$scope.editItemId = null;
 
+	console.log($scope.thread);
+
+	$scope.$watch('editPost', function(newValue, oldValue){
+
+	});
+
+	$scope.createPost = function(){
+		$scope.newPost.parent = $scope.thread;
+		postFactory.createPost($scope.newPost, function(data){
+			$scope.thread.posts.push(data);
+			$scope.newPost = {};
+		});
 	}
 
-	$scope.replacePostLf = function(post){
-		return post.replace('\n', '<br /><br />');
+	$scope.updatePost = function(post){
+		postFactory.updatePost(post, function(){
+			$scope.enableEditation(false, null);
+		});
+	}
+
+	$scope.deletePost = function(post){
+		postFactory.deletePost(post._id, function(){
+			//console.log($scope.thread.posts[$scope.thread.posts.indexOf(post)]);
+			$scope.thread.posts[$scope.thread.posts.indexOf(post)].deletedAt = Date.Now;
+			// splice(position, numberOfItemsToRemove, item)
+			$scope.thread.posts.splice($scope.thread.posts[$scope.thread.posts.indexOf(post)], 1, post);
+			//console.log($scope.thread.posts[$scope.thread.posts.indexOf(post)]);
+		});
+	}
+
+	$scope.enableEditation = function(boolEnable, itemId){
+		$scope.isEditationEnabled = boolEnable;
+		$scope.editItemId = itemId;
 	}
 }]);
