@@ -15,7 +15,11 @@ var Category = require('../models/Category.js');
 // get a specific post by id
 router.get('/:id', function(req, res, next){
 	Post.findById(req.params.id)
-		.populate('parent') // check if we need this
+		.deepPopulate(
+			'parent' + // check if we need this
+			' createdBy' +
+			' updatedBy'
+		)
 		.exec(function(err, post){
 			if(err) return next(err);
 			res.header("Content-Type", "application/json; charset=utf-8");
@@ -83,7 +87,13 @@ router.delete('/:id', permission.check, function(req, res, next) {
 
 // ONLY FOR DEBUG AND DEVELOPMENT: get all posts
 router.get('/debug/getall', function(req, res, next) {
-	Post.find(function (err, post) {
+	Post.find()
+		.deepPopulate(
+			'parent' + // check if we need this
+			' createdBy' +
+			' updatedBy'
+		)
+		.exec(function (err, post) {
 		if(err) return next(err);
 		res.header("Content-Type", "application/json; charset=utf-8");
 		res.json(post);

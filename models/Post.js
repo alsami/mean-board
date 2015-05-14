@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+var deepPopulate = require('mongoose-deep-populate');
+
 var PostSchema = new Schema({
 	body: String,
 	parent: {type: Schema.Types.ObjectId, ref: 'Thread', required: true},
@@ -10,5 +12,7 @@ var PostSchema = new Schema({
 	updatedAt: {type: Date, default: Date.now},
 	deletedAt: {type: Date, default: null}
 });
+
+PostSchema.plugin(deepPopulate, {});
 
 module.exports = mongoose.model('Post', PostSchema);

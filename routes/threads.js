@@ -71,7 +71,13 @@ router.delete('/:id', permission.check, function(req, res, next) {
 
 // ONLY FOR DEBUG AND DEVELOPMENT: get all threads
 router.get('/debug/getall', function(req, res, next) {
-	Thread.find(function (err, thread) {
+	Thread.find()
+		.deepPopulate(
+			'posts.createdBy' +
+			' parent.title' +
+			' createdBy.userName'
+		)
+		.exec(function (err, thread) {
 		if (err) return next(err);
 		res.header("Content-Type", "application/json; charset=utf-8");
 		res.json(thread);
