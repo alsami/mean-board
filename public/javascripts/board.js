@@ -1,6 +1,6 @@
-var boardElements = angular.module("board", []);
+var boardModule = angular.module('board', ['category']);
 
-boardElements.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider){
+boardModule.config(['$stateProvider', function($stateProvider){
 	$stateProvider
 		.state('board', {
 			url: '/board',
@@ -10,66 +10,59 @@ boardElements.config(['$stateProvider', '$urlRouterProvider', function($statePro
 					},
 				'body' : {
 					templateUrl: './partials/board.html',
-					controller: 'boardCtrl',
-					resolve:{
-						postPromise: ['categoryFactory', function(categoryFactory){
-							return categoryFactory.getAllCategories();
-						}]
-					}
+					controller: 'mBoardCtrl'
 				},
-				'modal' : {
-					templateUrl: './partials/modal_register.html'
+				'main@board' : {
+					templateUrl: './partials/board.main.html'
+				},
+				'administrative@board': {
+					templateUrl: './partials/board.administrative.html'
+				},
+				'modal': {
+					templateUrl: './partials/user.register.html'
 				}
 			}
 		});
 }]);
 
-boardElements.factory('categoryFactory', ['$http', function($http){
-	var categoryObject = {
-		category : []
-	}
+boardModule.controller('mBoardCtrl', ['$scope', 'categoryFactory', function($scope, categoryFactory){
+	$scope.category = {};
+	$scope.newCategory = {};
+	$scope.subParent = null;
 
-	categoryObject.createCategory = function(category){
-		return $http.post('/api/category', category).success(function(data){
-			if(category.parent == null){
-				categoryObject.category.push(data)
-			}else if(category.parent != null && category.parent.parent == null){
-				categoryObject.category[categoryObject.category.indexOf(category.parent)].categories.push(category);
-			}else{
-				// TODO find out how to push a sub-sub item to it's parent
-			}
+	$scope.$on('$stateChangeSuccess', function () {
+		$scope.setCategory();
+	});
+
+	$scope.setCategory = function(){
+		var promise = categoryFactory.getAllCategories();
+		promise.then(function(result){
+			$scope.category = result.data;
 		});
 	}
 
-	categoryObject.updateCategory = function(category){
-		return $http.put('/api/category/' + category._id, category).success(function(data){
-			categoryObject.getAllCategories();
-		});
+	$scope.setSubParent = function(obj){
+		$scope.subParent = obj.subParent;
+		//$scope.newCategory.parent = $scope.subParent;
+		console.log($scope.subParent);
 	}
 
-	categoryObject.deleteCategory = function(category){
-		return $http.delete('/api/category/' + category._id, category).success(function(data){
-			categoryObject.category.splice(categoryObject.category.indexOf(category), 1);
+	$scope.createCategory = function(){
+		if($scope.subParent != null){
+			$scope.newCategory.parent = $scope.subParent;
+			$scope.subParent = null;
+		}
+		categoryFactory.createCategory($scope.newCategory, function(callback){
+			$scope.setCategory();
+			$scope.newCategory = {};
 		});
 	}
-
-	categoryObject.getSingleCategory = function(categoryId){
-		return $http.get('/api/category/' + categoryId).success(function(data){
-			return data;
-		});
-	}
-
-	categoryObject.getAllCategories = function(){
-		return $http.get('/api/category').success(function(data){
-			angular.copy(data, categoryObject.category);
-		});
-	}
-
-	return categoryObject;
 }]);
 
-boardElements.controller('boardCtrl', ['$scope', 'categoryFactory', function($scope, categoryFactory){
-	$scope.category = categoryFactory.category;
+boardModule.controller('categoryCtrlOld', ['$scope', '$location', '$stateParams', 'categoryFactory', 'category', function($scope, $location, $stateParams, categoryFactory, category){
+	$scope.isSingleCategorySelected = ($stateParams.id == undefined ? false : true)
+	$scope.category = category.data;
+	console.log($scope.category);
 	$scope.subParent = null;
 	$scope.newCategory = {};
 	$scope.createCategory = function(){
@@ -77,14 +70,9 @@ boardElements.controller('boardCtrl', ['$scope', 'categoryFactory', function($sc
 			$scope.newCategory.parent = $scope.subParent;
 			$scope.subParent = null;
 		}
-		categoryFactory.createCategory($scope.newCategory);
-		console.log("I am here");
-		$scope.newCategory = {};
-	}
-	$scope.updateCategory = function(category){
-		categoryFactory.updateCategory(category);
-	}
-	$scope.deleteCategory = function(category){
-		categoryFactory.deleteCategory(category);
+		categoryFactory.createCategory($scope.newCategory, function(data){
+			$scope.category = data;
+			$scope.newCategory = {};
+		});
 	}
 }]);

@@ -1,6 +1,6 @@
-var userElements = angular.module('user', [])
+var userModule = angular.module('user', [])
 
-userElements.factory('userFactory', ['$http', function($http){
+userModule.factory('userFactory', ['$http', function($http){
   userObject = {
   	user: {}
   }
@@ -12,16 +12,15 @@ userElements.factory('userFactory', ['$http', function($http){
   	$http.get('/api/user/login')
   	.success(function(data){
   		userObject.user = data;
-  		callback(data);
+  		callback(userObject.user);
   	})
 	.error(function(error){
 		userObject.user = null;
+		callback(null);
 	});
   };
 
   userObject.login = function(user, callback){
-
-    	console.log("I am here dawg")
     $http.post('/api/user/login', user)
     .success(function(data){
         userObject.user = data;
@@ -57,8 +56,9 @@ userElements.factory('userFactory', ['$http', function($http){
         userObject.user = data;
         callback(userObject.user);
     })
-    .error(function(error){
-      callback(null);
+	.error(function(error){
+		alert(error);
+		callback(null);
     });
   };
 

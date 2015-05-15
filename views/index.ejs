@@ -5,11 +5,15 @@
 	<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
 	<link href="stylesheets/style.css" rel="stylesheet">
 </head>
-<body  ng-controller="authCtrl" style="background-color:rgb(35, 28, 42);">
+<body  ng-controller="authCtrl">
 
 	<div ui-view="navbar"></div>
-	<div class="container-fluid"  ui-view="body"></div>
-	<div ui-view="modal"></div>
+	<div class="col-md-8 col-md-offset-2">
+		<div class="container-fluid" ui-view="body"></div>
+		<div ui-view="modal"></div>
+	</div>
+
+	<span style="background-color:white;">Hallo&nbsp;{{user.userName}}</span>
 
 	<!-- Always! load js right before the closing body tag -->
 	<!-- saves time rendering the page -->
@@ -19,9 +23,10 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.14/angular-ui-router.js"></script>
 	<script src="./javascripts/user.js"></script>
 	<script src="./javascripts/auth.js"></script>
-	<script src="./javascripts/board.js"></script>
 	<script src="./javascripts/category.js"></script>
+	<script src="./javascripts/thread.js"></script>
+	<script src="./javascripts/post.js"></script>
+	<script src="./javascripts/board.js"></script>
 	<script src="./javascripts/meanBoard.js"></script>
-	<script src="./javascripts/default.js"></script>
 </body>
 </html>

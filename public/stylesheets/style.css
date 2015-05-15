@@ -1,3 +1,7 @@
+body{
+		background-color:#818181
+}
+
 .float.right{
 	float:right;
 }
@@ -39,4 +43,11 @@
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 14px;
     line-height: 1.42857143;
+}
+
+.div-right{
+	position:absolute;
+	right:10px;
+	bottom:0px;
+	margin-bottom:10px;
 }

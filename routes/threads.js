@@ -14,15 +14,14 @@ var Category = require('../models/Category.js');
 // get a specific thread by id
 router.get('/:id', function(req, res, next){
 	Thread.findById(req.params.id)
-		.populate({
-			path: 'posts',
-			match: { deletedAt: null },
-			select: 'body _id'
-		})
-		.populate({
-			path: 'parent',
-			select: 'title _id'
-		})
+		.select('_id title parent createdBy updatedBy posts')
+		.deepPopulate(
+			'parent' +
+			' createdBy' +
+			' posts' +
+			' posts.createdBy' +
+			' posts.updatedBy'
+		)
 		.exec(function(err, thread){
 			if(err) return next(err);
 			res.header("Content-Type", "application/json; charset=utf-8");
@@ -31,7 +30,10 @@ router.get('/:id', function(req, res, next){
 });
 
 // create a thread
-router.post('/', permission.loginRequired, function(req, res, next) {
+router.post('/', function(req, res, next) {
+	// add the user ID to the thread before creating it
+	req.body.createdBy = req.user._id;
+
 	Thread.create(req.body, function (err, thread) {
 		if (err) return next(err);
 
@@ -46,7 +48,9 @@ router.post('/', permission.loginRequired, function(req, res, next) {
 });
 
 // update thread by id
-router.put('/:id', function(req, res, next) {
+router.put('/:id', permission.check, function(req, res, next) {
+	req.body.updatedBy = req.user._id;
+	req.body.updatedAt = Date.now();
 	Thread.findByIdAndUpdate(req.params.id, req.body, function (err, thread) {
 		if (err) return next(err);
 		res.header("Content-Type", "application/json; charset=utf-8");
@@ -55,8 +59,13 @@ router.put('/:id', function(req, res, next) {
 });
 
 // soft delete thread by setting current date for deletedAt
-router.delete('/:id', function(req, res, next) {
-	Thread.findByIdAndUpdate(req.params.id, {deletedAt: Date.now()} , function (err, thread) {
+router.delete('/:id', permission.check, function(req, res, next) {
+	delete_info = {
+		deletedAt: Date.now(),
+		updatedBy: req.user._id
+	};
+
+	Thread.findByIdAndUpdate(req.params.id, delete_info , function (err, thread) {
 		if (err) return next(err);
 		res.header("Content-Type", "application/json; charset=utf-8");
 		res.json(thread);
@@ -65,7 +74,13 @@ router.delete('/:id', function(req, res, next) {
 
 // ONLY FOR DEBUG AND DEVELOPMENT: get all threads
 router.get('/debug/getall', function(req, res, next) {
-	Thread.find(function (err, thread) {
+	Thread.find()
+		.deepPopulate(
+			'posts.createdBy' +
+			' parent.title' +
+			' createdBy.userName'
+		)
+		.exec(function (err, thread) {
 		if (err) return next(err);
 		res.header("Content-Type", "application/json; charset=utf-8");
 		res.json(thread);

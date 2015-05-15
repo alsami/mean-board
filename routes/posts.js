@@ -15,7 +15,12 @@ var Category = require('../models/Category.js');
 // get a specific post by id
 router.get('/:id', function(req, res, next){
 	Post.findById(req.params.id)
-		.populate('parent') // check if we need this
+		.select('_id parent body createdBy updatedBy')
+		.deepPopulate(
+			'parent' +
+			' createdBy' +
+			' updatedBy'
+		)
 		.exec(function(err, post){
 			if(err) return next(err);
 			res.header("Content-Type", "application/json; charset=utf-8");
@@ -24,7 +29,10 @@ router.get('/:id', function(req, res, next){
 });
 
 // create a post
-router.post('/', permission.loginRequired, function(req, res, next) {
+router.post('/', function(req, res, next) {
+	// add the user ID to the post before creating it
+	req.body.createdBy = req.user._id;
+
 	Post.create(req.body, function(err, post) {
 		if (err) return next(err);
 
@@ -51,18 +59,27 @@ var setLastPostForAllCategories = function(categoryId, lastPostId){
 }
 
 // update post by id
-router.put('/:id', function(req, res, next) {
-	req.body.updatedAt = Date.now();
-	Post.findByIdAndUpdate(req.params.id, req.body, function(err, post) {
+router.put('/:id', permission.check, function(req, res, next) {
+	Post.findById(req.params.id, function(err, post) {
 		if(err) return next(err);
 		res.header("Content-Type", "application/json; charset=utf-8");
-		res.json(post);
+		post.body = req.body.body;
+		post.updatedBy = req.user._id;
+		post.updatedAt = Date.now();
+		post.save(function(err){
+			if(!err) res.json(post);
+		});
 	});
 });
 
 // soft delete post by setting current date for deletedAt
-router.delete('/:id', function(req, res, next) {
-	Post.findByIdAndUpdate(req.params.id, {deletedAt: Date.now()} , function (err, post) {
+router.delete('/:id', permission.check, function(req, res, next) {
+	delete_info = {
+		deletedAt: Date.now(),
+		updatedBy: req.user._id
+	};
+
+	Post.findByIdAndUpdate(req.params.id, delete_info , function (err, post) {
 		if (err) return next(err);
 		res.header("Content-Type", "application/json; charset=utf-8");
 		res.json(post);
@@ -71,7 +88,13 @@ router.delete('/:id', function(req, res, next) {
 
 // ONLY FOR DEBUG AND DEVELOPMENT: get all posts
 router.get('/debug/getall', function(req, res, next) {
-	Post.find(function (err, post) {
+	Post.find()
+		.deepPopulate(
+			'parent' + // check if we need this
+			' createdBy' +
+			' updatedBy'
+		)
+		.exec(function (err, post) {
 		if(err) return next(err);
 		res.header("Content-Type", "application/json; charset=utf-8");
 		res.json(post);
@@ -86,5 +109,6 @@ router.delete('/debug/delete/:id', function(req, res, next) {
 		res.json(post);
 	});
 });
+
 
 module.exports = router;

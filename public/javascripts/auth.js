@@ -1,8 +1,8 @@
-var authElements = angular.module("auth", []);
+var authModule = angular.module('auth', []);
 
-authElements.controller('authCtrl', ['$scope', 'userFactory', function($scope, userFactory){
+authModule.controller('authCtrl', ['$scope', 'userFactory', function($scope, userFactory){
 	userFactory.getUser(function(data){
-		console.log(data)
+		//console.log(data);
 		$scope.authUser = data;
 	});
 

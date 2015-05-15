@@ -1,0 +1,122 @@
+<ol class="breadcrumb">
+  <li><a href="/#/home">Home</a></li>
+  <li><a href="/#/board">Board</a></li>
+  <li ng-hide="category.parent.parent == null"><a href="/#/board/{{category.parent.parent._id}}">{{ category.parent.parent.title}}</a></li>
+  <li ng-hide="category.parent == null"><a href="/#/board/{{category.parent._id}}">{{category.parent.title}}</a></li>
+  <li><a href="/#/board/{{category._id}}">{{category.title}}</a></li>
+  <li class="active">{{thread == null ? "Create a new Thread" : thread.title}}</li>
+</ol>
+
+<!-- VIEW FOR EXISTING THREADS -->
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    {{thread.title}}
+  </div>
+  <div class="panel-body">
+    <!-- Iterate through all posts in this thread -->
+    <div class="container-fluid">
+      <div class="list-group">
+        <div ng-repeat="post in thread.posts" class="list-group-item">
+          <span ng-show="post.deletedAt != null" style="font-style:italic; font-size:small;">
+            This post has been deleted by {{post.updatedBy}} at {{post.deletedAt}}
+          </span>
+          <div ng-hide="post.deletedAt != null" ng-show="editItemId != post._id" class="post-wrapper">
+            <div class="post-user">
+              <img class="responsive" title="profilepicture" src="/images/placeholder.png" style="width:50px; height:50px;"/>
+              {{post.createdBy.userName}}
+            </div>
+            <div class="post-view">
+              {{post.body | breakFilter}}
+              <span ng-show="post.updatedAt != null" style="font-style:italic; font-size:small;">
+                <br />Last updated by {{post.updatedBy}} at {{post.updatedAt}}
+              </span>
+            </div>
+            <!-- Post Action Dropdown -->
+            <div ng-hide="authUser == null" class="container-fluid" align="right">
+              <div class="dropdown">
+                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
+                  Post actions
+                  <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu1">
+                  <li
+                    ng-show="post.createdBy._id == authUser._id || authUser.role == 'admin' || authUser.role == 'moderator'"
+                    ng-click="enableEditation(true, post._id);"
+                    class="pointer"
+                    role="presentation">
+                    <a role="menuitem" tabindex="-1" >Update Post</a>
+                  </li>
+                  <li
+                    ng-show="!$first && (post.createdBy._id == authUser._id || authUser.role == 'admin' || authUser.role == 'moderator')"
+                    ng-click="deletePost(post);"
+                    class="pointer"
+                    role="presentation">
+                    <a role="menuitem" tabindex="-1" >Delete Post</a>
+                  </li>
+                  <li
+                    class="pointer"
+                    role="presentation">
+                    <a role="menuitem" tabindex="-1" >Quote</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div ng-show="editItemId == post._id" class="post-edit-vie">
+            <form ng-submit="updatePost(post)">
+              <div class="form-group">
+                <textarea
+                  class="form-control"
+                  style="resize:vertical;"
+                  rows="10"
+                  ng-init="post.body"
+                  ng-model="post.body"
+                  required></textarea>
+              </div>
+              <div class="container-fluid" align="right">
+                <button
+                  type="button"
+                  ng-click="enableEditation(false)"
+                  class="btn btn-default"
+                >Canel</button>
+                <button
+                  type="submit"
+                  class="btn btn-success"
+                ><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;Update Post</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Create a new Post to existing Thead -->
+<div ng-hide="authUser == null" class="panel panel-primary">
+  <div class="panel-heading">
+    Create a post
+  </div>
+  <div class="panel-body">
+    <div class="container-fluid">
+      <form ng-submit="createPost();">
+        <div class="form-group">
+          <textarea
+            class="form-control"
+            style="resize:vertical;"
+            rows="5"
+            placeholder="Post message"
+            ng-model="newPost.body"></textarea>
+        </div>
+        <div align="right" class="container-fluidt">
+          <button
+            type="submit"
+            class="btn btn-success"
+          ><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;Create Post</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

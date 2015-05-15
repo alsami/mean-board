@@ -1,43 +1,81 @@
-var categoryElements = angular.module("category", []);
+var categoryModule = angular.module('category', []);
 
-categoryElements.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider){
-$stateProvider
-		.state('category',{
-			url: '/category/{id}',
-			views : {
-				'navbar' : {
-					templateUrl: './partials/navbar.html'
+
+categoryModule.config(['$stateProvider', function($stateProvider){
+	$stateProvider
+		.state('categoryById', {
+			url: '/board/{id}',
+			views: {
+				'navbar': {
+						templateUrl: './partials/navbar.html'
+					},
+				'body': {
+					templateUrl: './partials/board.html',
+					controller: 'categoryCtrl'
 				},
-				'body' : {
-					templateUrl: './partials/category.html',
-					controller: 'categoryCtrl',
-					resolve: {
-						category: ['$stateParams', 'categoryFactory', function($stateParams, categoryFactory) {
-							return categoryFactory.getSingleCategory($stateParams.id);
-						}]
-					}
+				'category@categoryById': {
+					templateUrl: './partials/board.category.html'
 				},
-				'modal' : {
-					templateUrl: './partials/modal_register.html',
+				'thread@categoryById': {
+					templateUrl: './partials/board.thread.html'
+				},
+				'modal': {
+					templateUrl: './partials/user.register.html'
 				}
-			}
+			},
+			resolve: {
+					category: ['$stateParams', 'categoryFactory', function($stateParams, categoryFactory) {
+						return categoryFactory.getSingleCategory($stateParams.id);
+					}]
+				}
 		});
 }]);
 
-categoryElements.controller('categoryCtrl', ['$scope', 'categoryFactory', 'category', function($scope, categoryFactory, category){
-	$scope.category = category.data;
-	console.log($scope.category)
+
+categoryModule.factory('categoryFactory', ['$http', function($http){
+	var categoryFactory = {};
+
+	categoryFactory.createCategory = function(category, callback){
+		console.log(category);
+    return $http.post('/api/category', category).success(function(){
+      callback();
+		})
+    .error(function(error){
+      alert(error);
+    });
+	}
+
+	categoryFactory.updateCategory = function(category){
+		return $http.put('/api/category/' + category._id, category).success(function(data){
+			categoryFactory.getAllCategories();
+		});
+	}
+
+	categoryFactory.deleteCategory = function(category){
+		return $http.delete('/api/category/' + category._id, category).success(function(data){
+			//categoryFactory.categoryJSON.splice(categoryFactory.categoryJSON.indexOf(category), 1);
+		});
+	}
+
+	categoryFactory.getSingleCategory = function(categoryId){
+		return $http.get('/api/category/' + categoryId).success(function(data){
+			//console.log(data);
+			return data;
+		});
+	}
+
+	categoryFactory.getAllCategories = function(){
+		return $http.get('/api/category').success(function(data){
+			return data;
+		});
+	}
+
+	return categoryFactory;
 }]);
 
-categoryElements.factory('User', function(){
-	var user = null;
-
-	return {
-		getUser: function(){
-			return user;
-		},
-		setUser: function(newUser){
-			user = newUser;
-		}
-	};
-});
+categoryModule.controller('categoryCtrl', ['$scope', '$location', 'category', function($scope, $location, category){
+	$scope.category = category.data;
+	$scope.redirectTo = function(url, categoryId){
+		$location.search('categoryId', categoryId).path(url);
+	}
+}]);

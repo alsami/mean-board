@@ -10,6 +10,9 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var session = require('client-sessions');
 
+// custom modules
+var permission = require('./routes/lib/permission');
+
 // default express routes
 var routes = require('./routes/index');
 
@@ -71,6 +74,9 @@ app.use(function(req, res, next){
 		next();
 	}
 });
+
+// secure API with ACLs
+app.use('/api', permission.secureApi);
 
 // use default express middleware
 // uncomment after placing your favicon in /public
