@@ -6,6 +6,16 @@ var permission = {};
 
 
 permission.secureApi = function(req, res, next){
+	var isPermitted = getAcl(req);
+	if(isPermitted){
+		next();
+	} else {
+		res.status(403).end('Error: No permission to access this route!');
+	}
+};
+
+
+function getAcl(req){
 	var role = getRole(req);
 	console.log('permission.js - role: ', role);
 	var method = req.method.toLowerCase();
@@ -15,17 +25,11 @@ permission.secureApi = function(req, res, next){
 
 	var isPermitted = ACL(role, method, uri);
 	console.log('permission.js - isPermitted: ', isPermitted);
-
-	if(isPermitted){
-		next();
-	} else {
-		res.status(403).end('Error: No permission to access this route!');
-	}
-};
+	return isPermitted;
+}
 
 
 function getRole(req){
-	console.log('req.user: ', req.user);
 	if(!req.user){
 		req.user = { role: 'guest'};
 	}
@@ -36,32 +40,10 @@ function getRole(req){
 
 function getUri(req){
 	root_model_id = req.url.split('/');
+
 	uri = root_model_id[1];
 	return uri;
 };
-
-
-// TODO:
-// guest:
-// OK - * user: get
-// OK - * category: get
-// OK - * thread: get
-// OK - * post: get
-//
-// user:
-// OK - * user: get, update, --> delete
-// OK - * category: get
-// OK - * thread: get, post, update
-// OK - * post: get, post, update
-//
-// moderator:
-// OK - * user: get, update, --> delete
-// OK - * category: get
-// OK - * thread: get, post, update, --> delete
-// OK - * post: get, post, update, --> delete
-//
-// admin: 
-// * user, category, thread, post: *
 
 
 permission.check = function(req, res, next){
@@ -98,6 +80,18 @@ function get_requested_object(id, callback){
 		}
 	});
 };
+
+
+permission.permitted_obj = function(req){
+	var update_obj = {};
+	var attributes = getAcl(req);
+	attributes.forEach(function(attrib){
+		if(req.body[attrib]){
+			update_obj[attrib] = req.body[attrib];
+		}
+	});
+	return update_obj;
+}
 
 
 module.exports = permission;

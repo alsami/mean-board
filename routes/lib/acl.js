@@ -2,7 +2,13 @@ var acl = {
 	guest: {
 		user: {
 			get: true,
-			post: true,
+			post: [
+				'firstName',
+				'lastName',
+				'userName',
+				'email',
+				'password'
+			],
 			put: false,
 			delete: false,
 		},
@@ -29,7 +35,20 @@ var acl = {
 		user: {
 			get: true,
 			post: false,
-			put: true,
+			put: [
+				'firstName',
+				'lastName',
+				'birthday',
+				'gender',
+				'email',
+				'signature',
+				'aboutMe',
+				'country',
+				'city',
+				'zipCode',
+				'subscribed_categories',
+				'subscribed_threads'
+			],
 			delete: true
 		},
 		category: {
@@ -55,7 +74,20 @@ var acl = {
 		user: {
 			get: true,
 			post: false,
-			put: true,
+			put: [
+				'firstName',
+				'lastName',
+				'birthday',
+				'gender',
+				'email',
+				'signature',
+				'aboutMe',
+				'country',
+				'city',
+				'zipCode',
+				'subscribed_categories',
+				'subscribed_threads'
+			],
 			delete: true
 		},
 		category: {
@@ -81,7 +113,21 @@ var acl = {
 		user: {
 			get: true,
 			post: true,
-			put: true,
+			put: [
+				'firstName',
+				'lastName',
+				'birthday',
+				'gender',
+				'email',
+				'signature',
+				'aboutMe',
+				'country',
+				'city',
+				'zipCode',
+				'subscribed_categories',
+				'subscribed_threads',
+				'role'
+			],
 			delete: true
 		},
 		category: {

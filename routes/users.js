@@ -94,7 +94,8 @@ router.post('/', function(req, res, next) {
 		} else if(user){
 			res.status(400).end('Error: Username is already taken!');
 		} else {
-			var newUser = req.body;
+			req.url = '/user'; // hack for acl
+			var newUser = permission.permitted_obj(req);
 			var hash = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
 			newUser.password = hash; // avoid saving password as plain text
 			User.create(newUser, function(err, user){
@@ -114,15 +115,20 @@ router.post('/', function(req, res, next) {
 
 // update user by id
 router.put('/byID/:id', permission.check, function(req, res, next) {
-	req.body.updatedBy = req.user._id;
-	req.body.updatedAt = Date.now();
-	User.findByIdAndUpdate(req.params.id, req.body)
+	req.url = '/user/'; // hack for acl
+	permitted_obj = permission.permitted_obj(req);
+	permitted_obj.updatedBy = req.user._id;
+	permitted_obj.updatedAt = Date.now();
+	console.log('users.js - permitted_obj: ' , permitted_obj);
+
+	User.findByIdAndUpdate(req.params.id, permitted_obj)
 		.deepPopulate(
 			'subscribed_categories' +
 			' subscribed_threads'
 		)
 		.exec(function (err, user) {
 			if (err) return next(err);
+
 			res.header("Content-Type", "application/json; charset=utf-8");
 			user.password = '';
 			// check if the updated user is the user logged in
