@@ -113,6 +113,33 @@ router.post('/', function(req, res, next) {
 });
 
 
+// update password by user id
+router.put('/changePassword/:id', permission.check, function(req, res, next){
+	res.header("Content-Type", "application/json; charset=utf-8");
+	User.findOne({_id: req.params.id}, function(err, user){
+		if(err){
+			return next(err);
+		} else if(user){
+			if(bcrypt.compareSync(req.body.old_password, user.password)){
+				var hash = bcrypt.hashSync(req.body.new_password, bcrypt.genSaltSync(10));
+				user.password = hash;
+				user.save(function(err){
+					if(err){
+						res.end('Error: Could not save password');
+					} else {
+						res.end('Success: Password changed successfully!');
+					}
+				});
+			} else {
+				res.end('Error: Wrong password!');
+			}
+		} else {
+			res.end('Error: Did not find user, invalid user id!');
+		}
+	});
+});
+
+
 // update user by id
 router.put('/byID/:id', permission.check, function(req, res, next) {
 	req.url = '/user/'; // hack for acl
