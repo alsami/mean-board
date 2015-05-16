@@ -23,7 +23,7 @@ function getAcl(req){
 	var uri = getUri(req);
 	console.log('permission.js - uri: ', uri);
 
-	var isPermitted = ACL(role, method, uri);
+	var isPermitted = ACL.isPermitted(role, method, uri);
 	console.log('permission.js - isPermitted: ', isPermitted);
 	return isPermitted;
 }
@@ -46,15 +46,27 @@ function getUri(req){
 };
 
 
+// note: only used for put and delete
 permission.check = function(req, res, next){
 	if(req.user.role === 'admin'){
 		next();
-	} else if(req.user.role === 'moderator' && req.url.indexOf('category') === -1){
-		next();
 	} else {
-		get_requested_object(req.params.id, function(id){
+		get_requested_object_id(req.params.id, function(id){
 			if(id.equals(req.user._id)){
 				next();
+			} else if(req.user.role === 'moderator'){
+				// avoid that a moderator can update or delete another moderator or admin
+				role = get_requested_user_role(req.params.id, function(role){
+					if(role){
+						moderator_acces_key = ACL.get_access_key(req.user.role);
+						role_editable_by = ACL.get_editable_by(role);
+						if(role_editable_by % moderator_acces_key === 0){
+							next();
+						} else {
+							res.status(403).end('Error: No permission to access this route!');
+						}
+					}
+				});
 			} else {
 				res.status(403).end('Error: No permission to access this route!');
 			}
@@ -63,7 +75,7 @@ permission.check = function(req, res, next){
 };
 
 
-function get_requested_object(id, callback){
+function get_requested_object_id(id, callback){
 	User.findById(id, function(err, user){
 		if(user){
 			callback(user._id);
@@ -77,6 +89,19 @@ function get_requested_object(id, callback){
 	Thread.findById(id, function(err, thread){
 		if(thread){
 			callback(thread.createdBy);
+		}
+	});
+};
+
+
+function get_requested_user_role(id, callback){
+	User.findById(id, function(err, user){
+		if(err){
+			callback(null);
+		} else if(user){
+			callback(user.role);
+		} else {
+			callback(null);
 		}
 	});
 };
