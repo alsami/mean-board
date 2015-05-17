@@ -21,6 +21,7 @@ var users = require('./routes/users');
 var categories = require('./routes/categories');
 var threads = require('./routes/threads');
 var posts = require('./routes/posts');
+var messages = require('./routes/messages');
 
 // custom models
 var User = require('./models/User');
@@ -94,6 +95,7 @@ app.use('/api/user', users);
 app.use('/api/category', categories);
 app.use('/api/thread', threads);
 app.use('/api/post', posts);
+app.use('/api/message', messages);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

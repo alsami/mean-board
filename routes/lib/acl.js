@@ -31,6 +31,12 @@ var acl = {
 			post: false,
 			put: false,
 			delete: false
+		},
+		message: {
+			get: false,
+			post: false,
+			put: false,
+			delete: false
 		}
 	},
 	user: {
@@ -72,6 +78,12 @@ var acl = {
 			post: true,
 			put: true,
 			delete: false
+		},
+		message: {
+			get: true,
+			post: true,
+			put: false,
+			delete: true
 		}
 	},
 	moderator: {
@@ -112,6 +124,12 @@ var acl = {
 			get: true,
 			post: true,
 			put: true,
+			delete: true
+		},
+		message: {
+			get: true,
+			post: true,
+			put: false,
 			delete: true
 		}
 	},
@@ -154,6 +172,12 @@ var acl = {
 			get: true,
 			post: true,
 			put: true,
+			delete: true
+		},
+		message: {
+			get: true,
+			post: true,
+			put: false,
 			delete: true
 		}
 	}

@@ -46,7 +46,7 @@ function getUri(req){
 };
 
 
-// note: only used for put and delete
+// note: only used for put and delete AND for get by id for messages
 permission.check = function(req, res, next){
 	if(req.user.role === 'admin'){
 		next();
