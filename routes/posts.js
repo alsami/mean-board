@@ -15,9 +15,12 @@ var Category = require('../models/Category.js');
 // get a specific post by id
 router.get('/:id', function(req, res, next){
 	Post.findById(req.params.id)
-		.select('_id parent body createdBy updatedBy')
+		.select('_id parent body createdBy updatedBy deletedAt')
 		.deepPopulate(
 			'parent' +
+			' parent.parent' +
+			' parent.parent.parent' +
+			' parent.parent.parent.parent' +
 			' createdBy' +
 			' updatedBy'
 		)
@@ -90,7 +93,7 @@ router.delete('/:id', permission.check, function(req, res, next) {
 router.get('/debug/getall', function(req, res, next) {
 	Post.find()
 		.deepPopulate(
-			'parent' + // check if we need this
+			'parent' +
 			' createdBy' +
 			' updatedBy'
 		)
