@@ -16,6 +16,57 @@ var CategorySchema = new Schema({
 	deletedAt: {type: Date, default: null}
 });
 
-CategorySchema.plugin(deepPopulate, {});
+CategorySchema.plugin(deepPopulate, {
+	populate: {
+		'parent' : {
+			select: '_id title parent'
+		},
+		'parent.parent' : {
+			select: '_id title'
+		},
+		'lastPost' : {
+			select: '_id createdBy parent'
+		},
+		'lastPost.createdBy' : {
+			select: '_id userName'
+		},
+		'lastPost.parent' : {
+			select: '_id title'
+		},
+		'threads' : {
+			select: '_id title lastPost'
+		},
+		'threads.lastPost' : {
+			select: 'createdBy'
+		},
+		'threads.lastPost.createdBy' : {
+			select: '_id userName'
+		},
+		'categories' : {
+			select: '_id title lastPost categories'
+		},
+		'categories.lastPost' : {
+			select: '_id createdBy parent'
+		},
+		'categories.lastPost.createdBy' : {
+			select: '_id userName'
+		},
+		'categories.lastPost.parent' : {
+			select: '_id title'
+		},
+		'categories.categories' : {
+			select: '_id title lastPost categories'
+		},
+		'categories.categories.lastPost' : {
+			select: '_id createdBy parent'
+		},
+		'categories.categories.lastPost.createdBy' : {
+			select: '_id userName'
+		},
+		'categories.categories.lastPost.parent' : {
+			select: '_id title'
+		}
+	}
+});
 
 module.exports = mongoose.model('Category', CategorySchema);

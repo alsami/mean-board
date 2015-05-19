@@ -1,6 +1,8 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
+var deepPopulate = require('mongoose-deep-populate');
+
 var PostSchema = new Schema({
 	body: String,
 	parent: {type: Schema.Types.ObjectId, ref: 'Thread', required: true},
@@ -9,6 +11,29 @@ var PostSchema = new Schema({
 	updatedBy: {type: Schema.Types.ObjectId, ref: 'User'},
 	updatedAt: {type: Date, default: null},
 	deletedAt: {type: Date, default: null}
+});
+
+PostSchema.plugin(deepPopulate, {
+	populate : {
+		'parent' : { // thread
+			select : '_id title parent'
+		},
+		'parent.parent' : { // e.g. sub sub category
+			select : '_id title parent'
+		},
+		'parent.parent.parent' : { // e.g. sub category
+			select : '_id title parent'
+		},
+		'parent.parent.parent.parent' : { // e.g. main category
+			select : '_id title'
+		},
+		'createdBy' : {
+			select: '_id userName'
+		},
+		'updatedBy' : {
+			select: '_id userName'
+		}
+	}
 });
 
 module.exports = mongoose.model('Post', PostSchema);

@@ -13,14 +13,23 @@ var Category = require('../models/Category.js');
 // get all main categories
 router.get('/', function(req, res, next){
 	Category.find({parent: null, deletedAt: null})
-		.select('_id title categories threads')
+		.select('_id title lastPost parent categories threads')
 		.deepPopulate(
-			'categories.lastPost.parent' +
-			' categories.categories.lastPost.parent' +
+			'lastPost' +
+			' lastPost.createdBy' +
+			' lastPost.parent' +
+			' threads' +
 			' threads.lastPost' +
-			' categories.createdBy.userName' +
-			' threads.createdBy.userName'
-			)
+			' threads.lastPost.createdBy' +
+			' categories' +
+			' categories.lastPost' +
+			' categories.lastPost.createdBy' +
+			' categories.lastPost.parent' +
+			' categories.categories' +
+			' categories.categories.lastPost' +
+			' categories.categories.lastPost.createdBy' +
+			' categories.categories.lastPost.parent'
+		)
 		.exec(function(err, category){
 			if(err) return next(err);
 			res.header("Content-Type", "application/json; charset=utf-8");
@@ -31,16 +40,25 @@ router.get('/', function(req, res, next){
 // get a specific category by id
 router.get('/:id', function(req, res, next){
 	Category.findById(req.params.id)
-		.select('parent _id title categories threads')
+		.select('_id title lastPost parent categories threads')
 		.deepPopulate(
 			'parent' +
-			' categories.lastPost.parent' +
-			' categories.categories.lastPost.parent' +
 			' parent.parent' +
-			' threads.lastPost.createdBy.userName' +
-			' categories.createdBy.userName' +
-			' threads.createdBy.userName'
-			)
+			' lastPost' +
+			' lastPost.createdBy' +
+			' lastPost.parent' +
+			' threads' +
+			' threads.lastPost' +
+			' threads.lastPost.createdBy' +
+			' categories' +
+			' categories.lastPost' +
+			' categories.lastPost.createdBy' +
+			' categories.lastPost.parent' +
+			' categories.categories' +
+			' categories.categories.lastPost' +
+			' categories.categories.lastPost.createdBy' +
+			' categories.categories.lastPost.parent'
+		)
 		.exec(function(err, category){
 			if(err) return next(err);
 			res.header("Content-Type", "application/json; charset=utf-8");

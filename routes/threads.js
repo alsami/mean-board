@@ -14,10 +14,13 @@ var Category = require('../models/Category.js');
 // get a specific thread by id
 router.get('/:id', function(req, res, next){
 	Thread.findById(req.params.id)
+		.select('_id title parent createdBy updatedBy posts')
 		.deepPopulate(
-			'posts.createdBy' +
-			' parent.title' +
-			' createdBy.userName'
+			'parent' +
+			' createdBy' +
+			' posts' +
+			' posts.createdBy' +
+			' posts.updatedBy'
 		)
 		.exec(function(err, thread){
 			if(err) return next(err);
@@ -71,7 +74,13 @@ router.delete('/:id', permission.check, function(req, res, next) {
 
 // ONLY FOR DEBUG AND DEVELOPMENT: get all threads
 router.get('/debug/getall', function(req, res, next) {
-	Thread.find(function (err, thread) {
+	Thread.find()
+		.deepPopulate(
+			'posts.createdBy' +
+			' parent.title' +
+			' createdBy.userName'
+		)
+		.exec(function (err, thread) {
 		if (err) return next(err);
 		res.header("Content-Type", "application/json; charset=utf-8");
 		res.json(thread);
