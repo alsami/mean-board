@@ -76,11 +76,36 @@ router.get('/debug/getall', function(req, res, next) {
 
 // create a message
 router.post('/', function(req, res, next) {
-	req.body.from = req.user._id;
-	Message.create(req.body, function (err, message) {
+	permitted_obj = permission.permitted_obj(req);
+	permitted_obj.from = req.user._id;
+	Message.create(permitted_obj, function (err, message) {
 		if (err) return next(err);
 		res.header("Content-Type", "application/json; charset=utf-8");
 		res.json(message);
+	});
+});
+
+
+// update message, used to set isRead attribute
+router.put('/:id', permission.check, function(req, res, next) {
+	// toggle read/unread
+	Message.findById(req.params.id, function (err, message) {
+		if (err) return next(err);
+
+		if(message.isRead){
+			message.isRead = false;
+		} else {
+			message.isRead = true;
+		}
+
+		message.save(function(err){
+			res.header("Content-Type", "application/json; charset=utf-8");
+			if(err) {
+				res.end("Error: Could not toggle the isRead attribute of message!");
+			} else {
+				res.json(message);
+			}
+		});
 	});
 });
 

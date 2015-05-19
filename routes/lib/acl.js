@@ -81,8 +81,14 @@ var acl = {
 		},
 		message: {
 			get: true,
-			post: true,
-			put: false,
+			post: [
+				'to',
+				'subject',
+				'body'
+			],
+			put: [
+				'isRead'
+			],
 			delete: true
 		}
 	},
@@ -128,8 +134,14 @@ var acl = {
 		},
 		message: {
 			get: true,
-			post: true,
-			put: false,
+			post: [
+				'to',
+				'subject',
+				'body'
+			],
+			put: [
+				'isRead'
+			],
 			delete: true
 		}
 	},
@@ -176,8 +188,14 @@ var acl = {
 		},
 		message: {
 			get: true,
-			post: true,
-			put: false,
+			post: [
+				'to',
+				'subject',
+				'body'
+			],
+			put: [
+				'isRead'
+			],
 			delete: true
 		}
 	}
