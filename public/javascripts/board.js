@@ -10,7 +10,7 @@ boardModule.config(['$stateProvider', function($stateProvider){
 					},
 				'body' : {
 					templateUrl: './partials/board.html',
-					controller: 'mBoardCtrl'
+					controller: 'mainBoardCtrl'
 				},
 				'main@board' : {
 					templateUrl: './partials/board.main.html'
@@ -25,7 +25,7 @@ boardModule.config(['$stateProvider', function($stateProvider){
 		});
 }]);
 
-boardModule.controller('mBoardCtrl', ['$scope', 'categoryFactory', function($scope, categoryFactory){
+boardModule.controller('mainBoardCtrl', ['$scope', 'categoryFactory', function($scope, categoryFactory){
 	$scope.category = {};
 	$scope.newCategory = {};
 	$scope.subParent = null;
@@ -43,8 +43,6 @@ boardModule.controller('mBoardCtrl', ['$scope', 'categoryFactory', function($sco
 
 	$scope.setSubParent = function(obj){
 		$scope.subParent = obj.subParent;
-		//$scope.newCategory.parent = $scope.subParent;
-		console.log($scope.subParent);
 	}
 
 	$scope.createCategory = function(){
@@ -54,24 +52,6 @@ boardModule.controller('mBoardCtrl', ['$scope', 'categoryFactory', function($sco
 		}
 		categoryFactory.createCategory($scope.newCategory, function(callback){
 			$scope.setCategory();
-			$scope.newCategory = {};
-		});
-	}
-}]);
-
-boardModule.controller('categoryCtrlOld', ['$scope', '$location', '$stateParams', 'categoryFactory', 'category', function($scope, $location, $stateParams, categoryFactory, category){
-	$scope.isSingleCategorySelected = ($stateParams.id == undefined ? false : true)
-	$scope.category = category.data;
-	console.log($scope.category);
-	$scope.subParent = null;
-	$scope.newCategory = {};
-	$scope.createCategory = function(){
-		if($scope.subParent != null){
-			$scope.newCategory.parent = $scope.subParent;
-			$scope.subParent = null;
-		}
-		categoryFactory.createCategory($scope.newCategory, function(data){
-			$scope.category = data;
 			$scope.newCategory = {};
 		});
 	}

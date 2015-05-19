@@ -33,7 +33,7 @@
             </div>
             <!-- Post Action Dropdown -->
             <div ng-hide="authUser == null" class="container-fluid" align="right">
-              <div class="dropdown">
+              <div class="dropdown" ng-show="!$first && (post.createdBy._id == authUser._id || authUser.role == 'admin' || authUser.role == 'moderator')">
                 <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
                   Post actions
                   <span class="caret"></span>
@@ -55,6 +55,7 @@
                   </li>
                   <li
                     class="pointer"
+                    ng-hide="true"
                     role="presentation">
                     <a role="menuitem" tabindex="-1" >Quote</a>
                   </li>
@@ -94,7 +95,7 @@
 
 
 
-<!-- Create a new Post to existing Thead -->
+<!-- Create a new Post in existing Threads -->
 <div ng-hide="authUser == null" class="panel panel-primary">
   <div class="panel-heading">
     Create a post
