@@ -1,26 +1,25 @@
 var authModule = angular.module('auth', []);
 
 authModule.controller('authCtrl', ['$scope', 'userFactory', function($scope, userFactory){
-	userFactory.getUser(function(data){
-		//console.log(data);
-		$scope.authUser = data;
-	});
-
 	$scope.newUser = {};
 	$scope.existingUser = {};
+
+	userFactory.getUser(function(data){
+		$scope.authUser = data;
+	});
 
 	$scope.createUser = function(){
 		userFactory.create($scope.newUser, function(data){
 			$scope.authUser = data;
+			$scope.newUser = {};
 		});
-		$scope.newUser = {};
 	};
 
 	$scope.loginUser = function(){
 		userFactory.login($scope.existingUser, function(data){
 			$scope.authUser = data;
+			$scope.existingUser = {};
 		});
-		$scope.existingUser = {};
 	};
 
 	$scope.logout = function(){

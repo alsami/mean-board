@@ -55,6 +55,7 @@
                   </li>
                   <li
                     class="pointer"
+                    ng-click="quotePost(post);"
                     role="presentation">
                     <a role="menuitem" tabindex="-1" >Quote</a>
                   </li>
@@ -71,7 +72,7 @@
                   rows="10"
                   ng-init="post.body"
                   ng-model="post.body"
-                  required></textarea>
+                  required="true"></textarea>
               </div>
               <div class="container-fluid" align="right">
                 <button
@@ -94,7 +95,7 @@
 
 
 
-<!-- Create a new Post to existing Thead -->
+<!-- Create a new Post in existing Threads -->
 <div ng-hide="authUser == null" class="panel panel-primary">
   <div class="panel-heading">
     Create a post
@@ -108,7 +109,8 @@
             style="resize:vertical;"
             rows="5"
             placeholder="Post message"
-            ng-model="newPost.body"></textarea>
+            ng-model="newPost.body"
+            required="true"></textarea>
         </div>
         <div align="right" class="container-fluidt">
           <button

@@ -92,19 +92,11 @@ threadModule.controller('createThreadCtrl', ['$scope', '$location', 'threadFacto
 }]);
 
 threadModule.controller('basicThreadCtrl', ['$scope', 'threadFactory', 'postFactory', 'category', 'thread', function($scope, threadFactory, postFactory, category, thread){
-	// TODO: update post(s), delete  post(s) and move post(s)
 	$scope.thread = thread.data;
 	$scope.category = category.data;
 	$scope.newPost = {};
-	$scope.editPost = {};
 	$scope.isEditationEnabled = false;
 	$scope.editItemId = null;
-
-	console.log($scope.thread);
-
-	$scope.$watch('editPost', function(newValue, oldValue){
-
-	});
 
 	$scope.createPost = function(){
 		$scope.newPost.parent = $scope.thread;
@@ -115,23 +107,24 @@ threadModule.controller('basicThreadCtrl', ['$scope', 'threadFactory', 'postFact
 	}
 
 	$scope.updatePost = function(post){
-		postFactory.updatePost(post, function(){
+		postFactory.updatePost(post, function(data){
+			$scope.thread.posts[$scope.thread.posts.indexOf(post)] = data;
 			$scope.enableEditation(false, null);
 		});
 	}
 
 	$scope.deletePost = function(post){
-		postFactory.deletePost(post._id, function(){
-			//console.log($scope.thread.posts[$scope.thread.posts.indexOf(post)]);
-			$scope.thread.posts[$scope.thread.posts.indexOf(post)].deletedAt = Date.Now;
-			// splice(position, numberOfItemsToRemove, item)
-			$scope.thread.posts.splice($scope.thread.posts[$scope.thread.posts.indexOf(post)], 1, post);
-			//console.log($scope.thread.posts[$scope.thread.posts.indexOf(post)]);
+		postFactory.deletePost(post._id, function(data){
+			$scope.thread.posts[$scope.thread.posts.indexOf(post)] = data;
 		});
 	}
 
-	$scope.enableEditation = function(boolEnable, itemId){
+	$scope.quotePost = function(post){
+		console.log("Not implemented yet.");
+	}
+
+	$scope.enableEditation = function(boolEnable, editItemId){
 		$scope.isEditationEnabled = boolEnable;
-		$scope.editItemId = itemId;
+		$scope.editItemId = editItemId;
 	}
 }]);
