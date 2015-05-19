@@ -71,7 +71,7 @@
                   rows="10"
                   ng-init="post.body"
                   ng-model="post.body"
-                  required></textarea>
+                  required="true"></textarea>
               </div>
               <div class="container-fluid" align="right">
                 <button
@@ -108,7 +108,8 @@
             style="resize:vertical;"
             rows="5"
             placeholder="Post message"
-            ng-model="newPost.body"></textarea>
+            ng-model="newPost.body"
+            required="true"></textarea>
         </div>
         <div align="right" class="container-fluidt">
           <button

@@ -11,9 +11,9 @@ postModule.factory('postFactory', ['$http', function($http){
 		});
 	}
 
-	postObject.getPost = function(postId, callback){
+	postObject.getPost = function(postId){
 		return $http.get('/api/post/' + postId).success(function(data){
-			alert(data);
+			return data;
 		});
 	}
 

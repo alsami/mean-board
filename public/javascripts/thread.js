@@ -109,8 +109,16 @@ threadModule.controller('basicThreadCtrl', ['$scope', 'threadFactory', 'postFact
 	$scope.createPost = function(){
 		$scope.newPost.parent = $scope.thread;
 		postFactory.createPost($scope.newPost, function(data){
-			$scope.thread.posts.push(data);
+			$scope.getPost(data._id);
+			//$scope.thread.posts.push($scope.getPost(data._id));
 			$scope.newPost = {};
+		});
+	}
+
+	$scope.getPost = function(postId){
+		var promise = postFactory.getPost(postId);
+		promise.then(function(result){
+			return result.data;
 		});
 	}
 
