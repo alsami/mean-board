@@ -12,10 +12,11 @@ var Category = require('../models/Category.js');
 
 /* routes for post */
 
+
 // get a specific post by id
 router.get('/:id', function(req, res, next){
-	Post.findById(req.params.id)
-		.select('_id parent body createdBy updatedBy deletedAt')
+	Post.find({_id: req.params.id, deletedAt: null})
+		.select('_id parent body createdBy createdAt updatedBy updatedAt deletedAt')
 		.deepPopulate(
 			'parent' +
 			' parent.parent' +
@@ -31,9 +32,14 @@ router.get('/:id', function(req, res, next){
 		});
 });
 
+
 // create a post
 router.post('/', function(req, res, next) {
 	// add the user ID to the post before creating it
+	req.url = '/post'; // hack for acl
+	// -> fix this
+	// var permitted_obj = permission.permitted_obj(req);
+	//permitted_obj.createdBy = req.user._id;
 	req.body.createdBy = req.user._id;
 
 	Post.create(req.body, function(err, post) {
@@ -47,10 +53,10 @@ router.post('/', function(req, res, next) {
 			setLastPostForAllCategories(thread.parent, post._id);
 		});
 
-		res.header("Content-Type", "application/json; charset=utf-8");
-		res.json(post);
+		return_populated_post(post, res, next);
 	});
 });
+
 
 var setLastPostForAllCategories = function(categoryId, lastPostId){
 	Category.findByIdAndUpdate(categoryId, {lastPost: lastPostId}, function(err, category){
@@ -59,21 +65,41 @@ var setLastPostForAllCategories = function(categoryId, lastPostId){
 			setLastPostForAllCategories(category.parent, lastPostId);
 		}
 	});
-}
+};
+
+
+var return_populated_post = function(post, res, next){
+	Post.findById(post._id)
+		.select('_id body createdBy createdAt updatedBy updatedAt deletedAt')
+		.deepPopulate(
+			'createdBy' +
+			' updatedBy'
+		)
+		.exec(function(err, populated_post){
+			if(err) return next(err);
+			res.header("Content-Type", "application/json; charset=utf-8");
+			res.json(populated_post);
+		});
+};
+
 
 // update post by id
 router.put('/:id', permission.check, function(req, res, next) {
-	Post.findById(req.params.id, function(err, post) {
-		if(err) return next(err);
-		res.header("Content-Type", "application/json; charset=utf-8");
-		post.body = req.body.body;
-		post.updatedBy = req.user._id;
-		post.updatedAt = Date.now();
-		post.save(function(err){
-			if(!err) res.json(post);
-		});
-	});
+	req.url = '/post'; // hack for acl
+	var permitted_obj = permission.permitted_obj(req);
+	permitted_obj.updatedBy = req.user._id;
+	permitted_obj.updatedAt = Date.now();
+	update_and_return_populated_post(req.params.id, permitted_obj, res, next);
 });
+
+
+var update_and_return_populated_post = function(id, update_obj, res, next){
+	Post.findByIdAndUpdate(id, update_obj, function (err, post) {
+		if (err) return next(err);
+		return_populated_post(post, res, next);
+	});
+};
+
 
 // soft delete post by setting current date for deletedAt
 router.delete('/:id', permission.check, function(req, res, next) {
@@ -82,12 +108,9 @@ router.delete('/:id', permission.check, function(req, res, next) {
 		updatedBy: req.user._id
 	};
 
-	Post.findByIdAndUpdate(req.params.id, delete_info , function (err, post) {
-		if (err) return next(err);
-		res.header("Content-Type", "application/json; charset=utf-8");
-		res.json(post);
-	});
+	update_and_return_populated_post(req.params.id, delete_info, res, next);
 });
+
 
 // ONLY FOR DEBUG AND DEVELOPMENT: get all posts
 router.get('/debug/getall', function(req, res, next) {
@@ -103,6 +126,7 @@ router.get('/debug/getall', function(req, res, next) {
 		res.json(post);
 	});
 });
+
 
 // ONLY FOR DEBUG AND DEVELOPMENT: delete a post by id */
 router.delete('/debug/delete/:id', function(req, res, next) {

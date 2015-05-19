@@ -75,8 +75,8 @@ var acl = {
 		},
 		post: {
 			get: true,
-			post: true,
-			put: true,
+			post: ['body'],
+			put: ['body'],
 			delete: false
 		},
 		message: {
@@ -86,9 +86,7 @@ var acl = {
 				'subject',
 				'body'
 			],
-			put: [
-				'isRead'
-			],
+			put: ['isRead'],
 			delete: true
 		}
 	},
@@ -128,8 +126,8 @@ var acl = {
 		},
 		post: {
 			get: true,
-			post: true,
-			put: true,
+			post: ['body'],
+			put: ['body'],
 			delete: true
 		},
 		message: {
@@ -139,9 +137,7 @@ var acl = {
 				'subject',
 				'body'
 			],
-			put: [
-				'isRead'
-			],
+			put: ['isRead'],
 			delete: true
 		}
 	},
@@ -182,8 +178,8 @@ var acl = {
 		},
 		post: {
 			get: true,
-			post: true,
-			put: true,
+			post: ['body'],
+			put: ['body'],
 			delete: true
 		},
 		message: {
@@ -193,9 +189,7 @@ var acl = {
 				'subject',
 				'body'
 			],
-			put: [
-				'isRead'
-			],
+			put: ['isRead'],
 			delete: true
 		}
 	}
