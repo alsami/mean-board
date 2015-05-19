@@ -98,6 +98,8 @@ threadModule.controller('basicThreadCtrl', ['$scope', 'threadFactory', 'postFact
 	$scope.isEditationEnabled = false;
 	$scope.editItemId = null;
 
+	console.log($scope.thread);
+
 	$scope.createPost = function(){
 		$scope.newPost.parent = $scope.thread;
 		postFactory.createPost($scope.newPost, function(data){

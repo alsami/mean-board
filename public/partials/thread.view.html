@@ -18,7 +18,7 @@
       <div class="list-group">
         <div ng-repeat="post in thread.posts" class="list-group-item">
           <span ng-show="post.deletedAt != null" style="font-style:italic; font-size:small;">
-            This post has been deleted by {{post.updatedBy}} at {{post.deletedAt}}
+            This post has been deleted by {{post.updatedBy.userName}} at {{post.deletedAt}}
           </span>
           <div ng-hide="post.deletedAt != null" ng-show="editItemId != post._id" class="post-wrapper">
             <div class="post-user">
@@ -28,7 +28,7 @@
             <div class="post-view">
               {{post.body | breakFilter}}
               <span ng-show="post.updatedAt != null" style="font-style:italic; font-size:small;">
-                <br />Last updated by {{post.updatedBy}} at {{post.updatedAt}}
+                <br />Last updated by {{post.updatedBy.userName}} at {{post.updatedAt}}
               </span>
             </div>
             <!-- Post Action Dropdown -->
