@@ -125,7 +125,7 @@ threadModule.controller('basicThreadCtrl', ['$scope', 'threadFactory', 'postFact
 			//console.log($scope.thread.posts[$scope.thread.posts.indexOf(post)]);
 			$scope.thread.posts[$scope.thread.posts.indexOf(post)].deletedAt = Date.Now;
 			// splice(position, numberOfItemsToRemove, item)
-			$scope.thread.posts.splice($scope.thread.posts[$scope.thread.posts.indexOf(post)], 1, post);
+			//$scope.thread.posts.splice($scope.thread.posts[$scope.thread.posts.indexOf(post)], 1, post);
 			//console.log($scope.thread.posts[$scope.thread.posts.indexOf(post)]);
 		});
 	}

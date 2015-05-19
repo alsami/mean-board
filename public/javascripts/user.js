@@ -1,5 +1,29 @@
 var userModule = angular.module('user', [])
 
+userModule.config(['$stateProvider', function($stateProvider){
+	$stateProvider
+		.state('userControlPanel', {
+			url: '/user/{id}',
+			views: {
+				'navbar': {
+						templateUrl: './partials/navbar.html'
+					},
+				'body': {
+					templateUrl: './partials/user.controlPanel.html',
+					controller: 'userPanelCtrl'
+				},
+				'modal': {
+					templateUrl: './partials/user.register.html'
+				}
+			},
+			resolve: {
+					user: ['$stateParams', 'userFactory', function($stateParams, userFactory) {
+						return userFactory.getSingleUser($stateParams.id);
+					}]
+				}
+		});
+}]);
+
 userModule.factory('userFactory', ['$http', function($http){
   userObject = {
   	user: {}
@@ -62,5 +86,15 @@ userModule.factory('userFactory', ['$http', function($http){
     });
   };
 
+	userObject.getSingleUser = function(userId){
+		return $http.get('/api/user/byID/' + userId).success(function(data){
+			return data;
+		});
+	}
+
   return userObject;
+}]);
+
+userModule.controller('userPanelCtrl', ['$scope', 'userFactory', 'user', function ($scope, userFactory, user) {
+	$scope.user = user.data;
 }]);

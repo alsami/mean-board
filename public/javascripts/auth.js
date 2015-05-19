@@ -19,8 +19,8 @@ authModule.controller('authCtrl', ['$scope', 'userFactory', function($scope, use
 	$scope.loginUser = function(){
 		userFactory.login($scope.existingUser, function(data){
 			$scope.authUser = data;
+			$scope.existingUser = {};
 		});
-		$scope.existingUser = {};
 	};
 
 	$scope.logout = function(){
