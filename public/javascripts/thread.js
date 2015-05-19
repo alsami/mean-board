@@ -119,6 +119,10 @@ threadModule.controller('basicThreadCtrl', ['$scope', 'threadFactory', 'postFact
 		});
 	}
 
+	$scope.quotePost = function(post){
+		console.log("Not implemented yet.");
+	}
+
 	$scope.enableEditation = function(boolEnable, editItemId){
 		$scope.isEditationEnabled = boolEnable;
 		$scope.editItemId = editItemId;

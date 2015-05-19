@@ -1,6 +1,6 @@
 var postModule = angular.module('post', []);
 
-boardModule.config(['$stateProvider', function($stateProvider){
+postModule.config(['$stateProvider', function($stateProvider){
 	$stateProvider
 		.state('post', {
 			url: '/view-post?postId',

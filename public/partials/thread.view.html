@@ -33,7 +33,7 @@
             </div>
             <!-- Post Action Dropdown -->
             <div ng-hide="authUser == null" class="container-fluid" align="right">
-              <div class="dropdown" ng-show="!$first && (post.createdBy._id == authUser._id || authUser.role == 'admin' || authUser.role == 'moderator')">
+              <div class="dropdown">
                 <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
                   Post actions
                   <span class="caret"></span>
@@ -55,7 +55,7 @@
                   </li>
                   <li
                     class="pointer"
-                    ng-hide="true"
+                    ng-click="quotePost(post);"
                     role="presentation">
                     <a role="menuitem" tabindex="-1" >Quote</a>
                   </li>
