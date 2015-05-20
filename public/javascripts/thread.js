@@ -2,8 +2,8 @@ var threadModule = angular.module('thread', ['board', 'post']);
 
 threadModule.config(['$stateProvider', function($stateProvider){
 	$stateProvider
-		.state('createThread', {
-			url: '/create-thread?categoryId',
+		.state('create-thread', {
+			url: '/board/category/create-thread?categoryId',
 			views: {
 				'navbar': {
 						templateUrl: './partials/navbar.html'
@@ -12,20 +12,18 @@ threadModule.config(['$stateProvider', function($stateProvider){
 					templateUrl: './partials/thread.html',
 					controller: 'createThreadCtrl',
 				},
-				'create-thread@createThread': {
+				'thread-create-view@create-thread': {
 					templateUrl: './partials/thread.create.html',
 				},
 				'modal': {
 					templateUrl: './partials/user.register.html'
 				}
 			},
-			resolve: {
-				category: ['$stateParams', 'categoryFactory', function($stateParams, categoryFactory){
-					return categoryFactory.getSingleCategory($stateParams.categoryId)
-				}]
+			resolve:{
+				category: null
 			}
 		})
-		.state('threadById', {
+		.state('view-thread', {
 			url: '/view-thread?categoryId&threadId',
 			views: {
 				'navbar': {
@@ -35,7 +33,7 @@ threadModule.config(['$stateProvider', function($stateProvider){
 					templateUrl: './partials/thread.html',
 					controller: 'basicThreadCtrl',
 				},
-				'view-thread@threadById': {
+				'thread-view@view-thread': {
 					templateUrl: './partials/thread.view.html',
 				},
 				'modal': {
@@ -77,11 +75,12 @@ threadModule.factory('threadFactory', ['$http', function($http){
 }]);
 
 threadModule.controller('createThreadCtrl', ['$scope', '$location', 'threadFactory', 'postFactory', 'category', function($scope, $location, threadFactory, postFactory, category){
+	console.log("Yo")
 	$scope.category = category.data;
-	$scope.newThread = {};
+	$scope.newThread = { parent : $scope.category};
 	$scope.newPost = {};
 	$scope.createThread = function(){
-		$scope.newThread.parent = $scope.category;
+		// $scope.newThread.parent = $scope.category;
 		threadFactory.createThread($scope.newThread, function(thread){
 			$scope.newPost.parent = thread;
 			postFactory.createPost($scope.newPost, function(){

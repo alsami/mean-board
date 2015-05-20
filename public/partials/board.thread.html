@@ -18,12 +18,14 @@
   </div>
 </div>
 <div class="container-fluid float right" style="margin-bottom:20px;">
-  <button
-    ng-show="authUser != null"
-    ng-click="redirectTo('/create-thread', category._id)"
-    type="button"
+  <a
+    href="/#/board/category/create-thread?categoryId={{category._id}}"
     class="btn btn-primary"
-    ><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-    &nbsp;Create a new Thread
-  </button>
+    role="button">
+    <span
+      class="glyphicon glyphicon-plus"
+      aria-hidden="true">
+    </span>
+    &nbsp;Create a new thread
+  </a>
 </div>
