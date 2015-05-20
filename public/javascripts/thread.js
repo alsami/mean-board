@@ -77,12 +77,10 @@ threadModule.factory('threadFactory', ['$http', function($http){
 }]);
 
 threadModule.controller('createThreadCtrl', ['$scope', '$location', 'threadFactory', 'postFactory', 'category', function($scope, $location, threadFactory, postFactory, category){
-	console.log("Yo")
 	$scope.category = category.data;
 	$scope.newThread = { parent : $scope.category};
 	$scope.newPost = {};
 	$scope.createThread = function(){
-		// $scope.newThread.parent = $scope.category;
 		threadFactory.createThread($scope.newThread, function(thread){
 			$scope.newPost.parent = thread;
 			postFactory.createPost($scope.newPost, function(){
@@ -98,8 +96,6 @@ threadModule.controller('basicThreadCtrl', ['$scope', 'threadFactory', 'postFact
 	$scope.newPost = {};
 	$scope.isEditationEnabled = false;
 	$scope.editItemId = null;
-
-	console.log($scope.thread);
 
 	$scope.createPost = function(){
 		$scope.newPost.parent = $scope.thread;
