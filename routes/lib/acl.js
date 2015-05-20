@@ -1,5 +1,7 @@
 var acl = {
 	guest: {
+		access_key: -1,
+		editable_by: -1,
 		user: {
 			get: true,
 			post: [
@@ -29,9 +31,17 @@ var acl = {
 			post: false,
 			put: false,
 			delete: false
+		},
+		message: {
+			get: false,
+			post: false,
+			put: false,
+			delete: false
 		}
 	},
 	user: {
+		access_key: 5,
+		editable_by: 30, // 2*3*5 (admin * moderator * user)
 		user: {
 			get: true,
 			post: false,
@@ -65,12 +75,24 @@ var acl = {
 		},
 		post: {
 			get: true,
-			post: true,
-			put: true,
+			post: ['body'],
+			put: ['body'],
 			delete: false
+		},
+		message: {
+			get: true,
+			post: [
+				'to',
+				'subject',
+				'body'
+			],
+			put: ['isRead'],
+			delete: true
 		}
 	},
 	moderator: {
+		access_key: 3,
+		editable_by: 2,
 		user: {
 			get: true,
 			post: false,
@@ -104,12 +126,24 @@ var acl = {
 		},
 		post: {
 			get: true,
-			post: true,
-			put: true,
+			post: ['body'],
+			put: ['body'],
+			delete: true
+		},
+		message: {
+			get: true,
+			post: [
+				'to',
+				'subject',
+				'body'
+			],
+			put: ['isRead'],
 			delete: true
 		}
 	},
 	admin: {
+		access_key: 2,
+		editable_by: 2,
 		user: {
 			get: true,
 			post: true,
@@ -144,15 +178,28 @@ var acl = {
 		},
 		post: {
 			get: true,
-			post: true,
-			put: true,
+			post: ['body'],
+			put: ['body'],
+			delete: true
+		},
+		message: {
+			get: true,
+			post: [
+				'to',
+				'subject',
+				'body'
+			],
+			put: ['isRead'],
 			delete: true
 		}
 	}
 };
 
 
-var isPermitted = function(role, method, uri){
+var ACL = {};
+
+
+ACL.isPermitted = function(role, method, uri){
 	try {
 		return acl[role][uri][method];
 	} catch(err) {
@@ -162,4 +209,14 @@ var isPermitted = function(role, method, uri){
 };
 
 
-module.exports = isPermitted;
+ACL.get_access_key = function(role){
+	return acl[role]['access_key'];
+};
+
+
+ACL.get_editable_by = function(role){
+	return acl[role]['editable_by'];
+};
+
+
+module.exports = ACL;

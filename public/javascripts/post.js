@@ -1,6 +1,34 @@
 var postModule = angular.module('post', []);
 
-// TODO: Add config state for single post-view
+postModule.config(['$stateProvider', function($stateProvider){
+	$stateProvider
+		.state('post', {
+			url: '/view-post?postId',
+			views: {
+				'navbar' : {
+						templateUrl: './partials/navbar.html'
+					},
+				'body' : {
+					templateUrl: './partials/board.html',
+					controller: 'mainBoardCtrl'
+				},
+				'main@board' : {
+					templateUrl: './partials/board.main.html'
+				},
+				'administrative@board': {
+					templateUrl: './partials/board.administrative.html'
+				},
+				'modal': {
+					templateUrl: './partials/user.register.html'
+				}
+			},
+			resolve: {
+				post: ['$stateParams', 'postFactory', function($stateParams, postFactory){
+					return postFactory.getPost($stateParams.postId);
+				}]
+			}
+		});
+}]);
 
 postModule.factory('postFactory', ['$http', function($http){
 	var postObject = {};
@@ -11,15 +39,15 @@ postModule.factory('postFactory', ['$http', function($http){
 		});
 	}
 
-	postObject.getPost = function(postId, callback){
+	postObject.getPost = function(postId){
 		return $http.get('/api/post/' + postId).success(function(data){
-			alert(data);
+			return data;
 		});
 	}
 
 	postObject.updatePost = function(post, callback){
-		return $http.put('/api/post/' + post._id, post).success(function(){
-			callback();
+		return $http.put('/api/post/' + post._id, post).success(function(data){
+			callback(data);
 		})
 		.error(function(error){
 			alert(error);
@@ -27,8 +55,8 @@ postModule.factory('postFactory', ['$http', function($http){
 	}
 
 	postObject.deletePost = function(postId, callback){
-		return $http.delete('/api/post/' + postId).success(function(){
-			callback();
+		return $http.delete('/api/post/' + postId).success(function(data){
+			callback(data);
 		})
 	}
 
@@ -36,7 +64,7 @@ postModule.factory('postFactory', ['$http', function($http){
 }]);
 
 // This controller will be used for cases, where a single post will be shown
-// To make this possible we'll need to papulate threads parent categories!
-postModule.controller('postCtrl', ['$scope', '$stateParams', 'postFactory', function($scope, $stateParams, postFactory){
-
+// To make this possible we'll need to populate parent thread and parent categories!
+postModule.controller('postCtrl', ['$scope', '$stateParams', 'postFactory', 'post', function($scope, $stateParams, postFactory, post){
+	$scope.post = post;
 }]);

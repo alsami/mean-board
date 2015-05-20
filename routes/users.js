@@ -15,7 +15,7 @@ var User = require('../models/User.js');
 // get all users, but only return some information
 router.get('/', function(req, res, next) {
 	User.find()
-		.select('firstName lastName birthday gender userName country')
+		.select('firstName lastName birthday gender userName country role')
 		.exec(function (err, user) {
 			if (err) return next(err);
 			res.header("Content-Type", "application/json; charset=utf-8");
@@ -27,7 +27,7 @@ router.get('/', function(req, res, next) {
 // get a specific user by id
 router.get('/byID/:id', function(req, res, next){
 	User.findById(req.params.id)
-		.select('firstName lastName birthday gender userName country')
+		.select('firstName lastName birthday gender userName country role')
 		.exec(function(err, user){
 		if(err) return next(err);
 		res.header("Content-Type", "application/json; charset=utf-8");
@@ -108,6 +108,33 @@ router.post('/', function(req, res, next) {
 					res.status(201).json(user);
 				}
 			});
+		}
+	});
+});
+
+
+// update password by user id
+router.put('/changePassword/:id', permission.check, function(req, res, next){
+	res.header("Content-Type", "application/json; charset=utf-8");
+	User.findOne({_id: req.params.id}, function(err, user){
+		if(err){
+			return next(err);
+		} else if(user){
+			if(bcrypt.compareSync(req.body.old_password, user.password)){
+				var hash = bcrypt.hashSync(req.body.new_password, bcrypt.genSaltSync(10));
+				user.password = hash;
+				user.save(function(err){
+					if(err){
+						res.end('Error: Could not save password');
+					} else {
+						res.end('Success: Password changed successfully!');
+					}
+				});
+			} else {
+				res.end('Error: Wrong password!');
+			}
+		} else {
+			res.end('Error: Did not find user, invalid user id!');
 		}
 	});
 });

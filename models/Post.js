@@ -15,7 +15,16 @@ var PostSchema = new Schema({
 
 PostSchema.plugin(deepPopulate, {
 	populate : {
-		'parent' : {
+		'parent' : { // thread
+			select : '_id title parent'
+		},
+		'parent.parent' : { // e.g. sub sub category
+			select : '_id title parent'
+		},
+		'parent.parent.parent' : { // e.g. sub category
+			select : '_id title parent'
+		},
+		'parent.parent.parent.parent' : { // e.g. main category
 			select : '_id title'
 		},
 		'createdBy' : {
