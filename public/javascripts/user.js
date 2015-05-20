@@ -97,4 +97,14 @@ userModule.factory('userFactory', ['$http', function($http){
 
 userModule.controller('userPanelCtrl', ['$scope', 'userFactory', 'user', function ($scope, userFactory, user) {
 	$scope.user = user.data;
+	$scope.editMode = false;
+
+	$scope.toggleEditMode = function () {
+		if ($scope.editMode)
+			$scope.editMode = false;
+		else
+			$scope.editMode = true;
+
+		console.log("Test");
+	};
 }]);
