@@ -7,7 +7,7 @@
     <ul class="list-group">
       <li ng-repeat="thread in category.threads" class="list-group-item">
         <div class="container-fluid">
-          <a href="/#/view-thread?categoryId={{category._id}}&threadId={{thread._id}}">{{thread.title}}</a>
+          <a href="/#/board/category/view-thread?categoryId={{category._id}}&threadId={{thread._id}}">{{thread.title}}</a>
           <span class="float right">
               {{thread.lastPost.createdBy.userName}}<br />
           </span>

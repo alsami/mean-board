@@ -1,4 +1,4 @@
-var threadModule = angular.module('thread', ['board', 'post']);
+var threadModule = angular.module('thread', ['category', 'post']);
 
 threadModule.config(['$stateProvider', function($stateProvider){
 	$stateProvider
@@ -19,12 +19,14 @@ threadModule.config(['$stateProvider', function($stateProvider){
 					templateUrl: './partials/user.register.html'
 				}
 			},
-			resolve:{
-				category: null
+			resolve: {
+				category: ['$stateParams', 'categoryFactory', function($stateParams, categoryFactory){
+					return categoryFactory.getSingleCategory($stateParams.categoryId);
+				}]
 			}
 		})
 		.state('view-thread', {
-			url: '/view-thread?categoryId&threadId',
+			url: '/board/category/view-thread?categoryId&threadId',
 			views: {
 				'navbar': {
 						templateUrl: './partials/navbar.html'
@@ -84,7 +86,7 @@ threadModule.controller('createThreadCtrl', ['$scope', '$location', 'threadFacto
 		threadFactory.createThread($scope.newThread, function(thread){
 			$scope.newPost.parent = thread;
 			postFactory.createPost($scope.newPost, function(){
-				$location.path('/view-thread').search('threadId', thread._id);
+				$location.path('/board/category/view-thread').search('threadId', thread._id);
 			});
 		});
 	}

@@ -4,7 +4,7 @@ var categoryModule = angular.module('category', []);
 categoryModule.config(['$stateProvider', function($stateProvider){
 	$stateProvider
 		.state('categoryById', {
-			url: '/board/category/{id}',
+			url: '/board/category?categoryId',
 			views: {
 				'navbar': {
 						templateUrl: './partials/navbar.html'
@@ -25,7 +25,7 @@ categoryModule.config(['$stateProvider', function($stateProvider){
 			},
 			resolve: {
 					category: ['$stateParams', 'categoryFactory', function($stateParams, categoryFactory) {
-						return categoryFactory.getSingleCategory($stateParams.id);
+						return categoryFactory.getSingleCategory($stateParams.categoryId);
 					}]
 				}
 		});
@@ -58,8 +58,6 @@ categoryModule.factory('categoryFactory', ['$http', function($http){
 	}
 
 	categoryFactory.getSingleCategory = function(categoryId){
-		console.log("I am called and the category id is:");
-		console.log(categoryId);
 		return $http.get('/api/category/' + categoryId).success(function(data){
 			return data;
 		});
