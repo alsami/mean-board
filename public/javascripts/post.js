@@ -1,28 +1,28 @@
-var postModule = angular.module('post', []);
+var postModule = angular.module('post', ['category', 'thread']);
 
 postModule.config(['$stateProvider', function($stateProvider){
 	$stateProvider
 		.state('post', {
-			url: '/view-post?postId',
+			url: '/board/category/thread/view-post?categoryId&threadId&postId',
 			views: {
 				'navbar' : {
 						templateUrl: './partials/navbar.html'
 					},
 				'body' : {
-					templateUrl: './partials/board.html',
-					controller: 'mainBoardCtrl'
-				},
-				'main@board' : {
-					templateUrl: './partials/board.main.html'
-				},
-				'administrative@board': {
-					templateUrl: './partials/board.administrative.html'
+					templateUrl: './partials/board.thread.html',
+					controller: 'postCtrl'
 				},
 				'modal': {
 					templateUrl: './partials/user.register.html'
 				}
 			},
 			resolve: {
+				category: ['$stateParams', 'categoryFactory', function($stateParams, categoryFactory){
+						return categoryFactory.getCategory($stateParams.categoryId);
+				}],
+				thread: ['$stateParams', 'threadFactory', function($stateParams, threadFactory){
+						return threadFactory.getThread($stateParams.threadId);
+				}],
 				post: ['$stateParams', 'postFactory', function($stateParams, postFactory){
 					return postFactory.getPost($stateParams.postId);
 				}]
@@ -65,6 +65,9 @@ postModule.factory('postFactory', ['$http', function($http){
 
 // This controller will be used for cases, where a single post will be shown
 // To make this possible we'll need to populate parent thread and parent categories!
-postModule.controller('postCtrl', ['$scope', '$stateParams', 'postFactory', 'post', function($scope, $stateParams, postFactory, post){
-	$scope.post = post;
+postModule.controller('postCtrl', ['$scope', 'postFactory', 'category', 'thread', 'post', function($scope, postFactory, category, thread, post){
+	$scope.post = post.data;
+	$scope.thread = thread.data;
+	$scope.category = category.data;
+	console.log($scope.post);
 }]);

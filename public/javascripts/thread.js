@@ -21,7 +21,7 @@ threadModule.config(['$stateProvider', function($stateProvider){
 			},
 			resolve: {
 				category: ['$stateParams', 'categoryFactory', function($stateParams, categoryFactory){
-					return categoryFactory.getSingleCategory($stateParams.categoryId);
+					return categoryFactory.getCategory($stateParams.categoryId);
 				}]
 			}
 		})
@@ -44,7 +44,7 @@ threadModule.config(['$stateProvider', function($stateProvider){
 			},
 			resolve: {
 				category: ['$stateParams', 'categoryFactory', function($stateParams, categoryFactory){
-					return categoryFactory.getSingleCategory($stateParams.categoryId);
+					return categoryFactory.getCategory($stateParams.categoryId);
 				}],
 				thread: ['$stateParams', 'threadFactory', function($stateParams, threadFactory){
 					return threadFactory.getThread($stateParams.threadId);
@@ -93,12 +93,12 @@ threadModule.controller('createThreadCtrl', ['$scope', '$location', 'threadFacto
 threadModule.controller('basicThreadCtrl', ['$scope', 'threadFactory', 'postFactory', 'category', 'thread', function($scope, threadFactory, postFactory, category, thread){
 	$scope.thread = thread.data;
 	$scope.category = category.data;
-	$scope.newPost = {};
+	$scope.newPost = { parent : $scope.thread };
 	$scope.isEditationEnabled = false;
 	$scope.editItemId = null;
 
 	$scope.createPost = function(){
-		$scope.newPost.parent = $scope.thread;
+		//console.log($scope.newPost.body);
 		postFactory.createPost($scope.newPost, function(data){
 			$scope.thread.posts.push(data);
 			$scope.newPost = {};

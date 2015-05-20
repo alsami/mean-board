@@ -25,7 +25,7 @@ categoryModule.config(['$stateProvider', function($stateProvider){
 			},
 			resolve: {
 					category: ['$stateParams', 'categoryFactory', function($stateParams, categoryFactory) {
-						return categoryFactory.getSingleCategory($stateParams.categoryId);
+						return categoryFactory.getCategory($stateParams.categoryId);
 					}]
 				}
 		});
@@ -57,7 +57,7 @@ categoryModule.factory('categoryFactory', ['$http', function($http){
 		});
 	}
 
-	categoryFactory.getSingleCategory = function(categoryId){
+	categoryFactory.getCategory = function(categoryId){
 		return $http.get('/api/category/' + categoryId).success(function(data){
 			return data;
 		});
