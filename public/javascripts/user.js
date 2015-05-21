@@ -97,14 +97,22 @@ userModule.factory('userFactory', ['$http', function($http){
 
 userModule.controller('userPanelCtrl', ['$scope', 'userFactory', 'user', function ($scope, userFactory, user) {
 	$scope.user = user.data;
+	$scope.userCopy = angular.copy($scope.user);
 	$scope.editMode = false;
 
 	$scope.toggleEditMode = function () {
-		if ($scope.editMode)
+		if ($scope.editMode) {
 			$scope.editMode = false;
+			$scope.user = angular.copy($scope.userCopy);
+		}
 		else
 			$scope.editMode = true;
+	};
 
-		console.log("Test");
+	$scope.isEditMode = function (authUser) {
+		if ($scope.editMode && (authUser._id == $scope.user._id || authUser.role == 'admin' || (authUser.role == 'moderator' && $scope.user.role == 'user')))
+			return true;
+		else
+			return false;
 	};
 }]);
