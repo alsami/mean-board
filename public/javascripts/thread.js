@@ -76,7 +76,7 @@ threadModule.factory('threadFactory', ['$http', function($http){
 	return threadObject;
 }]);
 
-threadModule.controller('createThreadCtrl', ['$scope', '$location', 'threadFactory', 'postFactory', 'category', function($scope, $location, threadFactory, postFactory, category){
+threadModule.controller('createThreadCtrl', ['$scope', '$state', 'threadFactory', 'postFactory', 'category', function($scope, $state, threadFactory, postFactory, category){
 	$scope.category = category.data;
 	$scope.newThread = { parent : $scope.category};
 	$scope.newPost = {};
@@ -84,7 +84,7 @@ threadModule.controller('createThreadCtrl', ['$scope', '$location', 'threadFacto
 		threadFactory.createThread($scope.newThread, function(thread){
 			$scope.newPost.parent = thread;
 			postFactory.createPost($scope.newPost, function(){
-				$location.path('/board/category/view-thread').search('threadId', thread._id);
+				$state.go('view-thread', {'categoryId' : $scope.category._id, 'threadId' : thread._id});
 			});
 		});
 	}
