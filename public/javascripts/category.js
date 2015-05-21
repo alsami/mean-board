@@ -4,7 +4,7 @@ var categoryModule = angular.module('category', []);
 categoryModule.config(['$stateProvider', function($stateProvider){
 	$stateProvider
 		.state('categoryById', {
-			url: '/board/{id}',
+			url: '/board/category?categoryId',
 			views: {
 				'navbar': {
 						templateUrl: './partials/navbar.html'
@@ -13,19 +13,19 @@ categoryModule.config(['$stateProvider', function($stateProvider){
 					templateUrl: './partials/board.html',
 					controller: 'categoryCtrl'
 				},
+				'modal': {
+					templateUrl: './partials/user.register.html'
+				},
 				'category@categoryById': {
 					templateUrl: './partials/board.category.html'
 				},
 				'thread@categoryById': {
 					templateUrl: './partials/board.thread.html'
-				},
-				'modal': {
-					templateUrl: './partials/user.register.html'
 				}
 			},
 			resolve: {
 					category: ['$stateParams', 'categoryFactory', function($stateParams, categoryFactory) {
-						return categoryFactory.getSingleCategory($stateParams.id);
+						return categoryFactory.getCategory($stateParams.categoryId);
 					}]
 				}
 		});
@@ -53,13 +53,12 @@ categoryModule.factory('categoryFactory', ['$http', function($http){
 
 	categoryFactory.deleteCategory = function(category){
 		return $http.delete('/api/category/' + category._id, category).success(function(data){
-			//categoryFactory.categoryJSON.splice(categoryFactory.categoryJSON.indexOf(category), 1);
+			return data;
 		});
 	}
 
-	categoryFactory.getSingleCategory = function(categoryId){
+	categoryFactory.getCategory = function(categoryId){
 		return $http.get('/api/category/' + categoryId).success(function(data){
-			//console.log(data);
 			return data;
 		});
 	}
@@ -75,7 +74,4 @@ categoryModule.factory('categoryFactory', ['$http', function($http){
 
 categoryModule.controller('categoryCtrl', ['$scope', '$location', 'category', function($scope, $location, category){
 	$scope.category = category.data;
-	$scope.redirectTo = function(url, categoryId){
-		$location.search('categoryId', categoryId).path(url);
-	}
 }]);

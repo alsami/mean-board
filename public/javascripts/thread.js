@@ -1,9 +1,9 @@
-var threadModule = angular.module('thread', ['board', 'post']);
+var threadModule = angular.module('thread', ['category', 'post']);
 
 threadModule.config(['$stateProvider', function($stateProvider){
 	$stateProvider
-		.state('createThread', {
-			url: '/create-thread?categoryId',
+		.state('create-thread', {
+			url: '/board/category/create-thread?categoryId',
 			views: {
 				'navbar': {
 						templateUrl: './partials/navbar.html'
@@ -12,7 +12,7 @@ threadModule.config(['$stateProvider', function($stateProvider){
 					templateUrl: './partials/thread.html',
 					controller: 'createThreadCtrl',
 				},
-				'create-thread@createThread': {
+				'thread-create-view@create-thread': {
 					templateUrl: './partials/thread.create.html',
 				},
 				'modal': {
@@ -21,12 +21,12 @@ threadModule.config(['$stateProvider', function($stateProvider){
 			},
 			resolve: {
 				category: ['$stateParams', 'categoryFactory', function($stateParams, categoryFactory){
-					return categoryFactory.getSingleCategory($stateParams.categoryId)
+					return categoryFactory.getCategory($stateParams.categoryId);
 				}]
 			}
 		})
-		.state('threadById', {
-			url: '/view-thread?categoryId&threadId',
+		.state('view-thread', {
+			url: '/board/category/view-thread?categoryId&threadId',
 			views: {
 				'navbar': {
 						templateUrl: './partials/navbar.html'
@@ -35,7 +35,7 @@ threadModule.config(['$stateProvider', function($stateProvider){
 					templateUrl: './partials/thread.html',
 					controller: 'basicThreadCtrl',
 				},
-				'view-thread@threadById': {
+				'thread-view@view-thread': {
 					templateUrl: './partials/thread.view.html',
 				},
 				'modal': {
@@ -44,7 +44,7 @@ threadModule.config(['$stateProvider', function($stateProvider){
 			},
 			resolve: {
 				category: ['$stateParams', 'categoryFactory', function($stateParams, categoryFactory){
-					return categoryFactory.getSingleCategory($stateParams.categoryId);
+					return categoryFactory.getCategory($stateParams.categoryId);
 				}],
 				thread: ['$stateParams', 'threadFactory', function($stateParams, threadFactory){
 					return threadFactory.getThread($stateParams.threadId);
@@ -78,14 +78,13 @@ threadModule.factory('threadFactory', ['$http', function($http){
 
 threadModule.controller('createThreadCtrl', ['$scope', '$location', 'threadFactory', 'postFactory', 'category', function($scope, $location, threadFactory, postFactory, category){
 	$scope.category = category.data;
-	$scope.newThread = {};
+	$scope.newThread = { parent : $scope.category};
 	$scope.newPost = {};
 	$scope.createThread = function(){
-		$scope.newThread.parent = $scope.category;
 		threadFactory.createThread($scope.newThread, function(thread){
 			$scope.newPost.parent = thread;
 			postFactory.createPost($scope.newPost, function(){
-				$location.path('/view-thread').search('threadId', thread._id);
+				$location.path('/board/category/view-thread').search('threadId', thread._id);
 			});
 		});
 	}
@@ -94,14 +93,12 @@ threadModule.controller('createThreadCtrl', ['$scope', '$location', 'threadFacto
 threadModule.controller('basicThreadCtrl', ['$scope', 'threadFactory', 'postFactory', 'category', 'thread', function($scope, threadFactory, postFactory, category, thread){
 	$scope.thread = thread.data;
 	$scope.category = category.data;
-	$scope.newPost = {};
+	$scope.newPost = { parent : $scope.thread };
 	$scope.isEditationEnabled = false;
 	$scope.editItemId = null;
 
-	console.log($scope.thread);
-
 	$scope.createPost = function(){
-		$scope.newPost.parent = $scope.thread;
+		//console.log($scope.newPost.body);
 		postFactory.createPost($scope.newPost, function(data){
 			$scope.thread.posts.push(data);
 			$scope.newPost = {};
