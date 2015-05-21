@@ -82,3 +82,7 @@ body{
 	display: inline-block;
 	vertical-align: top;
 }
+
+.fixed-table {
+	table-layout: fixed;
+}

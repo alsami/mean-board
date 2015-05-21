@@ -34,6 +34,10 @@
             <p ng-hide="user.lastName || authUser._id != user._id || isEditMode(authUser)">Please set your last name</p>
             <input type="text" required="true" ng-model="user.lastName" class="form-control input-margin" placeholder="last name" ng-show="isEditMode(authUser)" />
 
+            <label ng-show="authUser._id == user._id && (authUser.email || isEditMode(authUser))">email</label>
+            <p ng-show="authUser._id == user._id && authUser.email && !isEditMode(authUser)">{{authUser.email}}</p>
+            <input type="email" required="true" ng-model="user.email" class="form-control input-margin" placeholder="email" ng-show="isEditMode(authUser) && authUser._id == user._id" />
+
             <label ng-show="authUser._id == user._id || user.birthday || isEditMode(authUser)">birthday</label>
             <p ng-show="user.birthday && !isEditMode(authUser)">{{user.birthday | date:"MM.dd.yyyy"}}</p>
             <p ng-hide="user.birthday || authUser._id != user._id || isEditMode(authUser)">Please set your birthday</p>

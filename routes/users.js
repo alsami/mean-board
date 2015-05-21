@@ -77,7 +77,7 @@ router.get('/login', function(req, res, next){
 		// check for unreadMessages
 		User.findById(req.user._id, function(err, user){
 			if(err) return next(err);
-			
+
 			Message.count({to: req.user._id, deletedAt: null, isRead: false}, function(err, count){
 				if(err) return next(err);
 
