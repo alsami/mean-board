@@ -33,7 +33,7 @@ function getRole(req){
 	if(!req.user){
 		req.user = { role: 'guest'};
 	}
-	
+
 	return req.user.role;
 };
 
