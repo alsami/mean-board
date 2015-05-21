@@ -40,7 +40,7 @@ postModule.factory('postFactory', ['$http', function($http){
 	}
 
 	postObject.updatePost = function(post, callback){
-		return $http.put('/api/post/' + post._id, post).success(function(data){
+		return $http.put('/api/post/' + (post._id == undefined ? post[0]._id : post._id), post).success(function(data){
 			callback(data);
 		})
 		.error(function(error){
@@ -61,10 +61,12 @@ postModule.factory('postFactory', ['$http', function($http){
 // To make this possible we'll need to populate parent thread and parent categories!
 postModule.controller('postCtrl', ['$scope', 'postFactory', 'post', function($scope, postFactory, post){
 	$scope.post = post.data;
+	console.log($scope.post);
 	$scope.isEditationEnabled = false;
 	$scope.updatePost = function(post){
 		postFactory.updatePost(post, function(data){
-			$scope.post = data;
+			console.log(data);
+			$scope.post[0] = data;
 			$scope.enableEditation(false);
 		});
 	}
