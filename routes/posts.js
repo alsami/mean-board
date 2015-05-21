@@ -100,9 +100,13 @@ var setLastPostForAllCategories = function(categoryId, lastPostId){
 
 var return_populated_post = function(post, res, next){
 	Post.findById(post._id)
-		.select('_id body createdBy createdAt updatedBy updatedAt deletedAt')
+		.select('_id body parent createdBy createdAt updatedBy updatedAt deletedAt')
 		.deepPopulate(
-			'createdBy' +
+			'parent' +
+			' parent.parent' +
+			' parent.parent.parent' +
+			' parent.parent.parent.parent' +
+			' createdBy' +
 			' updatedBy'
 		)
 		.exec(function(err, populated_post){
