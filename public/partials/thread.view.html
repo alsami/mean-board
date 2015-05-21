@@ -26,9 +26,8 @@
               <img class="responsive" title="profilepicture" src="/images/placeholder.png" style="width:50px; height:50px;"/>
               {{post.createdBy.userName}}
             </div>
-            <div class="post-view">
-              {{post.body | breakFilter}}
-              <br />{{post._id}}
+            <div class="line-seperator">
+              <span class="pre-wrap">{{post.body}}</span>
               <!-- When post has been updated -->
               <span ng-show="post.updatedAt != null" style="font-style:italic; font-size:small;">
                 <br />Last updated by {{post.updatedBy.userName}} at {{post.updatedAt}}

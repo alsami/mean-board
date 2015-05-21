@@ -44,7 +44,7 @@
               <br />
             </div>
             <div class="line-seperator">
-              {{post[0].body | breakFilter | html}}
+              <span class="pre-wrap">{{post[0].body}}</span>
               <!-- When post has been updated -->
               <span ng-show="post[0].updatedAt != null" style="font-style:italic; font-size:small;">
                 <br />Last updated by {{post[0].updatedBy.userName}} at {{post[0].updatedAt}}
