@@ -24,6 +24,7 @@ var UserSchema = new Schema({
 	subscribed_threads: [{type: Schema.Types.ObjectId, ref: 'Thread'}],
 
 	role: {type: String, default: 'user'},
+	unreadMessages: {type: Number, default: 0},
 
 	createdAt: {type: Date, default: Date.now},
 	updatedBy: {type: Schema.Types.ObjectId, ref: 'User', default: null},

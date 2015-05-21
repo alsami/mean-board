@@ -7,6 +7,7 @@ var permission = require('./lib/permission');
 var mongoose = require('mongoose');
 var bcrypt = require('bcryptjs');
 var User = require('../models/User.js');
+var Message = require('../models/Message.js');
 
 
 /* routes for user */
@@ -27,7 +28,7 @@ router.get('/', function(req, res, next) {
 // get a specific user by id
 router.get('/byID/:id', function(req, res, next){
 	User.findById(req.params.id)
-		.select('firstName lastName birthday gender userName country role')
+		.select('firstName lastName birthday gender userName country role zipCode aboutMe city')
 		.exec(function(err, user){
 		if(err) return next(err);
 		res.header("Content-Type", "application/json; charset=utf-8");
@@ -66,17 +67,35 @@ router.post('/login', function(req, res, next){
 		});
 });
 
+
 // isLoggedIn? Check if there is a cookie and if role is not guest
 // if true return user
 // else return error
 router.get('/login', function(req, res, next){
 	res.header("Content-Type", "application/json; charset=utf-8");
 	if(req.user && req.user.role !== 'guest'){
-		res.json(req.user).end();
+		// check for unreadMessages
+		User.findById(req.user._id, function(err, user){
+			if(err) return next(err);
+			
+			Message.count({to: req.user._id, deletedAt: null, isRead: false}, function(err, count){
+				if(err) return next(err);
+
+				user.unreadMessages = count;
+				user.save(function(err){
+					if(err) next(err);
+					user.password = '';
+					req.user = user;
+					res.header("Content-Type", "application/json; charset=utf-8");
+					res.json(req.user).end();
+				});
+			});
+		});
 	} else {
 		res.status(400).end('Status: Not logged in!');
 	}
 });
+
 
 // logout:
 router.get('/logout', function(req, res, next){
