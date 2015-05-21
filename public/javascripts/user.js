@@ -75,7 +75,7 @@ userModule.factory('userFactory', ['$http', function($http){
   };
 
   userObject.update = function(user, callback){
-    return $http.put('/api/user/' + user._id, user)
+    return $http.put('/api/user/byID/' + user._id, user)
     .success(function(data){
         userObject.user = data;
         callback(userObject.user);
@@ -97,8 +97,12 @@ userModule.factory('userFactory', ['$http', function($http){
 
 userModule.controller('userPanelCtrl', ['$scope', 'userFactory', 'user', function ($scope, userFactory, user) {
 	$scope.user = user.data;
+	if ($scope.user.birthday != null)
+		$scope.user.birthday = new Date($scope.user.birthday);
 	$scope.userCopy = angular.copy($scope.user);
 	$scope.editMode = false;
+	$scope.validationErrors = [];
+	$scope.successMessages = [];
 
 	$scope.toggleEditMode = function () {
 		if ($scope.editMode) {
@@ -114,5 +118,28 @@ userModule.controller('userPanelCtrl', ['$scope', 'userFactory', 'user', functio
 			return true;
 		else
 			return false;
+	};
+
+	$scope.submitEditProfile = function (authUser) {
+		console.log("A");
+		$scope.validationErrors = [];
+
+		if (angular.isDate($scope.user.birthday))
+			$scope.user.birthday = new Date($scope.user.birthday);
+		else
+			$scope.validationErrors.push({title: 'Please check your validation:', error: 'Your entered birthday is not valid!'});
+
+		if ($scope.validationErrors.length > 0)
+			window.scrollTo(0, 0);
+		else {
+			console.log("B");
+			userFactory.update($scope.user, function(data) {
+				if (data != null)
+					$scope.successMessages.push({title: 'Finished:', message: 'Your data is saved now!'});
+				else
+					$scope.validationErrors.push({title: 'Error:', message: 'There was an unknown error! Please try again!'});
+				window.scrollTo(0, 0);
+			})
+		}
 	};
 }]);

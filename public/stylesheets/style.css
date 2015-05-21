@@ -58,5 +58,15 @@ body{
 }
 
 .input-margin{
-	margin: 10px 0px;
+	margin-bottom: 10px;
+}
+
+.relative-content {
+	position: relative;
+}
+
+.view-corner-right {
+	position: absolute;
+	right: 0px;
+	top: 0px;
 }
