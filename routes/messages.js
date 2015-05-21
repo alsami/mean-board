@@ -26,6 +26,16 @@ router.get('/inbox', function(req, res, next){
 });
 
 
+// count unread messages in INBOX
+router.get('/countInbox', function(req, res, next){
+	Message.count({to: req.user._id, deletedAt: null, isRead: false}, function(err, count){
+		if(err) return next(err);
+		res.header("Content-Type", "application/json; charset=utf-8");
+		res.json(count);
+	});
+});
+
+
 // get all outgoing messages OUTBOX
 router.get('/outbox', function(req, res, next){
 	Message.find({from: req.user._id, deletedAt: null})
