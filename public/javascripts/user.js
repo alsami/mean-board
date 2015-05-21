@@ -134,8 +134,11 @@ userModule.controller('userPanelCtrl', ['$scope', 'userFactory', 'user', functio
 		else {
 			console.log("B");
 			userFactory.update($scope.user, function(data) {
-				if (data != null)
+				if (data != null) {
 					$scope.successMessages.push({title: 'Finished:', message: 'Your data is saved now!'});
+					$scope.userCopy = angular.copy($scope.user);
+					$scope.toggleEditMode();
+				}
 				else
 					$scope.validationErrors.push({title: 'Error:', message: 'There was an unknown error! Please try again!'});
 				window.scrollTo(0, 0);

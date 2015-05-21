@@ -61,12 +61,14 @@ body{
 	margin-bottom: 10px;
 }
 
-.relative-content {
-	position: relative;
+.ucp-personal-information{
+	width: 69%;
+	display: inline-block;
+	vertical-align: top;
 }
 
-.view-corner-right {
-	position: absolute;
-	right: 0px;
-	top: 0px;
+.ucp-short-information{
+	width: 30%;
+	display: inline-block;
+	vertical-align: top;
 }

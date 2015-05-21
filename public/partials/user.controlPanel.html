@@ -19,53 +19,59 @@
           <strong>{{successMessage.title}}</strong> <span>{{successMessage.message}}</span>
         </div>
 
-        <div class="panel panel-default">
+        <div class="panel panel-default ucp-personal-information">
           <div class="panel-heading">
             Personal information
           </div>
           <div class="panel-body">
-            <div class="relative-content">
-              <label ng-show="authUser._id == user._id || user.firstName || isEditMode(authUser)">first name</label>
-              <p ng-show="user.firstName && !isEditMode(authUser)">{{user.firstName}}</p>
-              <p ng-hide="user.firstName || authUser._id != user._id || isEditMode(authUser)">Please set your first name</p>
-              <input type="text" required="true" ng-model="user.firstName" class="form-control input-margin" placeholder="first name" ng-show="isEditMode(authUser)" />
+            <label ng-show="authUser._id == user._id || user.firstName || isEditMode(authUser)">first name</label>
+            <p ng-show="user.firstName && !isEditMode(authUser)">{{user.firstName}}</p>
+            <p ng-hide="user.firstName || authUser._id != user._id || isEditMode(authUser)">Please set your first name</p>
+            <input type="text" required="true" ng-model="user.firstName" class="form-control input-margin" placeholder="first name" ng-show="isEditMode(authUser)" />
 
-              <label ng-show="authUser._id == user._id || user.lastName || isEditMode(authUser)">last name</label>
-              <p ng-show="user.lastName && !isEditMode(authUser)">{{user.lastName}}</p>
-              <p ng-hide="user.lastName || authUser._id != user._id || isEditMode(authUser)">Please set your last name</p>
-              <input type="text" required="true" ng-model="user.lastName" class="form-control input-margin" placeholder="last name" ng-show="isEditMode(authUser)" />
+            <label ng-show="authUser._id == user._id || user.lastName || isEditMode(authUser)">last name</label>
+            <p ng-show="user.lastName && !isEditMode(authUser)">{{user.lastName}}</p>
+            <p ng-hide="user.lastName || authUser._id != user._id || isEditMode(authUser)">Please set your last name</p>
+            <input type="text" required="true" ng-model="user.lastName" class="form-control input-margin" placeholder="last name" ng-show="isEditMode(authUser)" />
 
-              <label ng-show="authUser._id == user._id || user.birthday || isEditMode(authUser)">birthday</label>
-              <p ng-show="user.birthday && !isEditMode(authUser)">{{user.birthday | date:"MM.dd.yyyy"}}</p>
-              <p ng-hide="user.birthday || authUser._id != user._id || isEditMode(authUser)">Please set your birthday</p>
-              <input type="date" ng-model="user.birthday" class="form-control input-margin" ng-show="isEditMode(authUser)" />
+            <label ng-show="authUser._id == user._id || user.birthday || isEditMode(authUser)">birthday</label>
+            <p ng-show="user.birthday && !isEditMode(authUser)">{{user.birthday | date:"MM.dd.yyyy"}}</p>
+            <p ng-hide="user.birthday || authUser._id != user._id || isEditMode(authUser)">Please set your birthday</p>
+            <input type="date" ng-model="user.birthday" class="form-control input-margin" ng-show="isEditMode(authUser)" />
 
-              <label ng-show="authUser._id == user._id || user.gender || isEditMode(authUser)">gender</label>
-              <p ng-show="user.gender && !isEditMode(authUser)">{{user.gender}}</p>
-              <p ng-hide="user.gender || authUser._id != user._id || isEditMode(authUser)">Please set your gender</p>
-              <select ng-model="user.gender" class="form-control input-margin" ng-show="isEditMode(authUser)">
-                <option value="">Please choose...</option>
-                <option value="female">Female</option>
-                <option value="male">Male</option>
-              </select>
+            <label ng-show="authUser._id == user._id || user.gender || isEditMode(authUser)">gender</label>
+            <p ng-show="user.gender && !isEditMode(authUser)">{{user.gender}}</p>
+            <p ng-hide="user.gender || authUser._id != user._id || isEditMode(authUser)">Please set your gender</p>
+            <select ng-model="user.gender" class="form-control input-margin" ng-show="isEditMode(authUser)">
+              <option value="">Please choose...</option>
+              <option value="female">Female</option>
+              <option value="male">Male</option>
+            </select>
 
-              <label ng-show="authUser._id == user._id || user.country || isEditMode(authUser)">country</label>
-              <p ng-show="user.country && !isEditMode(authUser)">{{user.country}}</p>
-              <p ng-hide="user.country || authUser._id != user._id || isEditMode(authUser)">Please set your country</p>
-              <input type="text" ng-model="user.country" class="form-control input-margin" placeholder="country" ng-show="isEditMode(authUser)" />
+            <label ng-show="authUser._id == user._id || user.country || isEditMode(authUser)">country</label>
+            <p ng-show="user.country && !isEditMode(authUser)">{{user.country}}</p>
+            <p ng-hide="user.country || authUser._id != user._id || isEditMode(authUser)">Please set your country</p>
+            <input type="text" ng-model="user.country" class="form-control input-margin" placeholder="country" ng-show="isEditMode(authUser)" />
 
-              <label ng-show="authUser._id == user._id || user.zipCode || isEditMode(authUser)">zip code</label>
-              <p ng-show="user.zipCode && !isEditMode(authUser)">{{user.zipCode}}</p>
-              <p ng-hide="user.zipCode || authUser._id != user._id || isEditMode(authUser)">Please set your zip code</p>
-              <input type="text" ng-model="user.zipCode" class="form-control input-margin" placeholder="zip code" ng-show="isEditMode(authUser)" />
+            <label ng-show="authUser._id == user._id || user.zipCode || isEditMode(authUser)">zip code</label>
+            <p ng-show="user.zipCode && !isEditMode(authUser)">{{user.zipCode}}</p>
+            <p ng-hide="user.zipCode || authUser._id != user._id || isEditMode(authUser)">Please set your zip code</p>
+            <input type="text" ng-model="user.zipCode" class="form-control input-margin" placeholder="zip code" ng-show="isEditMode(authUser)" />
 
-              <label ng-show="authUser._id == user._id || user.city || isEditMode(authUser)">city</label>
-              <p ng-show="user.city && !isEditMode(authUser)">{{user.city}}</p>
-              <p ng-hide="user.city || authUser._id != user._id || isEditMode(authUser)">Please set your city</p>
-              <input type="text" ng-model="user.city" class="form-control input-margin" placeholder="city" ng-show="isEditMode(authUser)" />
+            <label ng-show="authUser._id == user._id || user.city || isEditMode(authUser)">city</label>
+            <p ng-show="user.city && !isEditMode(authUser)">{{user.city}}</p>
+            <p ng-hide="user.city || authUser._id != user._id || isEditMode(authUser)">Please set your city</p>
+            <input type="text" ng-model="user.city" class="form-control input-margin" placeholder="city" ng-show="isEditMode(authUser)" />
+          </div>
+        </div>
 
-              <img class="responsive view-corner-right" title="profilepicture" src="/images/placeholder.png" style="width:50px; height:50px;"/>
-            </div>
+        <div class="panel panel-default ucp-short-information">
+          <div class="panel-heading">
+            Short information
+          </div>
+          <div class="panel-body">
+            <img class="responsive" title="profilepicture" src="/images/placeholder.png"/>
+            <p>Posts: </p>
           </div>
         </div>
 
@@ -74,7 +80,7 @@
             About me
           </div>
           <div class="panel-body">
-            <p ng-show="user.aboutMe && !isEditMode(authUser)">{{user.aboutMe}}</p>
+            <p ng-show="user.aboutMe && !isEditMode(authUser)" class="pre-wrap">{{user.aboutMe}}</p>
             <p ng-hide="user.aboutMe || authUser._id != user._id || isEditMode(authUser)">Please write something about you</p>
             <textarea ng-model="user.aboutMe" class="form-control" placeholder="Something about you..." ng-show="isEditMode(authUser)"></textarea>
           </div>
