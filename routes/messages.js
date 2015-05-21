@@ -86,9 +86,9 @@ router.get('/debug/getall', function(req, res, next) {
 
 // create a message
 router.post('/', function(req, res, next) {
-	permitted_obj = permission.permitted_obj(req);
-	permitted_obj.from = req.user._id;
-	Message.create(permitted_obj, function (err, message) {
+	// permitted_obj = permission.permitted_obj(req);
+	// permitted_obj.from = req.user._id;
+	Message.create(req.body, function (err, message) {
 		if (err) return next(err);
 		res.header("Content-Type", "application/json; charset=utf-8");
 		res.json(message);
