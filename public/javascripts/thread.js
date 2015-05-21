@@ -104,6 +104,15 @@ threadModule.controller('basicThreadCtrl', ['$scope', 'threadFactory', 'postFact
 		});
 	}
 
+	$scope.isPostUpdated = function(updatedAt){
+		console.log(updatedAt);
+		return postFactory.isPostUpdated(updatedAt);
+	}
+
+	$scope.isPostDeleted = function(deletedAt){
+		return postFactory.isPostDeleted(deletedAt);
+	}
+
 	$scope.updatePost = function(post){
 		postFactory.updatePost(post, function(data){
 			$scope.thread.posts[$scope.thread.posts.indexOf(post)] = data;

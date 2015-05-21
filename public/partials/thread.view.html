@@ -13,28 +13,40 @@
     {{thread.title}}
   </div>
   <div class="panel-body">
-    <!-- Iterate through all posts in this thread -->
     <div class="container-fluid">
       <div class="list-group">
-        <div ng-repeat="post in thread.posts" class="list-group-item">
-          <!-- When post has been deleted -->
-          <span ng-show="post.deletedAt != null" style="font-style:italic; font-size:small;">
-            This post has been deleted by {{post.updatedBy.userName}} at {{post.deletedAt}}
-          </span>
-          <div ng-hide="post.deletedAt != null" ng-show="editItemId != post._id" class="post-wrapper">
-            <div class="post-user">
-              <img class="responsive" title="profilepicture" src="/images/placeholder.png" style="width:50px; height:50px;"/>
-              {{post.createdBy.userName}}
+        <!-- Iterate through all posts in this thread -->
+        <div ng-repeat="post in thread.posts" class="post-list-item">
+          <div ng-show="editItemId != post._id">
+            <div class="line-seperator hide-overflow">
+              <div class="post-user-body">
+                <a href="#" class="post-user-img"><img src="/images/placeholder.png" class="img-responsive pull-left" style="width: 40px; height: 40px;"></a>
+                <div class="post-user-info">
+                  <a href="/#/user/{{post.createdBy._id}}">{{post.createdBy.userName}}</a><br />
+                  User role
+                </div>
+              </div>
             </div>
-            <div class="line-seperator">
-              <span class="pre-wrap">{{post.body}}</span>
+            <div class="post-body">
+              <!-- Post-Body -->
+              <div class="post-content">
+                <span ng-show="!isPostDeleted(post.deletedAt);" class="pre-wrap">{{post.body}}</span>
+              </div>
               <!-- When post has been updated -->
-              <span ng-show="post.updatedAt != null" style="font-style:italic; font-size:small;">
+              <span ng-show="isPostUpdated(post.updatedAt);" class="italic-small">
                 <br />Last updated by {{post.updatedBy.userName}} at {{post.updatedAt}}
+              </span>
+              <!-- When post has been deleted -->
+              <span ng-show="isPostDeleted(post.deletedAt);" class="italic-small">
+                This post has been deleted by {{post.updatedBy.userName}} at {{post.deletedAt}}
               </span>
             </div>
             <!-- Post Action Dropdown -->
-            <div ng-hide="authUser == null" class="container-fluid" align="right">
+            <!--
+              ng-show="post.createdBy._id == authUser._id || authUser.role == 'admin' || authUser.role == 'moderator'"
+              ng-show="!$first && (post.createdBy._id == authUser._id || authUser.role == 'admin' || authUser.role == 'moderator')"
+            -->
+            <div ng-hide="isAuthUserNull()" class="post-action-body">
               <div class="dropdown">
                 <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
                   Post actions
@@ -49,7 +61,7 @@
                     <a role="menuitem" tabindex="-1" >Update Post</a>
                   </li>
                   <li
-                    ng-show="!$first && (post.createdBy._id == authUser._id || authUser.role == 'admin' || authUser.role == 'moderator')"
+
                     ng-click="deletePost(post);"
                     class="pointer"
                     role="presentation">
@@ -105,7 +117,7 @@
 
 
 <!-- Create a new Post in existing Threads -->
-<div ng-hide="authUser == null" class="panel panel-primary">
+<div ng-hide="isAuthUserNull()" class="panel panel-primary">
   <div class="panel-heading">
     Create a post
   </div>

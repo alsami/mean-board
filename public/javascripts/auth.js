@@ -26,4 +26,8 @@ authModule.controller('authCtrl', ['$scope', 'userFactory', function($scope, use
 		userFactory.logout();
 		$scope.authUser = null;
 	};
+
+	$scope.isAuthUserNull = function(){
+		return $scope.authUser == null ? true : false;
+	}
 }]);
