@@ -13,9 +13,29 @@ var Category = require('../models/Category.js');
 /* routes for post */
 
 
-// get a specific post by id
+// get a specific post by post id
 router.get('/:id', function(req, res, next){
 	Post.find({_id: req.params.id, deletedAt: null})
+		.select('_id parent body createdBy createdAt updatedBy updatedAt deletedAt')
+		.deepPopulate(
+			'parent' +
+			' parent.parent' +
+			' parent.parent.parent' +
+			' parent.parent.parent.parent' +
+			' createdBy' +
+			' updatedBy'
+		)
+		.exec(function(err, post){
+			if(err) return next(err);
+			res.header("Content-Type", "application/json; charset=utf-8");
+			res.json(post);
+		});
+});
+
+
+// get all posts by user id
+router.get('/byUserID/:id', function(req, res, next){
+	Post.find({createdBy: req.params.id, deletedAt: null})
 		.select('_id parent body createdBy createdAt updatedBy updatedAt deletedAt')
 		.deepPopulate(
 			'parent' +
