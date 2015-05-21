@@ -37,20 +37,22 @@
             This post has been deleted by {{post[0].updatedBy.userName}} at {{post[0].deletedAt}}
           </span>
           <div ng-hide="post[0].deletedAt != null" ng-show="!isEditationEnabled" class="post-wrapper">
-            <div class="post-user">
+            <div class="line-seperator">
               <img class="responsive" title="profilepicture" src="/images/placeholder.png" style="width:50px; height:50px;"/>
-              {{post[0].createdBy.userName}}
+              <a href="/#/user/{{post[0].createdBy._id}}" target="_blank">{{post[0].createdBy.userName}}</a>
+              {{post[0].createdBy}}
+              <br />
             </div>
-            <div class="post-view">
-              {{post[0].body | breakFilter}}
+            <div class="line-seperator">
+              {{post[0].body | breakFilter | html}}
               <!-- When post has been updated -->
               <span ng-show="post[0].updatedAt != null" style="font-style:italic; font-size:small;">
                 <br />Last updated by {{post[0].updatedBy.userName}} at {{post[0].updatedAt}}
               </span>
             </div>
             <!-- Post Action Dropdown -->
-            <div ng-hide="authUser == null" class="container-fluid" align="right">
-              <div class="dropdown">
+            <div ng-hide="authUser == null" class="hide-overflow">
+              <div class="dropdown pull-right">
                 <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
                   Post actions
                   <span class="caret"></span>
