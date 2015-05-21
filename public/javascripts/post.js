@@ -2,14 +2,14 @@ var postModule = angular.module('post', ['category', 'thread']);
 
 postModule.config(['$stateProvider', function($stateProvider){
 	$stateProvider
-		.state('post', {
-			url: '/board/category/thread/view-post?categoryId&threadId&postId',
+		.state('view-post', {
+			url: '/board/category/thread/post?postId',
 			views: {
 				'navbar' : {
 						templateUrl: './partials/navbar.html'
 					},
 				'body' : {
-					templateUrl: './partials/board.thread.html',
+					templateUrl: './partials/post.html',
 					controller: 'postCtrl'
 				},
 				'modal': {
@@ -17,12 +17,6 @@ postModule.config(['$stateProvider', function($stateProvider){
 				}
 			},
 			resolve: {
-				category: ['$stateParams', 'categoryFactory', function($stateParams, categoryFactory){
-						return categoryFactory.getCategory($stateParams.categoryId);
-				}],
-				thread: ['$stateParams', 'threadFactory', function($stateParams, threadFactory){
-						return threadFactory.getThread($stateParams.threadId);
-				}],
 				post: ['$stateParams', 'postFactory', function($stateParams, postFactory){
 					return postFactory.getPost($stateParams.postId);
 				}]
@@ -65,9 +59,21 @@ postModule.factory('postFactory', ['$http', function($http){
 
 // This controller will be used for cases, where a single post will be shown
 // To make this possible we'll need to populate parent thread and parent categories!
-postModule.controller('postCtrl', ['$scope', 'postFactory', 'category', 'thread', 'post', function($scope, postFactory, category, thread, post){
+postModule.controller('postCtrl', ['$scope', 'postFactory', 'post', function($scope, postFactory, post){
 	$scope.post = post.data;
-	$scope.thread = thread.data;
-	$scope.category = category.data;
-	console.log($scope.post);
+	$scope.isEditationEnabled = false;
+	$scope.updatePost = function(post){
+		postFactory.updatePost(post, function(data){
+			$scope.post = data;
+			$scope.enableEditation(false);
+		});
+	}
+
+	$scope.quotePost = function(post){
+		console.log("Not implemented yet.");
+	}
+
+	$scope.enableEditation = function(boolEnable){
+		$scope.isEditationEnabled = boolEnable;
+	}
 }]);

@@ -26,7 +26,7 @@ threadModule.config(['$stateProvider', function($stateProvider){
 			}
 		})
 		.state('view-thread', {
-			url: '/board/category/view-thread?categoryId&threadId',
+			url: '/board/category/thread?categoryId&threadId',
 			views: {
 				'navbar': {
 						templateUrl: './partials/navbar.html'
@@ -98,7 +98,6 @@ threadModule.controller('basicThreadCtrl', ['$scope', 'threadFactory', 'postFact
 	$scope.editItemId = null;
 
 	$scope.createPost = function(){
-		//console.log($scope.newPost.body);
 		postFactory.createPost($scope.newPost, function(data){
 			$scope.thread.posts.push(data);
 			$scope.newPost = {};
