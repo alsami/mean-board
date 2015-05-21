@@ -33,6 +33,16 @@ router.get('/:id', function(req, res, next){
 });
 
 
+// count posts by a user ID
+router.get('/countPosts/:id', function(req, res, next){
+	Post.count({createdBy: req.params.id, deletedAt: null}, function(err, count){
+		if(err) return next(err);
+		res.header("Content-Type", "application/json; charset=utf-8");
+		res.json(count);
+	});
+});
+
+
 // create a post
 router.post('/', function(req, res, next) {
 	// add the user ID to the post before creating it
