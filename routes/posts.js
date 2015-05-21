@@ -66,7 +66,7 @@ router.get('/countPosts/:id', function(req, res, next){
 // create a post
 router.post('/', function(req, res, next) {
 	// add the user ID to the post before creating it
-	req.url = '/post'; // hack for acl
+	// req.url = '/post'; // hack for acl
 	// -> fix this
 	// var permitted_obj = permission.permitted_obj(req);
 	//permitted_obj.createdBy = req.user._id;
