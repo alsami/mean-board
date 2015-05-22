@@ -12,7 +12,7 @@
   <div class="panel-heading">
     {{thread.title}}
   </div>
-  <!-- Panelbody End -->
+  <!-- Panelbody Start -->
   <div class="panel-body">
     <div class="list-group">
       <!-- Iterate through all posts in this thread -->
@@ -20,7 +20,7 @@
         <div>
           <div class="hide-overflow">
             <div class="post-user-body">
-              <a href="#" class="post-user-img"><img src="/images/placeholder.png" class="img-responsive pull-left" style="width: 40px; height: 40px;"></a>
+              <a href="#" class="post-user-img"><img src="/images/placeholder.png" class="img-rounded pull-left" style="width: 40px; height: 40px;"></a>
               <div class="post-user-info">
                 <a href="/#/user/{{post.createdBy._id}}">{{post.createdBy.userName}}</a><br />
                 User role
@@ -74,13 +74,15 @@
             ng-show="post.createdBy._id == authUser._id || authUser.role == 'admin' || authUser.role == 'moderator'"
             ng-show="!$first && (post.createdBy._id == authUser._id || authUser.role == 'admin' || authUser.role == 'moderator')"
           -->
-          <div ng-hide="isAuthUserNull()" class="post-action-body hide-overflow">
+          <div class="post-action-body hide-overflow">
             <span
+              ng-hide="isAuthUserNull();"
               title="upvote post"
               class="glyphicon glyphicon-thumbs-up glyphicon-large pointer">
-            </span> X Upvotes
+            </span>&nbsp;X Upvotes
             <div class="post-action">
                 <span
+                  ng-hide="isAuthUserNull();"
                   ng-click="enableEditation(true, post._id);"
                   title="edit post"
                   class="glyphicon glyphicon-pencil glyphicon-large pointer">
@@ -91,7 +93,7 @@
                   class="glyphicon glyphicon-eye-open glyphicon-large pointer">
                 </span>&nbsp;
                 <span
-                  ng-show="!$first"
+                  ng-hide="isAuthUserNull() || $first;"
                   ng-click="deletePost(post);"
                   title="delete post"
                   class="glyphicon glyphicon-remove glyphicon-large pointer">

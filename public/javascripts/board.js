@@ -5,9 +5,6 @@ boardModule.config(['$stateProvider', function($stateProvider){
 		.state('board', {
 			url: '/board',
 			views: {
-				'navbar' : {
-						templateUrl: './partials/navbar.html'
-					},
 				'body' : {
 					templateUrl: './partials/board.html',
 					controller: 'mainBoardCtrl'

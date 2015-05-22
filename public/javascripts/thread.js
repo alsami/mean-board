@@ -5,9 +5,6 @@ threadModule.config(['$stateProvider', function($stateProvider){
 		.state('create-thread', {
 			url: '/board/category/create-thread?categoryId',
 			views: {
-				'navbar': {
-						templateUrl: './partials/navbar.html'
-					},
 				'body': {
 					templateUrl: './partials/thread.html',
 					controller: 'createThreadCtrl',
@@ -28,9 +25,6 @@ threadModule.config(['$stateProvider', function($stateProvider){
 		.state('view-thread', {
 			url: '/board/category/thread?categoryId&threadId',
 			views: {
-				'navbar': {
-						templateUrl: './partials/navbar.html'
-					},
 				'body': {
 					templateUrl: './partials/thread.html',
 					controller: 'basicThreadCtrl',
@@ -105,7 +99,6 @@ threadModule.controller('basicThreadCtrl', ['$scope', '$state', 'threadFactory',
 	}
 
 	$scope.isPostUpdated = function(updatedAt){
-		console.log(updatedAt);
 		return postFactory.isPostUpdated(updatedAt);
 	}
 
