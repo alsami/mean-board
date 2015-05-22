@@ -86,6 +86,7 @@ threadModule.controller('createThreadCtrl', ['$scope', '$state', 'threadFactory'
 
 threadModule.controller('basicThreadCtrl', ['$scope', '$state', 'threadFactory', 'postFactory', 'category', 'thread', function($scope, $state, threadFactory, postFactory, category, thread){
 	$scope.thread = thread.data;
+	console.log($scope.thread.posts);
 	$scope.category = category.data;
 	$scope.newPost = { parent : $scope.thread };
 	$scope.isEditationEnabled = false;

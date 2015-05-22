@@ -28,13 +28,16 @@
             </div>
           </div>
           <!-- Simple View -->
-          <div class="post-body" ng-hide="editItemId == post._id">
+          <div
+            ng-class="isPostDeleted(post.deletedAt) ? 'no-border' : ''"
+            ng-hide="editItemId == post._id"
+            class="post-body no-border">
             <!-- Post-Body -->
             <div class="post-content">
               <span ng-show="!isPostDeleted(post.deletedAt);" class="pre-wrap">{{post.body}}</span>
               <!-- When post has been updated -->
               <span ng-show="isPostUpdated(post.updatedAt);" class="italic-small">
-                <br />Last updated by {{post.updatedBy.userName}} at {{post.updatedAt}}
+                <br /><br />Last updated by {{post.updatedBy.userName}} at {{post.updatedAt}}
               </span>
               <!-- When post has been deleted -->
               <span ng-show="isPostDeleted(post.deletedAt);" class="italic-small">
@@ -60,7 +63,7 @@
                     type="button"
                     ng-click="enableEditation(false)"
                     class="btn btn-default"
-                  >Canel</button>
+                  >Cancel</button>
                   <button
                     type="submit"
                     class="btn btn-success"
@@ -74,30 +77,34 @@
             ng-show="post.createdBy._id == authUser._id || authUser.role == 'admin' || authUser.role == 'moderator'"
             ng-show="!$first && (post.createdBy._id == authUser._id || authUser.role == 'admin' || authUser.role == 'moderator')"
           -->
-          <div class="post-action-body hide-overflow">
-            <span
-              ng-hide="isAuthUserNull();"
-              title="upvote post"
-              class="glyphicon glyphicon-thumbs-up glyphicon-large pointer">
-            </span>&nbsp;X Upvotes
+          <div ng-show="!isPostDeleted(post.deletedAt);" class="post-action-body hide-overflow">
             <div class="post-action">
-                <span
-                  ng-hide="isAuthUserNull();"
-                  ng-click="enableEditation(true, post._id);"
-                  title="edit post"
-                  class="glyphicon glyphicon-pencil glyphicon-large pointer">
-                </span>&nbsp;
-                <span
-                  ng-click="openPostState(post._id);"
-                  title="view single post"
-                  class="glyphicon glyphicon-eye-open glyphicon-large pointer">
-                </span>&nbsp;
-                <span
-                  ng-hide="isAuthUserNull() || $first;"
-                  ng-click="deletePost(post);"
-                  title="delete post"
-                  class="glyphicon glyphicon-remove glyphicon-large pointer">
-                </span>
+                <div class="pull-left">
+                  <span
+                    ng-hide="isAuthUserNull();"
+                    title="upvote post"
+                    class="glyphicon glyphicon-thumbs-up glyphicon-large pull-left pointer">
+                  </span>&nbsp;X Upvotes
+                </div>
+                <div class="pull-right">
+                  <span
+                    ng-hide="isAuthUserNull();"
+                    ng-click="enableEditation(true, post._id);"
+                    title="edit post"
+                    class="glyphicon glyphicon-pencil glyphicon-large pointer">
+                  </span>&nbsp;
+                  <span
+                    ng-click="openPostState(post._id);"
+                    title="view single post"
+                    class="glyphicon glyphicon-eye-open glyphicon-large pointer">
+                  </span>&nbsp;
+                  <span
+                    ng-hide="isAuthUserNull() || $first;"
+                    ng-click="deletePost(post);"
+                    title="delete post"
+                    class="glyphicon glyphicon-remove glyphicon-large pointer">
+                  </span>
+                </div>
             </div>
             <!--
             <div class="dropdown pull-right overflow-visible;">

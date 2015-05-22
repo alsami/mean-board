@@ -69,6 +69,6 @@ categoryModule.factory('categoryFactory', ['$http', function($http){
 	return categoryFactory;
 }]);
 
-categoryModule.controller('categoryCtrl', ['$scope', '$location', 'category', function($scope, $location, category){
+categoryModule.controller('categoryCtrl', ['$scope', 'category', function($scope, category){
 	$scope.category = category.data;
 }]);
