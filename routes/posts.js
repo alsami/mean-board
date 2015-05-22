@@ -8,6 +8,7 @@ var mongoose = require('mongoose');
 var Post = require('../models/Post.js');
 var Thread = require('../models/Thread.js');
 var Category = require('../models/Category.js');
+var User = require('../models/User.js');
 
 
 /* routes for post */
@@ -75,6 +76,9 @@ router.post('/', function(req, res, next) {
 	Post.create(req.body, function(err, post) {
 		if (err) return next(err);
 
+		// increment the posts attribute of the user
+		change_number_of_posts_for_user(req.user._id, 1);
+
 		// register the new post at the parent thread
 		Thread.findByIdAndUpdate(post.parent, { lastPost: post._id, $push : { posts: post}}, function(err, thread){
 			if(err) return next(err);
@@ -86,6 +90,17 @@ router.post('/', function(req, res, next) {
 		return_populated_post(post, res, next);
 	});
 });
+
+
+var change_number_of_posts_for_user = function(userId, number){
+	User.findById(userId, function(err, user){
+		if(err) return next(err);
+		user.posts += number;
+		user.save(function(err){
+			if(err) return next(err);
+		});
+	});
+};
 
 
 var setLastPostForAllCategories = function(categoryId, lastPostId){

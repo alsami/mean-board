@@ -25,6 +25,7 @@ var UserSchema = new Schema({
 
 	role: {type: String, default: 'user'},
 	unreadMessages: {type: Number, default: 0},
+	posts: {type: Number, default: 0},
 
 	createdAt: {type: Date, default: Date.now},
 	updatedBy: {type: Schema.Types.ObjectId, ref: 'User', default: null},

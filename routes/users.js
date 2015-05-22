@@ -16,7 +16,7 @@ var Message = require('../models/Message.js');
 // get all users, but only return some information
 router.get('/', function(req, res, next) {
 	User.find()
-		.select('firstName lastName birthday gender userName country role')
+		.select('firstName lastName birthday gender userName country role posts')
 		.exec(function (err, user) {
 			if (err) return next(err);
 			res.header("Content-Type", "application/json; charset=utf-8");
@@ -28,7 +28,7 @@ router.get('/', function(req, res, next) {
 // get a specific user by id
 router.get('/byID/:id', function(req, res, next){
 	User.findById(req.params.id)
-		.select('firstName lastName birthday gender userName country role zipCode aboutMe city')
+		.select('firstName lastName birthday gender userName country role zipCode aboutMe city posts')
 		.exec(function(err, user){
 		if(err) return next(err);
 		res.header("Content-Type", "application/json; charset=utf-8");
