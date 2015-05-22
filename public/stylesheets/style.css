@@ -101,3 +101,30 @@ body{
     font-size: 14px;
     line-height: 1.42857143;
 }
+
+.div-right{
+	position:absolute;
+	right:10px;
+	bottom:0px;
+	margin-bottom:10px;
+}
+
+.input-margin{
+	margin-bottom: 10px;
+}
+
+.ucp-personal-information{
+	width: 69%;
+	display: inline-block;
+	vertical-align: top;
+}
+
+.ucp-short-information{
+	width: 30%;
+	display: inline-block;
+	vertical-align: top;
+}
+
+.fixed-table {
+	table-layout: fixed;
+}

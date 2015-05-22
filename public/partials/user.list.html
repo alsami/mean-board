@@ -1,0 +1,44 @@
+<ol class="breadcrumb">
+  <li><a href="/#/home">Home</a></li>
+  <li class="active">Users</li>
+</ol>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    Userlist
+  </div>
+  <div class="panel-body">
+    <div class="container-fluid">
+      <div class="hide-overflow">
+        <div class="pull-right">
+          <label>Order by</label>
+          <select ng-model="usersOrderBy" class="form-control input-margin">
+            <option value="userName">User name</option>
+            <option value="firstName">First name</option>
+            <option value="lastName">Last name</option>
+            <option value="birthday">Birthday</option>
+          </select>
+        </div>
+      </div>
+      <div class="list-group">
+        <a ng-repeat="user in userList | orderBy: usersOrderBy" href="/#/user/{{user._id}}" class="list-group-item">
+          <h4>{{user.userName}}</h4>
+          <div class="row">
+            <div class="col-md-3">
+              <img class="responsive" title="profilepicture" src="/images/placeholder.png" style="width: 30px; height: 30px;"/>
+            </div>
+            <div class="col-md-3">
+              <span>{{user.firstName}} {{user.lastName}}</span>
+            </div>
+            <div class="col-md-3">
+              <span>{{user.birthday | date:"MM.dd.yyyy"}}</span>
+            </div>
+            <div class="col-md-3">
+              <span>0 posts</span>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
