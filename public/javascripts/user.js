@@ -22,9 +22,6 @@ userModule.config(['$stateProvider', function($stateProvider){
 		.state('userList', {
 			url: '/users',
 			views: {
-				'navbar': {
-						templateUrl: './partials/navbar.html'
-					},
 				'body': {
 					templateUrl: './partials/user.list.html',
 					controller: 'userListCtrl'
@@ -49,16 +46,13 @@ userModule.factory('userFactory', ['$http', function($http){
   // please use this function to get the user
   // otherwise you will lose your user when
   // you are reloading your page
-	console.log("A");
   userObject.getUser = function(callback){
   	$http.get('/api/user/login')
   	.success(function(data){
-			console.log("C");
   		userObject.user = data;
   		callback(userObject.user);
   	})
 	.error(function(error){
-		console.log("B");
 		userObject.user = null;
 		callback(null);
 	});
