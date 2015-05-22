@@ -5,9 +5,6 @@ postModule.config(['$stateProvider', function($stateProvider){
 		.state('view-post', {
 			url: '/board/category/thread/post?postId',
 			views: {
-				'navbar' : {
-						templateUrl: './partials/navbar.html'
-					},
 				'body' : {
 					templateUrl: './partials/post.html',
 					controller: 'postCtrl'
@@ -44,31 +41,44 @@ postModule.factory('postFactory', ['$http', function($http){
 			callback(data);
 		})
 		.error(function(error){
-			alert(error);
+			console.log(error);
 		});
 	}
 
 	postObject.deletePost = function(postId, callback){
 		return $http.delete('/api/post/' + postId).success(function(data){
 			callback(data);
-		})
+		});
+	}
+
+	postObject.isPostUpdated = function(updatedAt){
+		return updatedAt != null ? true : false;
+	}
+
+	postObject.isPostDeleted = function(deletedAt){
+		return deletedAt != null ? true : false;
 	}
 
 	return postObject;
 }]);
 
 // This controller will be used for cases, where a single post will be shown
-// To make this possible we'll need to populate parent thread and parent categories!
 postModule.controller('postCtrl', ['$scope', 'postFactory', 'post', function($scope, postFactory, post){
 	$scope.post = post.data;
-	console.log($scope.post);
 	$scope.isEditationEnabled = false;
 	$scope.updatePost = function(post){
 		postFactory.updatePost(post, function(data){
-			console.log(data);
 			$scope.post[0] = data;
 			$scope.enableEditation(false);
 		});
+	}
+
+	$scope.isPostUpdated = function(updatedAt){
+		return postFactory.isPostUpdated(updatedAt);
+	}
+
+	$scope.isPostDeleted = function(deletedAt){
+		return postFactory.isPostDeleted(deletedAt);
 	}
 
 	$scope.quotePost = function(post){

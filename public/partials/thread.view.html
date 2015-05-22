@@ -12,100 +12,141 @@
   <div class="panel-heading">
     {{thread.title}}
   </div>
+  <!-- Panelbody Start -->
   <div class="panel-body">
-    <!-- Iterate through all posts in this thread -->
-    <div class="container-fluid">
-      <div class="list-group">
-        <div ng-repeat="post in thread.posts" class="list-group-item">
-          <!-- When post has been deleted -->
-          <span ng-show="post.deletedAt != null" style="font-style:italic; font-size:small;">
-            This post has been deleted by {{post.updatedBy.userName}} at {{post.deletedAt}}
-          </span>
-          <div ng-hide="post.deletedAt != null" ng-show="editItemId != post._id" class="post-wrapper">
-            <div class="post-user">
-              <img class="responsive" title="profilepicture" src="/images/placeholder.png" style="width:50px; height:50px;"/>
-              {{post.createdBy.userName}}
-            </div>
-            <div class="line-seperator">
-              <span class="pre-wrap">{{post.body}}</span>
-              <!-- When post has been updated -->
-              <span ng-show="post.updatedAt != null" style="font-style:italic; font-size:small;">
-                <br />Last updated by {{post.updatedBy.userName}} at {{post.updatedAt}}
-              </span>
-            </div>
-            <!-- Post Action Dropdown -->
-            <div ng-hide="authUser == null" class="container-fluid" align="right">
-              <div class="dropdown">
-                <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
-                  Post actions
-                  <span class="caret"></span>
-                </button>
-                <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu1">
-                  <li
-                    ng-show="post.createdBy._id == authUser._id || authUser.role == 'admin' || authUser.role == 'moderator'"
-                    ng-click="enableEditation(true, post._id);"
-                    class="pointer"
-                    role="presentation">
-                    <a role="menuitem" tabindex="-1" >Update Post</a>
-                  </li>
-                  <li
-                    ng-show="!$first && (post.createdBy._id == authUser._id || authUser.role == 'admin' || authUser.role == 'moderator')"
-                    ng-click="deletePost(post);"
-                    class="pointer"
-                    role="presentation">
-                    <a role="menuitem" tabindex="-1" >Delete Post</a>
-                  </li>
-                  <li
-                    class="pointer"
-                    ng-click="quotePost(post);"
-
-                    role="presentation">
-                    <a role="menuitem" tabindex="-1" >Quote</a>
-                  </li>
-                  <li>
-                    <a href="/#/board/category/thread/post?postId={{post._id}}" target="_blank">
-                      View single post
-                    </a>
-                  </li>
-                </ul>
+    <div class="list-group">
+      <!-- Iterate through all posts in this thread -->
+      <div ng-repeat="post in thread.posts" class="post-list-item">
+        <div>
+          <div class="hide-overflow">
+            <div class="post-user-body">
+              <a href="#" class="post-user-img"><img src="/images/placeholder.png" class="img-rounded pull-left" style="width: 40px; height: 40px;"></a>
+              <div class="post-user-info">
+                <a href="/#/user/{{post.createdBy._id}}">{{post.createdBy.userName}}</a><br />
+                User role
               </div>
             </div>
           </div>
+          <!-- Simple View -->
+          <div class="post-body" ng-hide="editItemId == post._id">
+            <!-- Post-Body -->
+            <div class="post-content">
+              <span ng-show="!isPostDeleted(post.deletedAt);" class="pre-wrap">{{post.body}}</span>
+              <!-- When post has been updated -->
+              <span ng-show="isPostUpdated(post.updatedAt);" class="italic-small">
+                <br />Last updated by {{post.updatedBy.userName}} at {{post.updatedAt}}
+              </span>
+              <!-- When post has been deleted -->
+              <span ng-show="isPostDeleted(post.deletedAt);" class="italic-small">
+                This post has been deleted by {{post.updatedBy.userName}} at {{post.deletedAt}}
+              </span>
+            </div>
+          </div>
           <!-- Updating Post View -->
-          <div ng-show="editItemId == post._id" class="post-edit-view">
-            <form ng-submit="updatePost(post)">
-              <div class="form-group">
-                <textarea
-                  class="form-control"
-                  style="resize:vertical;"
-                  rows="10"
-                  ng-init="post.body"
-                  ng-model="post.body"
-                  required="true"></textarea>
-              </div>
-              <div class="container-fluid" align="right">
-                <button
-                  type="button"
-                  ng-click="enableEditation(false)"
-                  class="btn btn-default"
-                >Canel</button>
-                <button
-                  type="submit"
-                  class="btn btn-success"
-                ><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;Update Post</button>
-              </div>
-            </form>
+          <div ng-show="editItemId == post._id" class="post-body">
+            <div class="post-edit-view">
+              <form ng-submit="updatePost(post)">
+                <div class="form-group">
+                  <textarea
+                    class="form-control"
+                    style="resize:vertical;"
+                    rows="10"
+                    ng-init="post.body"
+                    ng-model="post.body"
+                    required="true"></textarea>
+                </div>
+                <div class="container-fluid" align="right">
+                  <button
+                    type="button"
+                    ng-click="enableEditation(false)"
+                    class="btn btn-default"
+                  >Canel</button>
+                  <button
+                    type="submit"
+                    class="btn btn-success"
+                  ><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;Update Post</button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <!-- Post Action Dropdown -->
+          <!--
+            ng-show="post.createdBy._id == authUser._id || authUser.role == 'admin' || authUser.role == 'moderator'"
+            ng-show="!$first && (post.createdBy._id == authUser._id || authUser.role == 'admin' || authUser.role == 'moderator')"
+          -->
+          <div class="post-action-body hide-overflow">
+            <span
+              ng-hide="isAuthUserNull();"
+              title="upvote post"
+              class="glyphicon glyphicon-thumbs-up glyphicon-large pointer">
+            </span>&nbsp;X Upvotes
+            <div class="post-action">
+                <span
+                  ng-hide="isAuthUserNull();"
+                  ng-click="enableEditation(true, post._id);"
+                  title="edit post"
+                  class="glyphicon glyphicon-pencil glyphicon-large pointer">
+                </span>&nbsp;
+                <span
+                  ng-click="openPostState(post._id);"
+                  title="view single post"
+                  class="glyphicon glyphicon-eye-open glyphicon-large pointer">
+                </span>&nbsp;
+                <span
+                  ng-hide="isAuthUserNull() || $first;"
+                  ng-click="deletePost(post);"
+                  title="delete post"
+                  class="glyphicon glyphicon-remove glyphicon-large pointer">
+                </span>
+            </div>
+            <!--
+            <div class="dropdown pull-right overflow-visible;">
+              <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
+                Post actions
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdownMenu1">
+                <li
+                  ng-show="post.createdBy._id == authUser._id || authUser.role == 'admin' || authUser.role == 'moderator'"
+                  ng-click="enableEditation(true, post._id);"
+                  class="pointer"
+                  role="presentation">
+                  <a role="menuitem" tabindex="-1" >Update Post</a>
+                </li>
+                <li
+
+                  ng-click="deletePost(post);"
+                  class="pointer"
+                  role="presentation">
+                  <a role="menuitem" tabindex="-1" >Delete Post</a>
+                </li>
+                <li
+                  class="pointer"
+                  ng-click="quotePost(post);"
+
+                  role="presentation">
+                  <a role="menuitem" tabindex="-1" >Quote</a>
+                </li>
+                <li>
+                  <a href="/#/board/category/thread/post?postId={{post._id}}" target="_blank">
+                    View single post
+                  </a>
+                </li>
+              </ul>
+            </div>
+            -->
           </div>
         </div>
       </div>
     </div>
+  <!-- Panelbody End -->
   </div>
 </div>
 
 
 
 <!-- Create a new Post in existing Threads -->
-<div ng-hide="authUser == null" class="panel panel-primary">
+<div ng-hide="isAuthUserNull()" class="panel panel-primary">
   <div class="panel-heading">
     Create a post
   </div>

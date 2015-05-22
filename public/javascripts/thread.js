@@ -5,9 +5,6 @@ threadModule.config(['$stateProvider', function($stateProvider){
 		.state('create-thread', {
 			url: '/board/category/create-thread?categoryId',
 			views: {
-				'navbar': {
-						templateUrl: './partials/navbar.html'
-					},
 				'body': {
 					templateUrl: './partials/thread.html',
 					controller: 'createThreadCtrl',
@@ -28,9 +25,6 @@ threadModule.config(['$stateProvider', function($stateProvider){
 		.state('view-thread', {
 			url: '/board/category/thread?categoryId&threadId',
 			views: {
-				'navbar': {
-						templateUrl: './partials/navbar.html'
-					},
 				'body': {
 					templateUrl: './partials/thread.html',
 					controller: 'basicThreadCtrl',
@@ -90,7 +84,7 @@ threadModule.controller('createThreadCtrl', ['$scope', '$state', 'threadFactory'
 	}
 }]);
 
-threadModule.controller('basicThreadCtrl', ['$scope', 'threadFactory', 'postFactory', 'category', 'thread', function($scope, threadFactory, postFactory, category, thread){
+threadModule.controller('basicThreadCtrl', ['$scope', '$state', 'threadFactory', 'postFactory', 'category', 'thread', function($scope, $state, threadFactory, postFactory, category, thread){
 	$scope.thread = thread.data;
 	$scope.category = category.data;
 	$scope.newPost = { parent : $scope.thread };
@@ -104,11 +98,23 @@ threadModule.controller('basicThreadCtrl', ['$scope', 'threadFactory', 'postFact
 		});
 	}
 
+	$scope.isPostUpdated = function(updatedAt){
+		return postFactory.isPostUpdated(updatedAt);
+	}
+
+	$scope.isPostDeleted = function(deletedAt){
+		return postFactory.isPostDeleted(deletedAt);
+	}
+
 	$scope.updatePost = function(post){
 		postFactory.updatePost(post, function(data){
 			$scope.thread.posts[$scope.thread.posts.indexOf(post)] = data;
 			$scope.enableEditation(false, null);
 		});
+	}
+
+	$scope.openPostState = function(postId){
+		$state.go('view-post', {'postId' : postId})
 	}
 
 	$scope.deletePost = function(post){

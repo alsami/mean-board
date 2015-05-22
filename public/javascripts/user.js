@@ -5,9 +5,6 @@ userModule.config(['$stateProvider', function($stateProvider){
 		.state('userControlPanel', {
 			url: '/user/{id}',
 			views: {
-				'navbar': {
-						templateUrl: './partials/navbar.html'
-					},
 				'body': {
 					templateUrl: './partials/user.controlPanel.html',
 					controller: 'userPanelCtrl'

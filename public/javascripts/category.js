@@ -6,9 +6,6 @@ categoryModule.config(['$stateProvider', function($stateProvider){
 		.state('categoryById', {
 			url: '/board/category?categoryId',
 			views: {
-				'navbar': {
-						templateUrl: './partials/navbar.html'
-					},
 				'body': {
 					templateUrl: './partials/board.html',
 					controller: 'categoryCtrl'

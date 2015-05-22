@@ -10,9 +10,6 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 		.state('home', {
 			url: '/home',
 			views: {
-				'navbar': {
-					templateUrl: './partials/navbar.html'
-				},
 				'body': {
 					templateUrl: './partials/home.html',
 				},
