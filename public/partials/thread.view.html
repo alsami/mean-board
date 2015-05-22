@@ -20,7 +20,7 @@
         <div>
           <div class="hide-overflow">
             <div class="post-user-body">
-              <a href="#" class="post-user-img"><img src="/images/placeholder.png" class="img-rounded pull-left" style="width: 40px; height: 40px;"></a>
+              <a href="/#/user/{{post.createdBy._id}}" class="post-user-img"><img src="/images/placeholder.png" class="img-rounded pull-left" style="width: 40px; height: 40px;"></a>
               <div class="post-user-info">
                 <a href="/#/user/{{post.createdBy._id}}">{{post.createdBy.userName}}</a><br />
                 User role
@@ -29,7 +29,6 @@
           </div>
           <!-- Simple View -->
           <div
-            ng-class="isPostDeleted(post.deletedAt) ? 'no-border' : ''"
             ng-hide="editItemId == post._id"
             class="post-body no-border">
             <!-- Post-Body -->
@@ -37,7 +36,7 @@
               <span ng-show="!isPostDeleted(post.deletedAt);" class="pre-wrap">{{post.body}}</span>
               <!-- When post has been updated -->
               <span ng-show="isPostUpdated(post.updatedAt);" class="italic-small">
-                <br /><br />Last updated by {{post.updatedBy.userName}} at {{post.updatedAt}}
+                <br /><br />Last updated by <a href="/#/user/{{post.createdBy._id}}">{{post.updatedBy.userName}}</a> at {{post.updatedAt | date: 'dd.MM.yyyy'}}
               </span>
               <!-- When post has been deleted -->
               <span ng-show="isPostDeleted(post.deletedAt);" class="italic-small">
@@ -49,6 +48,7 @@
           <div ng-show="editItemId == post._id" class="post-body">
             <div class="post-edit-view">
               <form ng-submit="updatePost(post)">
+                <label>Post Body</label>
                 <div class="form-group">
                   <textarea
                     class="form-control"
@@ -57,6 +57,14 @@
                     ng-init="post.body"
                     ng-model="post.body"
                     required="true"></textarea>
+                </div>
+                <div class="form-group">
+                  <label>Reason for update</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    ng-model="post.updateReason">
+                  </input>
                 </div>
                 <div class="container-fluid" align="right">
                   <button
@@ -72,11 +80,7 @@
               </form>
             </div>
           </div>
-          <!-- Post Action Dropdown -->
-          <!--
-            ng-show="post.createdBy._id == authUser._id || authUser.role == 'admin' || authUser.role == 'moderator'"
-            ng-show="!$first && (post.createdBy._id == authUser._id || authUser.role == 'admin' || authUser.role == 'moderator')"
-          -->
+          <!-- Post Actions -->
           <div ng-show="!isPostDeleted(post.deletedAt);" class="post-action-body hide-overflow">
             <div class="post-action">
                 <div class="pull-left">
@@ -107,6 +111,9 @@
                 </div>
             </div>
             <!--
+            ng-show="post.createdBy._id == authUser._id || authUser.role == 'admin' || authUser.role == 'moderator'"
+            ng-show="!$first && (post.createdBy._id == authUser._id || authUser.role == 'admin' || authUser.role == 'moderator')"
+
             <div class="dropdown pull-right overflow-visible;">
               <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
                 Post actions
