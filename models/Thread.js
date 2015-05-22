@@ -21,16 +21,16 @@ ThreadSchema.plugin(deepPopulate, {
 			select : '_id title'
 		},
 		'createdBy' : {
-			select : '_id userName'
+			select : '_id userName role'
 		},
 		'posts' : {
 			select : '_id body createdBy updatedBy updatedAt deletedAt'
 		},
 		'posts.createdBy' : {
-			select : '_id userName'
+			select : '_id userName role'
 		},
 		'posts.updatedBy' : {
-			select : '_id userName'
+			select : '_id userName role'
 		}
 	}
 });

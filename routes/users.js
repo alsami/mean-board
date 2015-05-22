@@ -92,7 +92,7 @@ router.get('/login', function(req, res, next){
 			});
 		});
 	} else {
-		res.status(400).end('Status: Not logged in!');
+		res.status(400).end();
 	}
 });
 
