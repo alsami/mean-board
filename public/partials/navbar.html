@@ -31,7 +31,7 @@
         </div>
       </div>
 
-      <li class="dropdown" ng-hide="authUser == null">
+      <li class="dropdown" ng-hide="isAuthUserNull();">
         <a class="dropdown-toggle" style="cursor:pointer;" data-toggle="dropdown" role="button" aria-expanded="false">{{authUser.userName}} <span class="caret"></span></a>
         <ul class="dropdown-menu" style="width:300px;" role="menu">
           <li>
@@ -46,7 +46,7 @@
         </ul>
       </li>
 
-      <li class="dropdown" ng-show="authUser == null">
+      <li class="dropdown" ng-show="isAuthUserNull();">
         <a class="dropdown-toggle" style="cursor:pointer;" data-toggle="dropdown" role="button" aria-expanded="false">Login <span class="caret"></span></a>
         <ul class="dropdown-menu" style="width:300px;" role="menu">
           <li role="presentation" class="dropdown-header">Login</li>

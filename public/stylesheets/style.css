@@ -1,17 +1,69 @@
 body{
-		background-color:#818181
+	background-color:#818181
+}
+
+.post-list-item{
+	display: block;
+	border: 1px solid #ddd;
+	margin-bottom: 20px;
+	padding: 0.5em 0;
+}
+
+.post-user-body{
+	border-bottom: 1px solid #e8e8e8;
+	padding-bottom: 5px;
+	margin-bottom: 5px;
+}
+
+.post-user-img{
+	top: 0px;
+	margin-left: 15px;
+	float: left;
+}
+
+.post-user-info{
+	display: block;
+	overflow: hidden;
+	padding-left: 10px;
+}
+
+.post-body{
+	border-bottom: 1px solid #e8e8e8;
+	padding-top: 5px;
+	margin-bottom: 5px;
+}
+
+.post-content{
+	margin-left: 15px;
+}
+
+.post-action-body{
+	margin-left: 15px;
+}
+
+.post-action{
+	margin-right: 15px;
+	float: right;
+}
+
+.glyphicon-large{
+	font-size: 18px;
+	line-height: 1.33;
+	border-radius: 6px;
+	font-size: 1.2em;
+}
+
+.italic-small{
+	font-style: italic;
+	font-size: small;
+}
+
+.pre-wrap{
+	white-space: pre-wrap;
 }
 
 .hide-overflow{
 	overflow:hidden;
-}
-
-.float.right{
-	float:right;
-}
-
-.float.left{
-	float:left;
 }
 .pointer{
 	cursor:pointer;
@@ -48,15 +100,4 @@ body{
     font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 14px;
     line-height: 1.42857143;
-}
-
-.div-right{
-	position:absolute;
-	right:10px;
-	bottom:0px;
-	margin-bottom:10px;
-}
-
-.input-margin{
-	margin: 10px 0px;
 }

@@ -90,7 +90,7 @@ threadModule.controller('createThreadCtrl', ['$scope', '$state', 'threadFactory'
 	}
 }]);
 
-threadModule.controller('basicThreadCtrl', ['$scope', 'threadFactory', 'postFactory', 'category', 'thread', function($scope, threadFactory, postFactory, category, thread){
+threadModule.controller('basicThreadCtrl', ['$scope', '$state', 'threadFactory', 'postFactory', 'category', 'thread', function($scope, $state, threadFactory, postFactory, category, thread){
 	$scope.thread = thread.data;
 	$scope.category = category.data;
 	$scope.newPost = { parent : $scope.thread };
@@ -104,11 +104,24 @@ threadModule.controller('basicThreadCtrl', ['$scope', 'threadFactory', 'postFact
 		});
 	}
 
+	$scope.isPostUpdated = function(updatedAt){
+		console.log(updatedAt);
+		return postFactory.isPostUpdated(updatedAt);
+	}
+
+	$scope.isPostDeleted = function(deletedAt){
+		return postFactory.isPostDeleted(deletedAt);
+	}
+
 	$scope.updatePost = function(post){
 		postFactory.updatePost(post, function(data){
 			$scope.thread.posts[$scope.thread.posts.indexOf(post)] = data;
 			$scope.enableEditation(false, null);
 		});
+	}
+
+	$scope.openPostState = function(postId){
+		$state.go('view-post', {'postId' : postId})
 	}
 
 	$scope.deletePost = function(post){
