@@ -145,12 +145,6 @@ router.put('/:id', permission.check, function(req, res, next) {
 var update_and_return_populated_post = function(id, update_obj, res, next){
 	Post.findByIdAndUpdate(id, update_obj, function (err, post) {
 		if (err) return next(err);
-
-		// decrement the posts attribute of the user for soft delete
-		if(post.deletedAt){
-			change_number_of_posts_for_user(post.createdBy, -1);
-		}
-
 		return_populated_post(post, res, next);
 	});
 };
