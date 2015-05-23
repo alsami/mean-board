@@ -34,7 +34,7 @@
 	        </li>
 					<li ui-sref-active="active">
 	          <a ui-sref="userList">
-            	Users
+	            Users
 	          </a>
 	        </li>
 	      </ul>
@@ -52,7 +52,7 @@
 	            <a href="/#/user/{{authUser._id}}" class="pointer">User CP</a>
 	          </li>
 	          <li>
-	            <a ui-sref="user/{{authUser._id}}">Inbox <span class="badge">42</span></a>
+	            <a ui-sref="userInbox">Inbox <span ng-show="user.unreadMessages" class="badge">{{user.unreadMessages}}</span></a>
 	          </li>
 	          <li ng-click="logout();" class="pointer">
 	            <a>Logout</a>
