@@ -6,8 +6,120 @@
 	<link href="stylesheets/style.css" rel="stylesheet">
 </head>
 <body  ng-controller="authCtrl">
+	<!-- Navbar -->
+	<nav class="navbar navbar-default">
+	  <div class="container-fluid">
+	  <!-- Brand and toggle get grouped for better mobile display -->
+	    <div class="navbar-header">
+	      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navigationbar">
+	        <span class="sr-only">Toggle navigation</span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	        <span class="icon-bar"></span>
+	      </button>
+	      <a class="navbar-brand">Mean Board</a>
+	    </div>
+	  <!-- Collect the nav links, forms, and other content for toggling -->
+	  <div class="collapse navbar-collapse"  id="navigationbar">
+	      <ul class="nav navbar-nav">
+	        <li ui-sref-active="active">
+	          <a ui-sref="home">
+	            Home
+	          </a>
+	        </li>
+	        <li ui-sref-active="active">
+	          <a ui-sref="board">
+	            Board
+	          </a>
+	        </li>
+					<li ui-sref-active="active">
+	          <a ui-sref="userList">
+            	Users
+	          </a>
+	        </li>
+	      </ul>
+	    <ul class="nav navbar-nav navbar-right">
+	      <!--<div class="navbar-form navbar-left" role="search">
+	        <div class="form-group">
+	          <input type="text" ng-model="defaultSearch" class="form-control" placeholder="Search">
+	        </div>
+	      </div>-->
 
-	<div ui-view="navbar"></div>
+	      <li class="dropdown" ng-hide="isAuthUserNull();">
+	        <a class="dropdown-toggle" style="cursor:pointer;" data-toggle="dropdown" role="button" aria-expanded="false">{{authUser.userName}} <span class="caret"></span></a>
+	        <ul class="dropdown-menu" style="width:300px;" role="menu">
+	          <li>
+	            <a href="/#/user/{{authUser._id}}" class="pointer">User CP</a>
+	          </li>
+	          <li>
+	            <a ui-sref="user/{{authUser._id}}">Inbox <span class="badge">42</span></a>
+	          </li>
+	          <li ng-click="logout();" class="pointer">
+	            <a>Logout</a>
+	          </li>
+	        </ul>
+	      </li>
+
+	      <li class="dropdown" ng-show="isAuthUserNull();">
+	        <a class="dropdown-toggle" style="cursor:pointer;" data-toggle="dropdown" role="button" aria-expanded="false">Login <span class="caret"></span></a>
+	        <ul class="dropdown-menu" style="width:300px;" role="menu">
+	          <li role="presentation" class="dropdown-header">Login</li>
+	          <li>
+	            <div style="padding: 3px 20px; clear: both; font-weight: 400; line-height:1.42857143; color:#333; white-space:nowrap;">
+	              <form>
+	                <div class="form-group">
+	                  <input
+	                    type="text"
+	                    class="form-control"
+	                    placeholder="Username"
+	                    ng-model="existingUser.userName"
+	                    required="true"
+	                  />
+	                </div>
+	                <div class="form-group">
+	                  <input
+	                    type="password"
+	                    class="form-control"
+	                    placeholder="Password"
+	                    ng-model="existingUser.password"
+	                    required="true"
+	                  />
+	                  <input id="checkboxKeepMeLoggedIn" type="checkbox" />
+	                  <label for="checkboxKeepMeLoggedIn">
+	                    Keep me logged in
+	                  </label>
+	                </div>
+	                <div class="form-group">
+	                  <button
+	                    ng-click="loginUser();"
+	                    type="submit"
+	                    class="btn btn-success"
+	                    style="width:100%;"
+	                    >Login
+	                  </button>
+	                </div>
+	              </form>
+	            </a>
+	          </li>
+	          <li class="divider"></li>
+	          <li>
+	            <a
+	              style="text-align:center; cursor:pointer;"
+	              data-toggle="modal"
+	              data-target="#modalWindowRegister"
+	            >
+	              Register
+	            </a>
+	          </li>
+	        </ul>
+	      </li>
+
+	    </ul>
+	    </div><!-- /.navbar-collapse -->
+	  </div><!-- /.container-fluid -->
+	</nav>
+	<!--  Navbar End -->
+	<!-- Content View -->
 	<div class="col-md-8 col-md-offset-2">
 		<div class="container-fluid" ui-view="body"></div>
 		<div ui-view="modal"></div>
@@ -25,6 +137,6 @@
 	<script src="./javascripts/thread.js"></script>
 	<script src="./javascripts/post.js"></script>
 	<script src="./javascripts/board.js"></script>
-	<script src="./javascripts/meanBoard.js"></script>
+	<script src="./javascripts/meanboard.js"></script>
 </body>
 </html>

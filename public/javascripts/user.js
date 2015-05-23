@@ -5,11 +5,8 @@ userModule.config(['$stateProvider', function($stateProvider){
 		.state('userControlPanel', {
 			url: '/user/{id}',
 			views: {
-				'navbar': {
-						templateUrl: './partials/navbar.html'
-					},
 				'body': {
-					templateUrl: './partials/user.controlPanel.html',
+					templateUrl: './partials/user.panel.html',
 					controller: 'userPanelCtrl'
 				},
 				'modal': {
@@ -25,9 +22,6 @@ userModule.config(['$stateProvider', function($stateProvider){
 		.state('userList', {
 			url: '/users',
 			views: {
-				'navbar': {
-						templateUrl: './partials/navbar.html'
-					},
 				'body': {
 					templateUrl: './partials/user.list.html',
 					controller: 'userListCtrl'

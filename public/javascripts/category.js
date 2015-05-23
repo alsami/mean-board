@@ -1,37 +1,5 @@
 var categoryModule = angular.module('category', []);
 
-
-categoryModule.config(['$stateProvider', function($stateProvider){
-	$stateProvider
-		.state('categoryById', {
-			url: '/board/category?categoryId',
-			views: {
-				'navbar': {
-						templateUrl: './partials/navbar.html'
-					},
-				'body': {
-					templateUrl: './partials/board.html',
-					controller: 'categoryCtrl'
-				},
-				'modal': {
-					templateUrl: './partials/user.register.html'
-				},
-				'category@categoryById': {
-					templateUrl: './partials/board.category.html'
-				},
-				'thread@categoryById': {
-					templateUrl: './partials/board.thread.html'
-				}
-			},
-			resolve: {
-					category: ['$stateParams', 'categoryFactory', function($stateParams, categoryFactory) {
-						return categoryFactory.getCategory($stateParams.categoryId);
-					}]
-				}
-		});
-}]);
-
-
 categoryModule.factory('categoryFactory', ['$http', function($http){
 	var categoryFactory = {};
 
@@ -72,6 +40,50 @@ categoryModule.factory('categoryFactory', ['$http', function($http){
 	return categoryFactory;
 }]);
 
-categoryModule.controller('categoryCtrl', ['$scope', '$location', 'category', function($scope, $location, category){
-	$scope.category = category.data;
+categoryModule.controller('categoryCtrl', ['$scope', '$stateParams', 'categoryFactory', function($scope, $stateParams, categoryFactory){
+	$scope.category = {};
+	$scope.newCategory = {};
+	$scope.subParent = null;
+
+	$scope.$on('$stateChangeSuccess', function(){
+		$scope.setCategory();
+	});
+
+
+	$scope.setCategory = function(){
+		var promise = null;
+		if(!$scope.isSingleCategorySelected()){
+			console.log("/board - all categories displayed");
+			promise = categoryFactory.getAllCategories();
+			promise.then(function(result){
+				$scope.category = result.data;
+			});
+		}else{
+			console.log("/board/category?categoryIdXY - a single category displayed");
+			promise = categoryFactory.getCategory($stateParams.categoryId);
+			promise.then(function(result){
+				$scope.category = result.data;
+			});
+		}
+	}
+
+	$scope.createCategory = function(){
+		if($scope.subParent != null){
+			console.log('has subParent');
+			$scope.newCategory.parent = $scope.subParent;
+			$scope.subParent = null;
+		}
+		categoryFactory.createCategory($scope.newCategory, function(callback){
+			$scope.setCategory();
+			$scope.newCategory = {};
+		});
+	}
+
+	$scope.setSubParent = function(obj){
+		$scope.subParent = obj.subParent;
+	}
+
+	$scope.isSingleCategorySelected = function(){
+		return $stateParams.categoryId !== undefined ? true : false;
+	}
 }]);
