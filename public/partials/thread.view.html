@@ -20,7 +20,7 @@
         <div>
           <div class="hide-overflow">
             <div class="post-user-body">
-              <a href="#" class="post-user-img"><img src="/images/placeholder.png" class="img-rounded pull-left" style="width: 40px; height: 40px;"></a>
+              <a href="/#/user/{{post.createdBy._id}}" class="post-user-img"><img src="/images/placeholder.png" class="img-rounded pull-left" style="width: 40px; height: 40px;"></a>
               <div class="post-user-info">
                 <a href="/#/user/{{post.createdBy._id}}">{{post.createdBy.userName}}</a><br />
                 User role
@@ -28,13 +28,15 @@
             </div>
           </div>
           <!-- Simple View -->
-          <div class="post-body" ng-hide="editItemId == post._id">
+          <div
+            ng-hide="editItemId == post._id"
+            class="post-body no-border">
             <!-- Post-Body -->
             <div class="post-content">
               <span ng-show="!isPostDeleted(post.deletedAt);" class="pre-wrap">{{post.body}}</span>
               <!-- When post has been updated -->
               <span ng-show="isPostUpdated(post.updatedAt);" class="italic-small">
-                <br />Last updated by {{post.updatedBy.userName}} at {{post.updatedAt}}
+                <br /><br />Last updated by <a href="/#/user/{{post.createdBy._id}}">{{post.updatedBy.userName}}</a> at {{post.updatedAt | date: 'dd.MM.yyyy'}}
               </span>
               <!-- When post has been deleted -->
               <span ng-show="isPostDeleted(post.deletedAt);" class="italic-small">
@@ -46,6 +48,7 @@
           <div ng-show="editItemId == post._id" class="post-body">
             <div class="post-edit-view">
               <form ng-submit="updatePost(post)">
+                <label>Post Body</label>
                 <div class="form-group">
                   <textarea
                     class="form-control"
@@ -55,12 +58,20 @@
                     ng-model="post.body"
                     required="true"></textarea>
                 </div>
+                <div class="form-group">
+                  <label>Reason for update</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    ng-model="post.updateReason">
+                  </input>
+                </div>
                 <div class="container-fluid" align="right">
                   <button
                     type="button"
                     ng-click="enableEditation(false)"
                     class="btn btn-default"
-                  >Canel</button>
+                  >Cancel</button>
                   <button
                     type="submit"
                     class="btn btn-success"
@@ -69,37 +80,40 @@
               </form>
             </div>
           </div>
-          <!-- Post Action Dropdown -->
-          <!--
-            ng-show="post.createdBy._id == authUser._id || authUser.role == 'admin' || authUser.role == 'moderator'"
-            ng-show="!$first && (post.createdBy._id == authUser._id || authUser.role == 'admin' || authUser.role == 'moderator')"
-          -->
-          <div class="post-action-body hide-overflow">
-            <span
-              ng-hide="isAuthUserNull();"
-              title="upvote post"
-              class="glyphicon glyphicon-thumbs-up glyphicon-large pointer">
-            </span>&nbsp;X Upvotes
+          <!-- Post Actions -->
+          <div ng-show="!isPostDeleted(post.deletedAt);" class="post-action-body hide-overflow">
             <div class="post-action">
-                <span
-                  ng-hide="isAuthUserNull();"
-                  ng-click="enableEditation(true, post._id);"
-                  title="edit post"
-                  class="glyphicon glyphicon-pencil glyphicon-large pointer">
-                </span>&nbsp;
-                <span
-                  ng-click="openPostState(post._id);"
-                  title="view single post"
-                  class="glyphicon glyphicon-eye-open glyphicon-large pointer">
-                </span>&nbsp;
-                <span
-                  ng-hide="isAuthUserNull() || $first;"
-                  ng-click="deletePost(post);"
-                  title="delete post"
-                  class="glyphicon glyphicon-remove glyphicon-large pointer">
-                </span>
+                <div class="pull-left">
+                  <span
+                    ng-hide="isAuthUserNull();"
+                    title="upvote post"
+                    class="glyphicon glyphicon-thumbs-up glyphicon-large pull-left pointer">
+                  </span>&nbsp;X Upvotes
+                </div>
+                <div class="pull-right">
+                  <span
+                    ng-hide="isAuthUserNull();"
+                    ng-click="enableEditation(true, post._id);"
+                    title="edit post"
+                    class="glyphicon glyphicon-pencil glyphicon-large pointer">
+                  </span>&nbsp;
+                  <span
+                    ng-click="openPostState(post._id);"
+                    title="view single post"
+                    class="glyphicon glyphicon-eye-open glyphicon-large pointer">
+                  </span>&nbsp;
+                  <span
+                    ng-hide="isAuthUserNull() || $first;"
+                    ng-click="deletePost(post);"
+                    title="delete post"
+                    class="glyphicon glyphicon-remove glyphicon-large pointer">
+                  </span>
+                </div>
             </div>
             <!--
+            ng-show="post.createdBy._id == authUser._id || authUser.role == 'admin' || authUser.role == 'moderator'"
+            ng-show="!$first && (post.createdBy._id == authUser._id || authUser.role == 'admin' || authUser.role == 'moderator')"
+
             <div class="dropdown pull-right overflow-visible;">
               <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-expanded="true">
                 Post actions

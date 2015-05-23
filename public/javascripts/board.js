@@ -1,55 +1,101 @@
-var boardModule = angular.module('board', ['category']);
+var boardModule = angular.module('board', ['category', 'thread', 'post']);
 
 boardModule.config(['$stateProvider', function($stateProvider){
 	$stateProvider
-		.state('board', {
-			url: '/board',
-			views: {
-				'body' : {
-					templateUrl: './partials/board.html',
-					controller: 'mainBoardCtrl'
-				},
-				'main@board' : {
-					templateUrl: './partials/board.main.html'
-				},
-				'administrative@board': {
-					templateUrl: './partials/board.administrative.html'
-				},
-				'modal': {
-					templateUrl: './partials/user.register.html'
-				}
+	.state('board', {
+		url: '/board',
+		views: {
+			'body' : {
+				templateUrl: './partials/board.html',
+				controller: 'categoryCtrl'
+			},
+			'category@board' : {
+				templateUrl: './partials/board.category.html'
+			},
+			'administrative@board': {
+				templateUrl: './partials/board.administrative.html'
+			},
+			'modal': {
+				templateUrl: './partials/user.register.html'
 			}
-		});
-}]);
-
-boardModule.controller('mainBoardCtrl', ['$scope', 'categoryFactory', function($scope, categoryFactory){
-	$scope.category = {};
-	$scope.newCategory = {};
-	$scope.subParent = null;
-
-	$scope.$on('$stateChangeSuccess', function () {
-		$scope.setCategory();
-	});
-
-	$scope.setCategory = function(){
-		var promise = categoryFactory.getAllCategories();
-		promise.then(function(result){
-			$scope.category = result.data;
-		});
-	}
-
-	$scope.setSubParent = function(obj){
-		$scope.subParent = obj.subParent;
-	}
-
-	$scope.createCategory = function(){
-		if($scope.subParent != null){
-			$scope.newCategory.parent = $scope.subParent;
-			$scope.subParent = null;
 		}
-		categoryFactory.createCategory($scope.newCategory, function(callback){
-			$scope.setCategory();
-			$scope.newCategory = {};
-		});
-	}
+	})
+	.state('categoryById', {
+		url: '/board/category?categoryId',
+		views: {
+			'body': {
+				templateUrl: './partials/board.html',
+				controller: 'categoryCtrl'
+			},
+			'modal': {
+				templateUrl: './partials/user.register.html'
+			},
+			'category@categoryById': {
+				templateUrl: './partials/board.category.html'
+			},
+			'thread@categoryById': {
+				templateUrl: './partials/board.thread.html'
+			}
+		}
+	})
+	.state('create-thread', {
+		url: '/board/category/create-thread?categoryId',
+		views: {
+			'body': {
+				templateUrl: './partials/thread.html',
+				controller: 'createThreadCtrl',
+			},
+			'thread-create-view@create-thread': {
+				templateUrl: './partials/thread.create.html',
+			},
+			'modal': {
+				templateUrl: './partials/user.register.html'
+			}
+		},
+		resolve: {
+			category: ['$stateParams', 'categoryFactory', function($stateParams, categoryFactory){
+				return categoryFactory.getCategory($stateParams.categoryId);
+			}]
+		}
+	})
+	.state('view-thread', {
+		url: '/board/category/thread?categoryId&threadId',
+		views: {
+			'body': {
+				templateUrl: './partials/thread.html',
+				controller: 'basicThreadCtrl',
+			},
+			'thread-view@view-thread': {
+				templateUrl: './partials/thread.view.html',
+			},
+			'modal': {
+				templateUrl: './partials/user.register.html'
+			}
+		},
+		resolve: {
+			category: ['$stateParams', 'categoryFactory', function($stateParams, categoryFactory){
+				return categoryFactory.getCategory($stateParams.categoryId);
+			}],
+			thread: ['$stateParams', 'threadFactory', function($stateParams, threadFactory){
+				return threadFactory.getThread($stateParams.threadId);
+			}]
+		}
+	})
+	.state('view-post', {
+		url: '/board/category/thread/post?postId',
+		views: {
+			'body' : {
+				templateUrl: './partials/post.html',
+				controller: 'postCtrl'
+			},
+			'modal': {
+				templateUrl: './partials/user.register.html'
+			}
+		},
+		resolve: {
+			post: ['$stateParams', 'postFactory', function($stateParams, postFactory){
+				return postFactory.getPost($stateParams.postId);
+			}]
+		}
+	});
 }]);

@@ -6,7 +6,7 @@ userModule.config(['$stateProvider', function($stateProvider){
 			url: '/user/{id}',
 			views: {
 				'body': {
-					templateUrl: './partials/user.controlPanel.html',
+					templateUrl: './partials/user.panel.html',
 					controller: 'userPanelCtrl'
 				},
 				'modal': {

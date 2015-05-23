@@ -1,52 +1,5 @@
 var threadModule = angular.module('thread', ['category', 'post']);
 
-threadModule.config(['$stateProvider', function($stateProvider){
-	$stateProvider
-		.state('create-thread', {
-			url: '/board/category/create-thread?categoryId',
-			views: {
-				'body': {
-					templateUrl: './partials/thread.html',
-					controller: 'createThreadCtrl',
-				},
-				'thread-create-view@create-thread': {
-					templateUrl: './partials/thread.create.html',
-				},
-				'modal': {
-					templateUrl: './partials/user.register.html'
-				}
-			},
-			resolve: {
-				category: ['$stateParams', 'categoryFactory', function($stateParams, categoryFactory){
-					return categoryFactory.getCategory($stateParams.categoryId);
-				}]
-			}
-		})
-		.state('view-thread', {
-			url: '/board/category/thread?categoryId&threadId',
-			views: {
-				'body': {
-					templateUrl: './partials/thread.html',
-					controller: 'basicThreadCtrl',
-				},
-				'thread-view@view-thread': {
-					templateUrl: './partials/thread.view.html',
-				},
-				'modal': {
-					templateUrl: './partials/user.register.html'
-				}
-			},
-			resolve: {
-				category: ['$stateParams', 'categoryFactory', function($stateParams, categoryFactory){
-					return categoryFactory.getCategory($stateParams.categoryId);
-				}],
-				thread: ['$stateParams', 'threadFactory', function($stateParams, threadFactory){
-					return threadFactory.getThread($stateParams.threadId);
-				}]
-			}
-		});
-}]);
-
 threadModule.factory('threadFactory', ['$http', function($http){
 	var threadObject = {
 		threadJSON : []
@@ -86,9 +39,10 @@ threadModule.controller('createThreadCtrl', ['$scope', '$state', 'threadFactory'
 
 threadModule.controller('basicThreadCtrl', ['$scope', '$state', 'threadFactory', 'postFactory', 'category', 'thread', function($scope, $state, threadFactory, postFactory, category, thread){
 	$scope.thread = thread.data;
+	console.log($scope.thread.posts);
 	$scope.category = category.data;
 	$scope.newPost = { parent : $scope.thread };
-	$scope.isEditationEnabled = false;
+	$scope.editationEnabled = false;
 	$scope.editItemId = null;
 
 	$scope.createPost = function(){
@@ -128,7 +82,7 @@ threadModule.controller('basicThreadCtrl', ['$scope', '$state', 'threadFactory',
 	}
 
 	$scope.enableEditation = function(boolEnable, editItemId){
-		$scope.isEditationEnabled = boolEnable;
+		$scope.editationEnabled = boolEnable;
 		$scope.editItemId = editItemId;
 	}
 }]);
