@@ -30,9 +30,8 @@
               </select>
             </div>
             <div ng-show="newCategory.parent.categories.length" class="form-group">
-              <label for="selectSubCategory">Sub Category</label>
+              <label>Sub Category</label>
               <select
-                id="selectSubCategory"
                 class="form-control"
                 ng-model="subParent"
                 ng-options="category as category.title for category in newCategory.parent.categories | orderBy : 'title'"
@@ -40,21 +39,9 @@
                 <option value=""></option>
               </select>
             </div>
-            <div ng-show="subParent != null" class="form-group">
-              <label for="selectSubSubCategory">Sub-Sub Category</label>
-              <select
-                id="selectSubSubCategory"
-                class="form-control"
-                ng-model="subSubCategory"
-                ng-options="category as category.title for category in subCategory.categories | orderBy : 'title'"
-                >
-                <option value=""></option>
-              </select>
-            </div>
-            <label for="textFieldCategoryTitle">Category Title</label>
             <div class="form-group">
+              <label>Category Title</label>
               <input
-                id="textFieldCategoryTitle"
                 type="text"
                 class="form-control"
                 placeholder="Category Title"

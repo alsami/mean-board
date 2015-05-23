@@ -1,26 +1,5 @@
 var postModule = angular.module('post', ['category', 'thread']);
 
-postModule.config(['$stateProvider', function($stateProvider){
-	$stateProvider
-		.state('view-post', {
-			url: '/board/category/thread/post?postId',
-			views: {
-				'body' : {
-					templateUrl: './partials/post.html',
-					controller: 'postCtrl'
-				},
-				'modal': {
-					templateUrl: './partials/user.register.html'
-				}
-			},
-			resolve: {
-				post: ['$stateParams', 'postFactory', function($stateParams, postFactory){
-					return postFactory.getPost($stateParams.postId);
-				}]
-			}
-		});
-}]);
-
 postModule.factory('postFactory', ['$http', function($http){
 	var postObject = {};
 
@@ -65,7 +44,8 @@ postModule.factory('postFactory', ['$http', function($http){
 // This controller will be used for cases, where a single post will be shown
 postModule.controller('postCtrl', ['$scope', 'postFactory', 'post', function($scope, postFactory, post){
 	$scope.post = post.data;
-	$scope.isEditationEnabled = false;
+	$scope.editationEnabled = false;
+
 	$scope.updatePost = function(post){
 		postFactory.updatePost(post, function(data){
 			$scope.post[0] = data;
@@ -86,6 +66,6 @@ postModule.controller('postCtrl', ['$scope', 'postFactory', 'post', function($sc
 	}
 
 	$scope.enableEditation = function(boolEnable){
-		$scope.isEditationEnabled = boolEnable;
+		$scope.editationEnabled = boolEnable;
 	}
 }]);

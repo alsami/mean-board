@@ -1,10 +1,11 @@
-var app = angular.module('meanBoard', ['ui.router', 'auth', 'user', 'board', 'category', 'thread']);
+var app = angular.module('meanBoard', ['ui.router', 'auth', 'user', 'board']);
 
 // Global config
 // everything that is not defined in any module used above as dependency, leeds us back home
 // home, sweet home :)
 app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider){
-	//$urlRouterProvider.otherwise('/home');
+	// You can uncomment this when testing page-routes
+	$urlRouterProvider.otherwise('/home');
 
 	$stateProvider
 		.state('home', {
