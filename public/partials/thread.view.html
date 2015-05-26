@@ -29,14 +29,16 @@
           </div>
           <!-- Simple View -->
           <div
-            ng-hide="editItemId == post._id"
+            ng-hide="editPost == post"
             class="post-body no-border">
             <!-- Post-Body -->
             <div class="post-content">
               <span ng-show="!isPostDeleted(post.deletedAt);" class="pre-wrap">{{post.body}}</span>
               <!-- When post has been updated -->
               <span ng-show="isPostUpdated(post.updatedAt);" class="italic-small">
-                <br /><br />Last updated by <a href="/#/user/{{post.createdBy._id}}">{{post.updatedBy.userName}}</a> at {{post.updatedAt | date: 'dd.MM.yyyy'}}
+                <br /><br />Last updated by <a href="/#/user/{{post.createdBy._id}}">{{post.updatedBy.userName}}</a>
+                at {{post.updatedAt | date:"dd.MM.yyyy 'at' h:mma"}}. Reason:<br />
+                {{post}}
               </span>
               <!-- When post has been deleted -->
               <span ng-show="isPostDeleted(post.deletedAt);" class="italic-small">
@@ -45,17 +47,17 @@
             </div>
           </div>
           <!-- Updating Post View -->
-          <div ng-show="editItemId == post._id" class="post-body">
+          <div ng-show="editPost == post" class="post-body">
             <div class="post-edit-view">
-              <form ng-submit="updatePost(post)">
+              <form ng-submit="updatePost(editPost)">
                 <label>Post Body</label>
                 <div class="form-group">
                   <textarea
                     class="form-control"
                     style="resize:vertical;"
                     rows="10"
-                    ng-init="post.body"
-                    ng-model="post.body"
+                    ng-init="editPost.body"
+                    ng-model="editPost.body"
                     required="true"></textarea>
                 </div>
                 <div class="form-group">
@@ -63,13 +65,13 @@
                   <input
                     type="text"
                     class="form-control"
-                    ng-model="post.updateReason">
+                    ng-model="editPost.updateReason">
                   </input>
                 </div>
                 <div class="container-fluid" align="right">
                   <button
                     type="button"
-                    ng-click="enableEditation(false)"
+                    ng-click="enableEditation(null)"
                     class="btn btn-default"
                   >Cancel</button>
                   <button
@@ -93,7 +95,7 @@
                 <div class="pull-right">
                   <span
                     ng-hide="isAuthUserNull();"
-                    ng-click="enableEditation(true, post._id);"
+                    ng-click="enableEditation(post);"
                     title="edit post"
                     class="glyphicon glyphicon-pencil glyphicon-large pointer">
                   </span>&nbsp;

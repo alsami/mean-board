@@ -24,7 +24,7 @@ ThreadSchema.plugin(deepPopulate, {
 			select : '_id userName'
 		},
 		'posts' : {
-			select : '_id body createdBy updatedBy updatedAt deletedAt'
+			select : '_id body createdBy updatedBy updatedAt updateReason deletedAt'
 		},
 		'posts.createdBy' : {
 			select : '_id userName'

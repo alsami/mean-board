@@ -73,9 +73,16 @@ threadModule.controller('threadCtrl', ['$scope', '$stateParams', '$state', 'thre
 	}
 
 	$scope.updatePost = function(post){
+		console.log(post.updateReason);
 		postFactory.updatePost(post, function(data){
 			$scope.thread.posts[$scope.thread.posts.indexOf(post)] = data;
-			$scope.enableEditation(false, null);
+			$scope.editPost = null;
+		});
+	}
+
+	$scope.deletePost = function(post){
+		postFactory.deletePost(post._id, function(data){
+			$scope.thread.posts[$scope.thread.posts.indexOf(post)] = data;
 		});
 	}
 
@@ -93,9 +100,8 @@ threadModule.controller('threadCtrl', ['$scope', '$stateParams', '$state', 'thre
 		console.log("Not implemented yet.");
 	}
 
-	$scope.enableEditation = function(boolEnable, editItemId){
-		$scope.editationEnabled = boolEnable;
-		$scope.editItemId = editItemId;
+	$scope.enableEditation = function(post){
+		$scope.editPost = post;
 	}
 
 	$scope.isThreadSelected = function(){

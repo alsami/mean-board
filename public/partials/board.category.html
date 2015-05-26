@@ -1,9 +1,10 @@
 <ol class="breadcrumb">
   <li><a href="/#/home">Home</a></li>
-  <li><a href="/#/board">Board</a></li>
+  <li ng-show="!isSingleCategorySelected();" class="active">Board</li>
+  <li ng-show="isSingleCategorySelected();"><a href="/#/board">Board</a></li>
   <li ng-hide="category.parent.parent == null"><a href="/#/board/category?categoryId={{category.parent.parent._id}}">{{ category.parent.parent.title}}</a></li>
   <li ng-hide="category.parent == null"><a href="/#/board/category?categoryId={{category.parent._id}}">{{category.parent.title}}</a></li>
-  <li class="active">{{category.title}}</li>
+  <li ng-hide="!isSingleCategorySelected();" class="active">{{category.title}}</li>
 </ol>
 <div ng-hide="category.categories.length == 0 || !isSingleCategorySelected();" class="panel panel-primary">
   <div class="panel-heading">

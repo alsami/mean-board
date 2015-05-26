@@ -122,7 +122,8 @@ var return_populated_post = function(post, res, next){
 			' parent.parent.parent' +
 			' parent.parent.parent.parent' +
 			' createdBy' +
-			' updatedBy'
+			' updatedBy' +
+			' updateReason'
 		)
 		.exec(function(err, populated_post){
 			if(err) return next(err);
@@ -134,6 +135,7 @@ var return_populated_post = function(post, res, next){
 
 // update post by id
 router.put('/:id', permission.check, function(req, res, next) {
+	console.log(req.body);
 	req.url = '/post'; // hack for acl
 	var permitted_obj = permission.permitted_obj(req);
 	permitted_obj.updatedBy = req.user._id;
