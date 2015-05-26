@@ -38,7 +38,6 @@ threadModule.controller('threadCtrl', ['$scope', '$stateParams', '$state', 'thre
 
 	$scope.initializeValues = function(){
 		if($scope.isThreadSelected()){
-			// Creating a new Thread
 			var	promise = threadFactory.getThread($stateParams.threadId)
 			promise.then(function(result){
 				$scope.thread = result.data;
