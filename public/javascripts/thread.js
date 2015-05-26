@@ -23,10 +23,32 @@ threadModule.factory('threadFactory', ['$http', function($http){
 	return threadObject;
 }]);
 
-threadModule.controller('createThreadCtrl', ['$scope', '$state', 'threadFactory', 'postFactory', 'category', function($scope, $state, threadFactory, postFactory, category){
+threadModule.controller('threadCtrl', ['$scope', '$stateParams', '$state', 'threadFactory', 'postFactory', 'category', function($scope, $stateParams, $state, threadFactory, postFactory, category){
 	$scope.category = category.data;
-	$scope.newThread = { parent : $scope.category};
+	$scope.thread = null;
+	$scope.newThread = {};
 	$scope.newPost = {};
+	$scope.editationEnabled = false;
+	$scope.editItemId = null;
+
+	$scope.$on('$stateChangeSuccess', function(){
+		$scope.initializeValues();
+	});
+
+
+	$scope.initializeValues = function(){
+		if($scope.isThreadSelected()){
+			// Creating a new Thread
+			var	promise = threadFactory.getThread($stateParams.threadId)
+			promise.then(function(result){
+				$scope.thread = result.data;
+				$scope.newPost.parent = $scope.thread;
+			});
+		}else{
+			$scope.newThread.parent = $scope.category;
+		}
+	}
+
 	$scope.createThread = function(){
 		threadFactory.createThread($scope.newThread, function(thread){
 			$scope.newPost.parent = thread;
@@ -35,15 +57,6 @@ threadModule.controller('createThreadCtrl', ['$scope', '$state', 'threadFactory'
 			});
 		});
 	}
-}]);
-
-threadModule.controller('basicThreadCtrl', ['$scope', '$state', 'threadFactory', 'postFactory', 'category', 'thread', function($scope, $state, threadFactory, postFactory, category, thread){
-	$scope.thread = thread.data;
-	console.log($scope.thread.posts);
-	$scope.category = category.data;
-	$scope.newPost = { parent : $scope.thread };
-	$scope.editationEnabled = false;
-	$scope.editItemId = null;
 
 	$scope.createPost = function(){
 		postFactory.createPost($scope.newPost, function(data){
@@ -84,5 +97,9 @@ threadModule.controller('basicThreadCtrl', ['$scope', '$state', 'threadFactory',
 	$scope.enableEditation = function(boolEnable, editItemId){
 		$scope.editationEnabled = boolEnable;
 		$scope.editItemId = editItemId;
+	}
+
+	$scope.isThreadSelected = function(){
+		return $stateParams.threadId !== undefined ? true : false;
 	}
 }]);

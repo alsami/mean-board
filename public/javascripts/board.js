@@ -45,7 +45,7 @@ boardModule.config(['$stateProvider', function($stateProvider){
 		views: {
 			'body': {
 				templateUrl: './partials/thread.html',
-				controller: 'createThreadCtrl',
+				controller: 'threadCtrl',
 			},
 			'thread-create-view@create-thread': {
 				templateUrl: './partials/thread.create.html',
@@ -65,7 +65,7 @@ boardModule.config(['$stateProvider', function($stateProvider){
 		views: {
 			'body': {
 				templateUrl: './partials/thread.html',
-				controller: 'basicThreadCtrl',
+				controller: 'threadCtrl',
 			},
 			'thread-view@view-thread': {
 				templateUrl: './partials/thread.view.html',
@@ -77,9 +77,6 @@ boardModule.config(['$stateProvider', function($stateProvider){
 		resolve: {
 			category: ['$stateParams', 'categoryFactory', function($stateParams, categoryFactory){
 				return categoryFactory.getCategory($stateParams.categoryId);
-			}],
-			thread: ['$stateParams', 'threadFactory', function($stateParams, threadFactory){
-				return threadFactory.getThread($stateParams.threadId);
 			}]
 		}
 	})
