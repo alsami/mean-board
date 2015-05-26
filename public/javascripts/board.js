@@ -2,6 +2,7 @@ var boardModule = angular.module('board', ['category', 'thread', 'post']);
 
 boardModule.config(['$stateProvider', function($stateProvider){
 	$stateProvider
+	<!-- Main Board-Page -->
 	.state('board', {
 		url: '/board',
 		views: {
@@ -20,6 +21,7 @@ boardModule.config(['$stateProvider', function($stateProvider){
 			}
 		}
 	})
+	<!-- Selecting a single category page -->
 	.state('categoryById', {
 		url: '/board/category?categoryId',
 		views: {
