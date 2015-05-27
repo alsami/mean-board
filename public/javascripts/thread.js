@@ -104,6 +104,10 @@ threadModule.controller('threadCtrl', ['$scope', '$stateParams', '$state', 'thre
 		$scope.editPost = post;
 	}
 
+	$scope.enableDeletation = function(post){
+		$scope.postToDelete = post;
+	}
+
 	$scope.isThreadSelected = function(){
 		return $stateParams.threadId !== undefined ? true : false;
 	}

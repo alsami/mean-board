@@ -68,7 +68,6 @@ categoryModule.controller('categoryCtrl', ['$scope', '$stateParams', 'categoryFa
 
 	$scope.createCategory = function(){
 		if($scope.subParent != null){
-			//console.log('has subParent');
 			$scope.newCategory.parent = $scope.subParent;
 			$scope.subParent = null;
 		}

@@ -41,7 +41,7 @@ boardModule.config(['$stateProvider', function($stateProvider){
 		}
 	})
 	.state('create-thread', {
-		url: '/board/category/create-thread?categoryId',
+		url: '/board/category/thread?categoryId',
 		views: {
 			'body': {
 				templateUrl: './partials/thread.html',
@@ -69,6 +69,9 @@ boardModule.config(['$stateProvider', function($stateProvider){
 			},
 			'thread-view@view-thread': {
 				templateUrl: './partials/thread.view.html',
+			},
+			'administrative@view-thread': {
+				templateUrl: './partials/thread.administrative.html',
 			},
 			'modal': {
 				templateUrl: './partials/user.register.html'
