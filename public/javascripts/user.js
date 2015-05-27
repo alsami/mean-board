@@ -35,23 +35,6 @@ userModule.config(['$stateProvider', function($stateProvider){
 						return userFactory.getAllUsers();
 					}]
 				}
-		})
-		.state('userInbox', {
-			url: '/userInbox',
-			views: {
-				'body': {
-					templateUrl: './partials/user.inbox.html',
-					controller: 'userInboxCtrl'
-				},
-				'modal': {
-					templateUrl: './partials/user.register.html'
-				}
-			},
-			resolve: {
-					messages: ['$stateParams', 'userFactory', function($stateParams, userFactory) {
-						return userFactory.getMessages();
-					}]
-				}
 		});
 }]);
 
@@ -130,7 +113,7 @@ userModule.factory('userFactory', ['$http', function($http){
 	};
 
 	userObject.getMessages = function() {
-		return $http.get('/api/inbox').success(function(data) {
+		return $http.get('/api/message/inbox').success(function(data) {
 			return data;
 		});
 	};
@@ -200,9 +183,4 @@ userModule.controller('userPanelCtrl', ['$scope', 'userFactory', 'user', functio
 userModule.controller('userListCtrl', ['$scope', 'userList', function ($scope, userList) {
 	$scope.userList = userList.data;
 	$scope.usersOrderBy = 'userName';
-}]);
-
-userModule.controller('userInboxCtrl', ['$scope', 'messages', function ($scope, messages) {
-	console.log(messages);
-	console.log("a");
 }]);

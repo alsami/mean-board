@@ -1,0 +1,43 @@
+<ol class="breadcrumb">
+  <li><a href="/#/home">Home</a></li>
+  <li><a ui-sref="userList">Users</a></li>
+  <li><a href="/#/user/{{user._id}}">{{user.userName}}</a></li>
+  <li class="active">Send message</li>
+</ol>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    Send message to {{user.userName}}
+  </div>
+  <div class="panel-body">
+    <div ng-hide="messageCreated">
+      <form ng-submit="submitMessage()">
+        <label>Subject</label>
+        <input type="text" required="true" ng-model="message.subject" class="form-control input-margin" placeholder="subject"/>
+        <label>Message</label>
+        <textarea ng-model="message.body" class="form-control input-margin" placeholder="message" required="true"></textarea>
+
+        <div class="container-fluid pull-right">
+          <a
+            href="/#/user/{{user._id}}"
+            class="btn btn-default"
+            role="button">Cancel</a>
+          <button
+            type="submit"
+            class="btn btn-success"
+          >Send message</button>
+        </div>
+      </form>
+    </div>
+    <div ng-show="messageCreated">
+      <div class="alert alert-success">
+        <span>Message send...</span>
+      </div>
+
+      <a
+        href="/#/user/{{user._id}}"
+        class="btn btn-success"
+        role="button">Back to user</a>
+    </div>
+  </div>
+</div>
