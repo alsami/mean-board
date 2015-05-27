@@ -1,4 +1,4 @@
-<div class="container-fluid pull-right" style="margin-bottom:20px;">
+<div class="pull-right" style="margin-bottom:20px;">
   <button
     ng-show="authUser.role == 'admin'"
     type="button"
@@ -45,7 +45,8 @@
                 type="text"
                 class="form-control"
                 placeholder="Category Title"
-                ng-model="newCategory.title">
+                ng-model="newCategory.title"
+                required="true">
               </input>
             </div>
             <div class="modal-footer">
@@ -61,7 +62,7 @@
                   <button
                     type="submit"
                     class="btn btn-success"
-                    >Create
+                    ><span class="glyphicon glyphicon-ok" aria-hidden="true"></span>&nbsp;Create
                   </button>
                 </div>
               </div>

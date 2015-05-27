@@ -8,19 +8,19 @@
       <li ng-repeat="thread in category.threads" class="list-group-item">
         <div class="container-fluid">
           <a href="/#/board/category/thread?categoryId={{category._id}}&threadId={{thread._id}}">{{thread.title}}</a>
-          <span class="float right">
+          <span class="pull-right">
               {{thread.lastPost.createdBy.userName}}<br />
           </span>
-          <span class="badge float right">{{thread.posts.length}} {{thread.posts.length == 1 ? "Post" : "Posts"}}</span>
+          <span class="badge pull-right">{{thread.posts.length}} {{thread.posts.length == 1 ? "Post" : "Posts"}}</span>
         </div>
       </li>
     </ul>
   </div>
 </div>
-<div class="container-fluid pull-right" style="margin-bottom:20px;">
+<div class="pull-right" style="margin-bottom:20px;">
   <a
     ng-hide="isAuthUserNull();"
-    href="/#/board/category/thread?categoryId={{category._id}}"
+    ui-sref="create-thread({'categoryId' : category._id})"
     class="btn btn-primary"
     role="button">
     <span
@@ -30,3 +30,4 @@
     &nbsp;Create a new thread
   </a>
 </div>
+<!--href="/#/board/category/thread?categoryId={{category._id}}"-->

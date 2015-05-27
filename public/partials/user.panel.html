@@ -90,7 +90,7 @@
           </div>
         </div>
 
-        <div class="container-fluid float right" ng-show="authUser.role == 'admin' || authUser._id == user._id">
+        <div class="container-fluid pull-right" ng-show="authUser.role == 'admin' || authUser._id == user._id">
           <button
             type="button"
             class="btn btn-primary"
@@ -110,7 +110,7 @@
           >Save</button>
         </div>
 
-        <div class="container-fluid float right" ng-show="!isAuthUserNull() && authUser._id != user._id">
+        <div class="container-fluid pull-right" ng-show="!isAuthUserNull() && authUser._id != user._id">
           <button
             type="button"
             class="btn btn-primary"
