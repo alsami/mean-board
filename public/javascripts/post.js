@@ -42,8 +42,12 @@ postModule.factory('postFactory', ['$http', function($http){
 }]);
 
 // This controller will be used for cases, where a single post will be shown
-postModule.controller('postCtrl', ['$scope', 'postFactory', 'post', function($scope, postFactory, post){
-	$scope.post = post.data
+postModule.controller('postCtrl', ['$scope', 'postFactory', 'dataArray', function($scope, postFactory, dataArray){
+	$scope.post = dataArray.data[0];
+	$scope.thread = $scope.post.parent;
+	$scope.category = $scope.thread.parent;
+	console.log($scope.category);
+
 
 	$scope.isPostUpdated = function(updatedAt){
 		return postFactory.isPostUpdated(updatedAt);

@@ -38,7 +38,7 @@ threadModule.controller('threadCtrl', ['$scope', '$stateParams', '$state', 'thre
 
 	$scope.initializeValues = function(){
 		if($scope.isThreadSelected()){
-			var	promise = threadFactory.getThread($stateParams.threadId)
+			var promise = threadFactory.getThread($stateParams.threadId);
 			promise.then(function(result){
 				$scope.thread = result.data;
 				$scope.newPost.parent = $scope.thread;
@@ -64,14 +64,6 @@ threadModule.controller('threadCtrl', ['$scope', '$stateParams', '$state', 'thre
 		});
 	}
 
-	$scope.isPostUpdated = function(updatedAt){
-		return postFactory.isPostUpdated(updatedAt);
-	}
-
-	$scope.isPostDeleted = function(deletedAt){
-		return postFactory.isPostDeleted(deletedAt);
-	}
-
 	$scope.updatePost = function(post){
 		console.log(post.updateReason);
 		postFactory.updatePost(post, function(data){
@@ -86,8 +78,16 @@ threadModule.controller('threadCtrl', ['$scope', '$stateParams', '$state', 'thre
 		});
 	}
 
-	$scope.openPostState = function(postId){
-		$state.go('view-post', {'postId' : postId})
+	$scope.viewPost = function(postId){
+		$state.go('view-post', {'postId' : postId});
+	}
+
+	$scope.isPostUpdated = function(updatedAt){
+		return postFactory.isPostUpdated(updatedAt);
+	}
+
+	$scope.isPostDeleted = function(deletedAt){
+		return postFactory.isPostDeleted(deletedAt);
 	}
 
 	$scope.deletePost = function(post){

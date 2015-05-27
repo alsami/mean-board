@@ -41,7 +41,7 @@ boardModule.config(['$stateProvider', function($stateProvider){
 		}
 	})
 	.state('create-thread', {
-		url: '/board/category/thread?categoryId',
+		url: '/board/category/create-thread?categoryId',
 		views: {
 			'body': {
 				templateUrl: './partials/thread.html',
@@ -61,7 +61,7 @@ boardModule.config(['$stateProvider', function($stateProvider){
 		}
 	})
 	.state('view-thread', {
-		url: '/board/category/thread?categoryId&threadId',
+		url: '/board/category/view-thread?categoryId&threadId',
 		views: {
 			'body': {
 				templateUrl: './partials/thread.html',
@@ -95,7 +95,7 @@ boardModule.config(['$stateProvider', function($stateProvider){
 			}
 		},
 		resolve: {
-			post: ['$stateParams', 'postFactory', function($stateParams, postFactory){
+			dataArray: ['$stateParams', 'postFactory', function($stateParams, postFactory){
 				return postFactory.getPost($stateParams.postId);
 			}]
 		}

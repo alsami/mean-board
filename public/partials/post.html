@@ -2,26 +2,10 @@
   <ol class="breadcrumb">
     <li><a href="/#/home">Home</a></li>
     <li><a href="/#/board">Board</a></li>
-    <li ng-show="post[0].parent.parent.parent.parent != null">
-      <a href="/#/board/category?categoryId={{post[0].parent.parent.parent.parent._id}}">
-        {{post[0].parent.parent.parent.parent.title}}
-      </a>
-    </li>
-    <li ng-show="post[0].parent.parent.parent != null">
-      <a href="/#/board/category?categoryId={{post[0].parent.parent.parent._id}}">
-        {{post[0].parent.parent.parent.title}}
-      </a>
-    </li>
-    <li>
-      <a href="/#/board/category?categoryId={{post[0].parent.parent._id}}">
-        {{post[0].parent.parent.title}}
-      </a>
-    </li>
-    <li>
-      <a href="/#/board/category/thread?categoryId={{post[0].parent.parent._id}}&threadId={{post[0].parent._id}}">
-        {{post[0].parent.title}}
-      </a>
-    </li>
+    <li ng-hide="category.parent.parent == null"><a href="/#/board/category?categoryId={{category.parent.parent._id}}">{{ category.parent.parent.title}}</a></li>
+    <li ng-hide="category.parent == null"><a href="/#/board/category?categoryId={{category.parent._id}}">{{category.parent.title}}</a></li>
+    <li><a href="/#/board/category?categoryId={{category._id}}">{{category.title}}</a></li>
+    <li><a href="/#/board/category/view-thread?categoryId={{category._id}}&threadId={{thread._id}}">{{thread.title}}</a></li>
     <li class="active">View single post</li>
   </ol>
 
