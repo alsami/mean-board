@@ -6,11 +6,30 @@ body{
 	border: none;
 }
 
+.thread-title{
+	text-align: left;
+	width: 70%;
+}
+
+.thread-post-view-info{
+	text-align: left;
+	width: 10%;
+}
+
+.thread-last-post-info{
+	text-align: left;
+	width: 20%;
+}
+
 .post-list-item{
 	display: block;
 	border: 1px solid #ddd;
 	margin-bottom: 20px;
 	padding: 0.5em 0;
+	border-top-left-radius: 4px;
+	border-top-right-radius: 4px;
+	border-bottom-left-radius: 4px;
+	border-bottom-right-radius: 4px;
 }
 
 .post-user-body{

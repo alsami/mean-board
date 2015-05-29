@@ -90,7 +90,7 @@ boardModule.config(['$stateProvider', function($stateProvider){
 	})
 	<!-- Viewing a single post -->
 	.state('view-post', {
-		url: '/board/category/thread/post?postId',
+		url: '/board/category/thread/view-post?postId',
 		views: {
 			'body' : {
 				templateUrl: './partials/post.html',

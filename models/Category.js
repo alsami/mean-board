@@ -37,7 +37,7 @@ CategorySchema.plugin(deepPopulate, {
 			select: '_id title lastPost'
 		},
 		'threads.lastPost' : {
-			select: 'createdBy'
+			select: '_id createdBy createdAt'
 		},
 		'threads.lastPost.createdBy' : {
 			select: '_id userName'
