@@ -21,7 +21,7 @@ boardModule.config(['$stateProvider', function($stateProvider){
 			}
 		}
 	})
-	<!-- Selecting a single category page -->
+	<!-- Viewing a single category -->
 	.state('categoryById', {
 		url: '/board/category?categoryId',
 		views: {
@@ -40,12 +40,13 @@ boardModule.config(['$stateProvider', function($stateProvider){
 			}
 		}
 	})
+	<!-- Creating thread -->
 	.state('create-thread', {
 		url: '/board/category/create-thread?categoryId',
 		views: {
 			'body': {
 				templateUrl: './partials/thread.html',
-				controller: 'threadCtrl',
+				controller: 'createThreadCtrl',
 			},
 			'thread-create-view@create-thread': {
 				templateUrl: './partials/thread.create.html',
@@ -60,18 +61,16 @@ boardModule.config(['$stateProvider', function($stateProvider){
 			}]
 		}
 	})
+	<!-- Viewing thread -->
 	.state('view-thread', {
-		url: '/board/category/view-thread?categoryId&threadId',
+		url: '/board/category/thread?categoryId&threadId',
 		views: {
 			'body': {
 				templateUrl: './partials/thread.html',
-				controller: 'threadCtrl',
+				controller: 'basicThreadCtrl',
 			},
 			'thread-view@view-thread': {
 				templateUrl: './partials/thread.view.html',
-			},
-			'administrative@view-thread': {
-				templateUrl: './partials/thread.administrative.html',
 			},
 			'modal': {
 				templateUrl: './partials/user.register.html'
@@ -80,9 +79,13 @@ boardModule.config(['$stateProvider', function($stateProvider){
 		resolve: {
 			category: ['$stateParams', 'categoryFactory', function($stateParams, categoryFactory){
 				return categoryFactory.getCategory($stateParams.categoryId);
+			}],
+			thread: ['$stateParams', 'threadFactory', function($stateParams, threadFactory){
+				return threadFactory.getThread($stateParams.threadId);
 			}]
 		}
 	})
+	<!-- Viewing a single post -->
 	.state('view-post', {
 		url: '/board/category/thread/post?postId',
 		views: {
@@ -95,7 +98,7 @@ boardModule.config(['$stateProvider', function($stateProvider){
 			}
 		},
 		resolve: {
-			dataArray: ['$stateParams', 'postFactory', function($stateParams, postFactory){
+			post: ['$stateParams', 'postFactory', function($stateParams, postFactory){
 				return postFactory.getPost($stateParams.postId);
 			}]
 		}
