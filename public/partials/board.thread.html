@@ -19,9 +19,11 @@
           </div>
           <div class="pull-left thread-last-post-info">
             <span>
-              Last post by <a href="/#/user/{{thread.lastPost.createdBy._id}}">{{thread.lastPost.createdBy.userName}}</a><br />
+              Last post by <a href="/#/user/{{thread.lastPost.createdBy._id}}">{{thread.lastPost.createdBy.userName}}</a>
               {{thread.lastPost.createdAt | date:"dd.MM.yyyy',' hh:mm"}}&nbsp;
-              <a ui-sref="view-post({'postId' : thread.lastPost._id})"><span title="Jump to last post" class="glyphicon glyphicon-arrow-right"></span></a>
+              <a ui-sref="view-post({'postId' : thread.lastPost._id})">
+                <span title="Jump to last post" class="glyphicon glyphicon-arrow-right"></span>
+              </a>
             </span>
           </div>
         </div>
