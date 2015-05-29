@@ -35,14 +35,15 @@
             <div class="post-content">
               <span ng-show="!isPostDeleted(post.deletedAt);" class="pre-wrap">{{post.body}}</span>
               <!-- When post has been updated -->
-              <span ng-show="isPostUpdated(post.updatedAt);" class="italic-small">
+              <span ng-show="isPostUpdated(post.updatedAt) && !isPostDeleted(post.deletedAt);" class="italic-small">
                 <br /><br />Last updated by <a href="/#/user/{{post.createdBy._id}}">{{post.updatedBy.userName}}</a>
                 on {{post.updatedAt | date:"dd.MM.yyyy 'at' h:mma"}}.
                 <span ng-hide="post.updateReason == null">&nbsp;Reason: {{post.updateReason}}</span>
               </span>
               <!-- When post has been deleted -->
               <span ng-show="isPostDeleted(post.deletedAt);" class="italic-small">
-                This post has been deleted by <a href="/#/user/{{post.createdBy._id}}">{{post.updatedBy.userName}}</a> on {{post.deletedAt | date:"dd.MM.yyyy 'at' h:mma"}}
+                This post has been deleted by <a href="/#/user/{{post.createdBy._id}}">{{post.updatedBy.userName}}</a> on {{post.deletedAt | date:"dd.MM.yyyy 'at' h:mma"}}.
+                <span ng-hide="post.updateReason == null">&nbsp;Reason: {{post.updateReason}}</span>
               </span>
             </div>
           </div>
