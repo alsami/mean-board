@@ -8,21 +8,25 @@
       <li ng-repeat="thread in category.threads" class="list-group-item hide-overflow">
         <div class="thread-body">
           <div class="pull-left thread-title">
-            <a href="/#/user/{{post.createdBy._id}}">
+            <a href="/#/board/category/view-thread?categoryId={{category._id}}&threadId={{thread._id}}">
               <img src="/images/placeholder.png" class="img-rounded" style="width: 40px; height: 40px;">
             </a>
             <a ui-sref="view-thread({'categoryId' : category._id, 'threadId' : thread._id})">{{thread.title}}</a>
           </div>
-          <div class="pull-right thread-post-view-info" style="width:30%;">
-            <span class="badge">{{thread.posts.length}}</span>&nbsp;{{thread.posts.length == 1 ? 'Post' : 'Posts'}}
-            <span class="badge">{{thread.posts.length}}</span>&nbsp;{{thread.posts.length == 1 ? 'View' : 'Views'}}<br />
-            <span>
-              Last post by <a href="/#/user/{{thread.lastPost.createdBy._id}}">{{thread.lastPost.createdBy.userName}}</a><br/>
-              {{thread.lastPost.createdAt | date:"dd.MM.yyyy',' hh:mm"}}&nbsp;
-              <a ui-sref="view-post({'postId' : thread.lastPost._id})">
-                <span title="Jump to last post" class="glyphicon glyphicon-arrow-right"></span>
-              </a>
-            </span>
+          <div class="pull-right thread-post-view-info" style="width:40%;">
+            <div class="pull-left">
+              <span class="badge">{{thread.posts.length}}</span>&nbsp;{{thread.posts.length == 1 ? 'Post' : 'Posts'}}<br />
+              <span class="badge">{{thread.posts.length}}</span>&nbsp;{{thread.posts.length == 1 ? 'View' : 'Views'}}
+            </div>
+            <div class="pull-right">
+              <span>
+                Last post by <a href="/#/user/{{thread.lastPost.createdBy._id}}">{{thread.lastPost.createdBy.userName}}</a><br/>
+                {{thread.lastPost.createdAt | date:"dd.MM.yyyy',' hh:mm"}}&nbsp;
+                <a ui-sref="view-post({'postId' : thread.lastPost._id})">
+                  <span title="Jump to last post in thread &#34;{{thread.title}}&#34;" class="glyphicon glyphicon-arrow-right"></span>
+                </a>
+              </span>
+            </div>
           </div>
         </div>
       </li>

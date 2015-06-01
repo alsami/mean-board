@@ -43,6 +43,7 @@ postModule.factory('postFactory', ['$http', function($http){
 
 // This controller will be used for cases, where a single post will be shown
 postModule.controller('postCtrl', ['$scope', 'postFactory', 'dataArray', function($scope, postFactory, dataArray){
+	console.log(dataArray.data);
 	$scope.post = dataArray.data[0];
 	$scope.thread = $scope.post.parent;
 	$scope.category = $scope.thread.parent;
