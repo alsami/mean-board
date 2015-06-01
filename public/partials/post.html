@@ -23,7 +23,7 @@
                 <div class="post-user-info">
                   <div class="pull-left">
                     <a href="/#/user/{{post.createdBy._id}}">{{post.createdBy.userName}}</a><br />
-                    User role:&nbsp;{{post.createdBy.role}}
+                    {{getUserRoleOutput(post.createdBy.role)}}
                   </div>
                   <div class="pull-right post-user-add-info">
                     Registered since:&nbsp;{{post.createdBy.createdAt | date : "dd.MM.yyyy" }}&nbsp;<br />

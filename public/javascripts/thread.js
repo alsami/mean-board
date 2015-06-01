@@ -111,4 +111,8 @@ threadModule.controller('threadCtrl', ['$scope', '$stateParams', '$state', 'thre
 	$scope.isThreadSelected = function(){
 		return $stateParams.threadId !== undefined ? true : false;
 	}
+
+	$scope.getUserRoleOutput = function(userRole){
+		return postFactory.getUserRoleOutput(userRole);
+	}
 }]);

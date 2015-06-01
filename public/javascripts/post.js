@@ -38,6 +38,23 @@ postModule.factory('postFactory', ['$http', function($http){
 		return deletedAt != null ? true : false;
 	}
 
+	postObject.getUserRoleOutput = function(userRole){
+		switch(userRole){
+			case 'admin':
+				return 'Board-Admin'
+				break;
+			case 'moderator':
+				return 'Board-Moderator'
+				break;
+			case 'user':
+				return 'Board-User'
+				break;
+			default:
+				return null;
+				break;
+		}
+	}
+
 	return postObject;
 }]);
 
@@ -56,5 +73,9 @@ postModule.controller('postCtrl', ['$scope', 'postFactory', 'dataArray', functio
 
 	$scope.isPostDeleted = function(deletedAt){
 		return postFactory.isPostDeleted(deletedAt);
+	}
+
+	$scope.getUserRoleOutput = function(userRole){
+		return postFactory.getUserRoleOutput(userRole);
 	}
 }]);
