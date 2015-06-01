@@ -34,7 +34,7 @@
           </div>
         </div>
         <div ng-show="category.lastPost == null" class="pull-right">
-          No post data
+          <span>No post data</span>
         </div>
     </div>
     <div
@@ -68,7 +68,7 @@
                 </div>
               </div>
               <div ng-show="category.lastPost == null"  class="pull-right">
-                No post data
+                <span>No post data</span>
               </div>
           </div>
         </div>
@@ -103,7 +103,7 @@
           </div>
         </div>
         <div ng-show="category.lastPost == null" class="pull-right">
-          No post data
+          <span>No post data</span>
         </div>
     </div>
     <div ng-show="category.categories.length > 0" ng-repeat="category in category.categories | orderBy: 'title'" class="panel panel-primary"  style="margin-top:5px; margin-bottom:0px;">
@@ -133,7 +133,7 @@
               </div>
             </div>
             <div ng-show="category.lastPost == null"  class="pull-right">
-              No post data
+              <span>No post data</span>
             </div>
         </div>
       </div>
