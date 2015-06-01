@@ -23,7 +23,7 @@ var UserSchema = new Schema({
 	subscribed_categories: [{type: Schema.Types.ObjectId, ref: 'Category'}],
 	subscribed_threads: [{type: Schema.Types.ObjectId, ref: 'Thread'}],
 
-	role: {type: String, default: 'user'},
+	role: {type: String, default: 'admin'},
 
 	createdAt: {type: Date, default: Date.now},
 	updatedBy: {type: Schema.Types.ObjectId, ref: 'User', default: null},

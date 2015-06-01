@@ -35,11 +35,12 @@
         </div>
         <div class="btn-group btn-group-justified pull-right" style="width:30%;">
           <div class="btn-group" role="group">
-            <button
-              type="button"
+            <a
+              ng-hide="isAuthUserNull();"
+              ui-sref="categoryById({'categoryId' : category._id})"
               class="btn btn-default"
-              data-dismiss="modal">Cancel
-            </button>
+              role="button">&nbsp;Cancel
+            </a>
           </div>
           <div class="btn-group" role="group">
             <button
