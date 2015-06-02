@@ -53,7 +53,7 @@ router.get('/outbox', function(req, res, next){
 
 
 // get a specific message by id
-router.get('/:id', permission.check, function(req, res, next){
+router.get('/:id', function(req, res, next){
 	Message.find({_id: req.params.id})
 		.select('_id to from subject body isRead createdAt')
 		.deepPopulate(
