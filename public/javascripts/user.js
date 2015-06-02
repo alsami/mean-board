@@ -112,12 +112,6 @@ userModule.factory('userFactory', ['$http', function($http){
 		});
 	};
 
-	userObject.getMessages = function() {
-		return $http.get('/api/message/inbox').success(function(data) {
-			return data;
-		});
-	};
-
   return userObject;
 }]);
 

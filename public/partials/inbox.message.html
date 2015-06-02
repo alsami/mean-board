@@ -1,0 +1,41 @@
+<ol class="breadcrumb">
+  <li><a href="/#/home">Home</a></li>
+  <li><a href="/#/userInbox">Inbox</a></li>
+  <li class="active">{{message.subject}}</li>
+</ol>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    Message from {{message.from.userName}}: {{message.subject}}
+  </div>
+  <div class="panel-body">
+    {{message.body}}
+  </div>
+</div>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    Reply to {{message.from.userName}}
+  </div>
+  <div class="panel-body">
+    <form ng-submit="submitMessage()">
+      <div ng-show="messageCreated" class="alert alert-success">
+        <span>Message sent...</span>
+      </div>
+
+      <label>Subject</label>
+      <input ng-disabled="messageCreated" type="text" required="true" ng-model="answer.subject" class="form-control input-margin" placeholder="subject"/>
+
+      <label>Message</label>
+      <textarea ng-disabled="messageCreated" ng-model="answer.body" class="form-control input-margin" placeholder="message" required="true"></textarea>
+
+      <div class="container-fluid pull-right">
+        <button
+          type="submit"
+          class="btn btn-success"
+          ng-disabled="messageCreated"
+        >Reply</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -53,7 +53,7 @@ router.get('/outbox', function(req, res, next){
 
 
 // get a specific message by id
-router.get('/:id', permission.check, function(req, res, next){
+router.get('/:id', function(req, res, next){
 	Message.find({_id: req.params.id})
 		.select('_id to from subject body isRead createdAt')
 		.deepPopulate(
@@ -97,7 +97,7 @@ router.post('/', function(req, res, next) {
 
 
 // update message, used to set isRead attribute
-router.put('/:id', permission.check, function(req, res, next) {
+router.put('/:id', function(req, res, next) {
 	// toggle read/unread
 	Message.findById(req.params.id, function (err, message) {
 		if (err) return next(err);
@@ -121,7 +121,7 @@ router.put('/:id', permission.check, function(req, res, next) {
 
 
 // soft delete message by setting current date for deletedAt
-router.delete('/:id', permission.check, function(req, res, next) {
+router.delete('/:id', function(req, res, next) {
 	Message.findByIdAndUpdate(req.params.id, {deletedAt: Date.now()} , function (err, message) {
 		if (err) return next(err);
 		res.header("Content-Type", "application/json; charset=utf-8");
