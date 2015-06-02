@@ -52,7 +52,7 @@
 	            <a href="/#/user/{{authUser._id}}" class="pointer">User CP</a>
 	          </li>
 	          <li>
-	            <a ui-sref="userInbox">Inbox <span ng-show="user.unreadMessages" class="badge">{{user.unreadMessages}}</span></a>
+	            <a ui-sref="userInbox">Inbox <span ng-show="authUser.unreadMessages" class="badge">{{authUser.unreadMessages}}</span></a>
 	          </li>
 	          <li ng-click="logout();" class="pointer">
 	            <a>Logout</a>
@@ -139,5 +139,6 @@
 	<script src="./javascripts/post.js"></script>
 	<script src="./javascripts/board.js"></script>
 	<script src="./javascripts/meanboard.js"></script>
+	<script src="./javascripts/message.js"></script>
 </body>
 </html>

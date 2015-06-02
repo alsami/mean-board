@@ -39,7 +39,7 @@
             <input type="email" required="true" ng-model="user.email" class="form-control input-margin" placeholder="email" ng-show="isEditMode(authUser) && authUser._id == user._id" />
 
             <label ng-show="authUser._id == user._id || user.birthday || isEditMode(authUser)">birthday</label>
-            <p ng-show="user.birthday && !isEditMode(authUser)">{{user.birthday | date:"MM.dd.yyyy"}}</p>
+            <p ng-show="user.birthday && !isEditMode(authUser)">{{user.birthday | date:"dd.MM.yyyy"}}</p>
             <p ng-hide="user.birthday || authUser._id != user._id || isEditMode(authUser)">Please set your birthday</p>
             <input type="date" ng-model="user.birthday" class="form-control input-margin" ng-show="isEditMode(authUser)" />
 
@@ -111,10 +111,10 @@
         </div>
 
         <div class="container-fluid pull-right" ng-show="!isAuthUserNull() && authUser._id != user._id">
-          <button
-            type="button"
+          <a
+            href="/#/user/{{user._id}}/sendMessage"
             class="btn btn-primary"
-          ><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;Send message</button>
+            role="button"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp;Send message</a>
         </div>
       </form>
     </div>

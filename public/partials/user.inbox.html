@@ -1,0 +1,37 @@
+<ol class="breadcrumb">
+  <li><a href="/#/home">Home</a></li>
+  <li class="active">Inbox</li>
+</ol>
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    Inbox
+  </div>
+  <div class="panel-body">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>subject</th>
+          <th>from</th>
+          <th>received at</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr ng-repeat="message in messages">
+          <td>
+            <a ng-show="message.isRead" href="/#/message/{{message._id}}">{{message.subject}}</a>
+            <a ng-hide="message.isRead" href="/#/message/{{message._id}}"><strong>{{message.subject}}</strong></a>
+          </td>
+          <td>{{message.from.userName}}</td>
+          <td>{{message.createdAt | date:"dd.MM.yyyy"}}</td>
+          <td>
+            <span ng-hide="message.isRead" class="badge">Unread</span>
+            <span class="glyphicon glyphicon-envelope pointer" aria-hidden="true" title="reply"></span>
+            <span class="glyphicon glyphicon-trash pointer" aria-hidden="true" title="delete message"></span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
