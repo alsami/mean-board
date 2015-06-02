@@ -46,20 +46,19 @@ categoryModule.controller('categoryCtrl', ['$scope', '$stateParams', 'categoryFa
 	$scope.subParent = null;
 
 	$scope.$on('$stateChangeSuccess', function(){
-		$scope.setCategory();
+		$scope.initializeValues();
 	});
 
-
-	$scope.setCategory = function(){
+	$scope.initializeValues = function(){
 		var promise = null;
 		if(!$scope.isSingleCategorySelected()){
-			console.log("/board - all categories displayed");
+			//console.log("/board - all categories displayed");
 			promise = categoryFactory.getAllCategories();
 			promise.then(function(result){
 				$scope.category = result.data;
 			});
 		}else{
-			console.log("/board/category?categoryIdXY - a single category displayed");
+			//console.log("/board/category?categoryIdXY - a single category displayed");
 			promise = categoryFactory.getCategory($stateParams.categoryId);
 			promise.then(function(result){
 				$scope.category = result.data;
@@ -69,12 +68,11 @@ categoryModule.controller('categoryCtrl', ['$scope', '$stateParams', 'categoryFa
 
 	$scope.createCategory = function(){
 		if($scope.subParent != null){
-			console.log('has subParent');
 			$scope.newCategory.parent = $scope.subParent;
 			$scope.subParent = null;
 		}
 		categoryFactory.createCategory($scope.newCategory, function(callback){
-			$scope.setCategory();
+			$scope.initializeValues();
 			$scope.newCategory = {};
 		});
 	}
@@ -85,5 +83,10 @@ categoryModule.controller('categoryCtrl', ['$scope', '$stateParams', 'categoryFa
 
 	$scope.isSingleCategorySelected = function(){
 		return $stateParams.categoryId !== undefined ? true : false;
+	}
+
+	$scope.isDeepestCategory = function(){
+		//return $scope.category.parent.parent != null ? true : false;
+		console.log($scope.category.parent.parent);
 	}
 }]);

@@ -16,7 +16,7 @@ postModule.factory('postFactory', ['$http', function($http){
 	}
 
 	postObject.updatePost = function(post, callback){
-		return $http.put('/api/post/' + (post._id == undefined ? post[0]._id : post._id), post).success(function(data){
+		return $http.put('/api/post/' + post._id, post).success(function(data){
 			callback(data);
 		})
 		.error(function(error){
@@ -38,20 +38,34 @@ postModule.factory('postFactory', ['$http', function($http){
 		return deletedAt != null ? true : false;
 	}
 
+	postObject.getUserRoleOutput = function(userRole){
+		switch(userRole){
+			case 'admin':
+				return 'Board-Admin'
+				break;
+			case 'moderator':
+				return 'Board-Moderator'
+				break;
+			case 'user':
+				return 'Board-User'
+				break;
+			default:
+				return null;
+				break;
+		}
+	}
+
 	return postObject;
 }]);
 
 // This controller will be used for cases, where a single post will be shown
-postModule.controller('postCtrl', ['$scope', 'postFactory', 'post', function($scope, postFactory, post){
-	$scope.post = post.data;
-	$scope.editationEnabled = false;
+postModule.controller('postCtrl', ['$scope', 'postFactory', 'dataArray', function($scope, postFactory, dataArray){
+	console.log(dataArray.data);
+	$scope.post = dataArray.data[0];
+	$scope.thread = $scope.post.parent;
+	$scope.category = $scope.thread.parent;
+	console.log($scope.category);
 
-	$scope.updatePost = function(post){
-		postFactory.updatePost(post, function(data){
-			$scope.post[0] = data;
-			$scope.enableEditation(false);
-		});
-	}
 
 	$scope.isPostUpdated = function(updatedAt){
 		return postFactory.isPostUpdated(updatedAt);
@@ -61,11 +75,7 @@ postModule.controller('postCtrl', ['$scope', 'postFactory', 'post', function($sc
 		return postFactory.isPostDeleted(deletedAt);
 	}
 
-	$scope.quotePost = function(post){
-		console.log("Not implemented yet.");
-	}
-
-	$scope.enableEditation = function(boolEnable){
-		$scope.editationEnabled = boolEnable;
+	$scope.getUserRoleOutput = function(userRole){
+		return postFactory.getUserRoleOutput(userRole);
 	}
 }]);

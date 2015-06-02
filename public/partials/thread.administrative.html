@@ -1,0 +1,36 @@
+<div class="container-fluid">
+  <div class="modal fade" id="modalWindowDeletePost" tabindex="-1" role="dialog" aria-labelledby="modalWindowLabelDelete" aria-hidden="true">
+    <div class="modal-dialog" style="margin: 20% auto;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="modalWindowLabelDelete">Delete Post</h4>
+        </div>
+        <div class="modal-body">
+          Do you really want to delete this post?
+        </div>
+        <div class="modal-footer">
+          <form ng-submit="deletePost(postToDelete);">
+            <div class="btn-group btn-group-justified pull-right" style="width:30%;">
+              <div class="btn-group" role="group">
+                <button
+                  type="button"
+                  class="btn btn-default"
+                  ng-click="enableDeletation(null);"
+                  data-dismiss="modal">Cancel
+                </button>
+              </div>
+              <div class="btn-group" role="group">
+                <button
+                  type="submit"
+                  class="btn btn-danger"
+                  >Delete
+                </button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

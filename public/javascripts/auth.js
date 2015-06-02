@@ -1,6 +1,6 @@
 var authModule = angular.module('auth', []);
 
-authModule.controller('authCtrl', ['$scope', 'userFactory', function($scope, userFactory){
+authModule.controller('authCtrl', ['$scope', '$window', 'userFactory', function($scope, $window, userFactory){
 	$scope.newUser = {};
 	$scope.existingUser = {};
 
@@ -12,6 +12,7 @@ authModule.controller('authCtrl', ['$scope', 'userFactory', function($scope, use
 		userFactory.create($scope.newUser, function(data){
 			$scope.authUser = data;
 			$scope.newUser = {};
+			$window.location.reload();
 		});
 	};
 

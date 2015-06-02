@@ -23,10 +23,31 @@ threadModule.factory('threadFactory', ['$http', function($http){
 	return threadObject;
 }]);
 
-threadModule.controller('createThreadCtrl', ['$scope', '$state', 'threadFactory', 'postFactory', 'category', function($scope, $state, threadFactory, postFactory, category){
+threadModule.controller('threadCtrl', ['$scope', '$stateParams', '$state', 'threadFactory', 'postFactory', 'category', function($scope, $stateParams, $state, threadFactory, postFactory, category){
 	$scope.category = category.data;
-	$scope.newThread = { parent : $scope.category};
+	$scope.thread = null;
+	$scope.newThread = {};
 	$scope.newPost = {};
+	$scope.editationEnabled = false;
+	$scope.editItemId = null;
+
+	$scope.$on('$stateChangeSuccess', function(){
+		$scope.initializeValues();
+	});
+
+
+	$scope.initializeValues = function(){
+		if($scope.isThreadSelected()){
+			var promise = threadFactory.getThread($stateParams.threadId);
+			promise.then(function(result){
+				$scope.thread = result.data;
+				$scope.newPost.parent = $scope.thread;
+			});
+		}else{
+			$scope.newThread.parent = $scope.category;
+		}
+	}
+
 	$scope.createThread = function(){
 		threadFactory.createThread($scope.newThread, function(thread){
 			$scope.newPost.parent = thread;
@@ -35,15 +56,6 @@ threadModule.controller('createThreadCtrl', ['$scope', '$state', 'threadFactory'
 			});
 		});
 	}
-}]);
-
-threadModule.controller('basicThreadCtrl', ['$scope', '$state', 'threadFactory', 'postFactory', 'category', 'thread', function($scope, $state, threadFactory, postFactory, category, thread){
-	$scope.thread = thread.data;
-	console.log($scope.thread.posts);
-	$scope.category = category.data;
-	$scope.newPost = { parent : $scope.thread };
-	$scope.editationEnabled = false;
-	$scope.editItemId = null;
 
 	$scope.createPost = function(){
 		postFactory.createPost($scope.newPost, function(data){
@@ -52,23 +64,30 @@ threadModule.controller('basicThreadCtrl', ['$scope', '$state', 'threadFactory',
 		});
 	}
 
+	$scope.updatePost = function(post){
+		console.log(post.updateReason);
+		postFactory.updatePost(post, function(data){
+			$scope.thread.posts[$scope.thread.posts.indexOf(post)] = data;
+			$scope.editPost = null;
+		});
+	}
+
+	$scope.deletePost = function(post){
+		postFactory.deletePost(post._id, function(data){
+			$scope.thread.posts[$scope.thread.posts.indexOf(post)] = data;
+		});
+	}
+
+	$scope.viewPost = function(postId){
+		$state.go('view-post', {'postId' : postId});
+	}
+
 	$scope.isPostUpdated = function(updatedAt){
 		return postFactory.isPostUpdated(updatedAt);
 	}
 
 	$scope.isPostDeleted = function(deletedAt){
 		return postFactory.isPostDeleted(deletedAt);
-	}
-
-	$scope.updatePost = function(post){
-		postFactory.updatePost(post, function(data){
-			$scope.thread.posts[$scope.thread.posts.indexOf(post)] = data;
-			$scope.enableEditation(false, null);
-		});
-	}
-
-	$scope.openPostState = function(postId){
-		$state.go('view-post', {'postId' : postId})
 	}
 
 	$scope.deletePost = function(post){
@@ -81,8 +100,19 @@ threadModule.controller('basicThreadCtrl', ['$scope', '$state', 'threadFactory',
 		console.log("Not implemented yet.");
 	}
 
-	$scope.enableEditation = function(boolEnable, editItemId){
-		$scope.editationEnabled = boolEnable;
-		$scope.editItemId = editItemId;
+	$scope.enableEditation = function(post){
+		$scope.editPost = post;
+	}
+
+	$scope.enableDeletation = function(post){
+		$scope.postToDelete = post;
+	}
+
+	$scope.isThreadSelected = function(){
+		return $stateParams.threadId !== undefined ? true : false;
+	}
+
+	$scope.getUserRoleOutput = function(userRole){
+		return postFactory.getUserRoleOutput(userRole);
 	}
 }]);

@@ -1,59 +1,140 @@
 <ol class="breadcrumb">
   <li><a href="/#/home">Home</a></li>
-  <li><a href="/#/board">Board</a></li>
+  <li ng-show="!isSingleCategorySelected();" class="active">Board</li>
+  <li ng-show="isSingleCategorySelected();"><a href="/#/board">Board</a></li>
   <li ng-hide="category.parent.parent == null"><a href="/#/board/category?categoryId={{category.parent.parent._id}}">{{ category.parent.parent.title}}</a></li>
   <li ng-hide="category.parent == null"><a href="/#/board/category?categoryId={{category.parent._id}}">{{category.parent.title}}</a></li>
-  <li class="active">{{category.title}}</li>
+  <li ng-hide="!isSingleCategorySelected();" class="active">{{category.title}}</li>
 </ol>
-<div ng-hide="category.categories.length == 0 || !isSingleCategorySelected();" class="panel panel-primary">
-  <div class="panel-heading">
-    {{category.title}}
-  </div>
-  <div class="panel-body">
-    <div ng-show="category.categories.length == 0"  ng-repeat="category in category.categories | orderBy : 'title'"  class="container-fluid category-simple">
-      <img src="/images/placeholder.png" class="img-rounded" alt="an image" style="width:50px; height:50px;" />
-      <a href="/#/board/category?categoryId={{category._id}}">
-        {{category.title}}
-      </a>
-    </div>
-    <div ng-show="category.categories.length > 0" ng-repeat="category in category.categories | orderBy: 'title'" class="panel panel-primary"  style="margin-top:5px; margin-bottom:0px;">
-      <div class="panel-heading">
-        <h3 class="panel-title inner-category-head">{{category.title}}</h3>
-      </div>
-      <div>
-        <div ng-repeat="category in category.categories | orderBy : 'title'" class="container-fluid category-subcategory" style="padding:10px 15px;">
-          <img src="/images/placeholder.png" class="img-rounded" alt="an image" style="width:50px; height:50px;" />
-          <a href="/#/board/category?categoryId={{category._id}}">
-            {{category.title}}
-          </a>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
+<!-- View for all categories -->
 <div ng-hide="isSingleCategorySelected()" ng-repeat="category in category | orderBy : 'title'" class="panel panel-primary">
   <div class="panel-heading">
     {{category.title}}
   </div>
   <div class="panel-body">
-    <div ng-show="category.categories.length == 0" ng-repeat="category in category.categories | orderBy : 'title'"  class="container-fluid category-simple">
-      <img src="/images/placeholder.png" class="img-rounded" alt="an image" style="width:50px; height:50px;" />
-      <a href="/#/board/category?categoryId={{category._id}}">
-        {{category.title}}
-      </a>
+    <div
+      ng-show="category.categories.length == 0"
+      ng-repeat="category in category.categories | orderBy : 'title'"
+      class="category-simple hide-overflow">
+        <a href="/#/board/category?categoryId={{category._id}}">
+          <img src="/images/placeholder.png" class="img-rounded" alt="an image" style="width:50px; height:50px;" />
+        </a>
+        <a href="/#/board/category?categoryId={{category._id}}">
+          {{category.title}}
+        </a>
+        <div ng-hide="category.lastPost == null" class="pull-right">
+          <div class="pull-left">
+            <span>
+              Last post by <a href="/#/user/{{category.lastPost.createdBy._id}}">{{category.lastPost.createdBy.userName}}</a><br />
+              {{category.lastPost.createdAt | date:"dd.MM.yyyy',' hh:mm"}}
+              <a ui-sref="view-post({'postId' : category.lastPost._id})">
+                <span title="Jump to last post" class="glyphicon glyphicon-arrow-right"></span>
+              </a>
+            </span>
+          </div>
+        </div>
+        <div ng-show="category.lastPost == null" class="pull-right">
+          <span>No post data</span>
+        </div>
     </div>
-
+    <div
+      ng-show="category.categories.length > 0"
+      ng-repeat="category in category.categories | orderBy: 'title'"
+      class="panel panel-primary"
+      style="margin-top:5px; margin-bottom:0px;">
+        <div class="panel-heading">
+          <h3 class="panel-title inner-category-head">{{category.title}}</h3>
+        </div>
+        <div>
+          <div
+            ng-repeat="category in category.categories | orderBy : 'title'"
+            class="container-fluid category-subcategory"
+            style="padding:10px 15px;">
+              <a href="/#/board/category?categoryId={{category._id}}">
+                <img src="/images/placeholder.png" class="img-rounded" alt="an image" style="width:50px; height:50px;" />
+              </a>
+              <a href="/#/board/category?categoryId={{category._id}}">
+                {{category.title}}
+              </a>
+              <div ng-hide="category.lastPost == null" class="pull-right">
+                <div class="pull-left">
+                  <span>
+                    Last post by <a href="/#/user/{{category.lastPost.createdBy._id}}">{{category.lastPost.createdBy.userName}}</a><br />
+                    {{category.lastPost.createdAt | date:"dd.MM.yyyy',' hh:mm"}}
+                    <a ui-sref="view-post({'postId' : category.lastPost._id})">
+                      <span title="Jump to last post" class="glyphicon glyphicon-arrow-right"></span>
+                    </a>
+                  </span>
+                </div>
+              </div>
+              <div ng-show="category.lastPost == null"  class="pull-right">
+                <span>No post data</span>
+              </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
+<!-- View for a single category -->
+<div ng-hide="category.categories.length == 0 || !isSingleCategorySelected();" class="panel panel-primary">
+  <div class="panel-heading">
+    {{category.title}}
+  </div>
+  <div class="panel-body">
+    <div
+      ng-show="category.categories.length == 0"
+      ng-repeat="category in category.categories | orderBy : 'title'"
+      class="category-simple">
+        <a href="/#/board/category?categoryId={{category._id}}">
+          <img src="/images/placeholder.png" class="img-rounded" alt="an image" style="width:50px; height:50px;" />
+        </a>
+        <a href="/#/board/category?categoryId={{category._id}}">
+          {{category.title}}
+        </a>
+        <div ng-hide="category.lastPost == null" class="pull-right">
+          <div class="pull-left">
+            <span>
+              Last post by <a href="/#/user/{{category.lastPost.createdBy._id}}">{{category.lastPost.createdBy.userName}}</a><br />
+              {{category.lastPost.createdAt | date:"dd.MM.yyyy',' hh:mm"}}
+              <a ui-sref="view-post({'postId' : category.lastPost._id})">
+                <span  title="Jump to last post in thread &#34;{{category.lastPost.parent.title}}&#34;"  class="glyphicon glyphicon-arrow-right"></span>
+              </a>
+            </span>
+          </div>
+        </div>
+        <div ng-show="category.lastPost == null" class="pull-right">
+          <span>No post data</span>
+        </div>
+    </div>
     <div ng-show="category.categories.length > 0" ng-repeat="category in category.categories | orderBy: 'title'" class="panel panel-primary"  style="margin-top:5px; margin-bottom:0px;">
       <div class="panel-heading">
         <h3 class="panel-title inner-category-head">{{category.title}}</h3>
       </div>
       <div>
-        <div ng-repeat="category in category.categories | orderBy : 'title'" class="container-fluid category-subcategory" style="padding:10px 15px;">
-          <img src="/images/placeholder.png" class="img-rounded" alt="an image" style="width:50px; height:50px;" />
-          <a href="/#/board/category?categoryId={{category._id}}">
-            {{category.title}}
-          </a>
+        <div
+          ng-repeat="category in category.categories | orderBy : 'title'"
+          class="container-fluid category-subcategory"
+          style="padding:10px 15px;">
+            <a href="/#/board/category?categoryId={{category._id}}">
+              <img src="/images/placeholder.png" class="img-rounded" alt="an image" style="width:50px; height:50px;" />
+            </a>
+            <a href="/#/board/category?categoryId={{category._id}}">
+              {{category.title}}
+            </a>
+            <div ng-hide="category.lastPost == null" class="pull-right">
+              <div class="pull-left">
+                <span>
+                  Last post by <a href="/#/user/{{category.lastPost.createdBy._id}}">{{category.lastPost.createdBy.userName}}</a><br />
+                  {{category.lastPost.createdAt | date:"dd.MM.yyyy',' hh:mm"}}
+                  <a ui-sref="view-post({'postId' : category.lastPost._id})">
+                    <span title="Jump to last post in thread &#34;{{category.lastPost.parent.title}}&#34;" class="glyphicon glyphicon-arrow-right"></span>
+                  </a>
+                </span>
+              </div>
+            </div>
+            <div ng-show="category.lastPost == null"  class="pull-right">
+              <span>No post data</span>
+            </div>
         </div>
       </div>
     </div>

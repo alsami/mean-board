@@ -34,10 +34,10 @@ CategorySchema.plugin(deepPopulate, {
 			select: '_id title'
 		},
 		'threads' : {
-			select: '_id title lastPost'
+			select: '_id title lastPost posts'
 		},
 		'threads.lastPost' : {
-			select: 'createdBy'
+			select: '_id createdBy createdAt'
 		},
 		'threads.lastPost.createdBy' : {
 			select: '_id userName'
@@ -46,7 +46,7 @@ CategorySchema.plugin(deepPopulate, {
 			select: '_id title lastPost categories'
 		},
 		'categories.lastPost' : {
-			select: '_id createdBy parent'
+			select: '_id createdBy createdAt parent'
 		},
 		'categories.lastPost.createdBy' : {
 			select: '_id userName'
@@ -58,7 +58,7 @@ CategorySchema.plugin(deepPopulate, {
 			select: '_id title lastPost categories'
 		},
 		'categories.categories.lastPost' : {
-			select: '_id createdBy parent'
+			select: '_id createdBy createdAt parent'
 		},
 		'categories.categories.lastPost.createdBy' : {
 			select: '_id userName'

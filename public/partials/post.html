@@ -2,93 +2,54 @@
   <ol class="breadcrumb">
     <li><a href="/#/home">Home</a></li>
     <li><a href="/#/board">Board</a></li>
-    <li ng-show="post[0].parent.parent.parent.parent != null">
-      <a href="/#/board/category?categoryId={{post[0].parent.parent.parent.parent._id}}">
-        {{post[0].parent.parent.parent.parent.title}}
-      </a>
-    </li>
-    <li ng-show="post[0].parent.parent.parent != null">
-      <a href="/#/board/category?categoryId={{post[0].parent.parent.parent._id}}">
-        {{post[0].parent.parent.parent.title}}
-      </a>
-    </li>
-    <li>
-      <a href="/#/board/category?categoryId={{post[0].parent.parent._id}}">
-        {{post[0].parent.parent.title}}
-      </a>
-    </li>
-    <li>
-      <a href="/#/board/category/thread?categoryId={{post[0].parent.parent._id}}&threadId={{post[0].parent._id}}">
-        {{post[0].parent.title}}
-      </a>
-    </li>
+    <li ng-hide="category.parent.parent == null"><a href="/#/board/category?categoryId={{category.parent.parent._id}}">{{ category.parent.parent.title}}</a></li>
+    <li ng-hide="category.parent == null"><a href="/#/board/category?categoryId={{category.parent._id}}">{{category.parent.title}}</a></li>
+    <li><a href="/#/board/category?categoryId={{category._id}}">{{category.title}}</a></li>
+    <li><a href="/#/board/category/view-thread?categoryId={{category._id}}&threadId={{thread._id}}">{{thread.title}}</a></li>
     <li class="active">View single post</li>
   </ol>
 
   <div class="panel panel-primary">
     <div class="panel-heading">
-      View Post by "{{post[0].createdBy.userName}}" in thread "{{post[0].parent.title}}"
+      View Post by "{{post.createdBy.userName}}" in thread "{{thread.title}}"
     </div>
     <div class="panel-body">
       <div class="list-group">
-        <div class="list-group-item">
-          <!-- When post has been deleted -->
-          <span ng-show="post[0].deletedAt != null" style="font-style:italic; font-size:small;">
-            This post has been deleted by {{post[0].updatedBy.userName}} at {{post[0].deletedAt}}
-          </span>
-          <div ng-hide="post[0].deletedAt != null" ng-show="!editationEnabled" class="post-wrapper">
-            <div class="line-seperator">
-              <a href="#" class="post-user-img">
-                <img class="responsive" title="profilepicture" src="/images/placeholder.png" style="width:50px; height:50px;"/>
-              </a>
-              <a href="/#/user/{{post[0].createdBy._id}}" target="_blank">{{post[0].createdBy.userName}}</a>
-              {{post[0].createdBy}}
-              <br />
-            </div>
-            <div class="line-seperator">
-              <span class="pre-wrap">{{post[0].body}}</span>
-              <!-- When post has been updated -->
-              <span ng-show="post[0].updatedAt != null" style="font-style:italic; font-size:small;">
-                <br />Last updated by {{post[0].updatedBy.userName}} at {{post[0].updatedAt}}
-              </span>
-            </div>
-            <!-- Post Actions -->
-            <div ng-hide="isAuthUserNull();" class="hide-overflow">
-              <div class="pull-right">
-                <p><span class="glyphicon glyphicon-pencil"></span>&nbsp;Edit post</p>
+        <div class="post-list-item">
+          <div>
+            <div class="hide-overflow">
+              <div class="post-user-body">
+                <a href="/#/user/{{post.createdBy._id}}" class="post-user-img"><img src="/images/placeholder.png" class="img-rounded pull-left" style="width: 40px; height: 40px;"></a>
+                <div class="post-user-info">
+                  <div class="pull-left">
+                    <a href="/#/user/{{post.createdBy._id}}">{{post.createdBy.userName}}</a><br />
+                    {{getUserRoleOutput(post.createdBy.role)}}
+                  </div>
+                  <div class="pull-right post-user-add-info">
+                    Registered since:&nbsp;{{post.createdBy.createdAt | date : "dd.MM.yyyy" }}&nbsp;<br />
+                    Postcount:&nbsp;<span class="badge">X</span> Posts&nbsp;
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-            <!-- Updating Post View -->
-            <div ng-show="editationEnabled" class="post-edit-view  hide-overflow">
-              <form ng-submit="updatePost(post)">
-                <div class="form-group">
-                  <textarea
-                    class="form-control"
-                    style="resize:vertical;"
-                    rows="10"
-                    ng-init="post[0].body"
-                    ng-model="post[0].body"
-                    required="true"></textarea>
+            <!-- Simple View -->
+              <div ng-hide="editPost == post" class="post-body no-border">
+                <!-- Post-Body -->
+                <div class="post-content">
+                  <span ng-show="!isPostDeleted(post.deletedAt);" class="pre-wrap">{{post.body}}</span>
+                  <!-- When post has been updated -->
+                  <span ng-show="isPostUpdated(post.updatedAt) && !isPostDeleted(post.deletedAt);" class="italic-small">
+                    <br /><br />Last updated by <a href="/#/user/{{post.createdBy._id}}">{{post.updatedBy.userName}}</a>
+                    on {{post.updatedAt | date:"dd.MM.yyyy 'at' h:mma"}}.
+                    <span ng-hide="post.updateReason == null">&nbsp;Reason: {{post.updateReason}}</span>
+                  </span>
+                  <!-- When post has been deleted -->
+                  <span ng-show="isPostDeleted(post.deletedAt);" class="italic-small">
+                    This post has been deleted by <a href="/#/user/{{post.createdBy._id}}">{{post.updatedBy.userName}}</a> on {{post.deletedAt | date:"dd.MM.yyyy 'at' h:mma"}}.
+                    <span ng-hide="post.updateReason == null">&nbsp;Reason: {{post.updateReason}}</span>
+                  </span>
                 </div>
-                <div class="form-group pull-right">
-                  <button
-                    ng-click="enableEditation(false);"
-                    type="button"
-                    class="btn btn-default"
-                    >Cancel
-                  </button>
-                  <button
-                    type="submit"
-                    class="btn btn-success"
-                    ><span
-                      class="glyphicon glyphicon-plus"
-                      aria-hidden="true">
-                    </span>
-                    &nbsp;Update Post
-                  </button>
-                </div>
-              </form>
+              </div>
             </div>
           </div>
         </div>
