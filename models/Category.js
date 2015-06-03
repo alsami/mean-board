@@ -1,11 +1,17 @@
+/**
+ * Blueprint for categories and interface
+ * for MongoDB
+ */
+
+// dependencies
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-
 var deepPopulate = require('mongoose-deep-populate');
 
+// schema
 var CategorySchema = new Schema({
 	title: String,
-	parent: {type: Schema.Types.ObjectId, ref: 'Category', default: null},
+	parent: {type: Schema.Types.ObjectId, ref: 'Category', default: null}, // if parent === null --> main category
 	categories: [{type: Schema.Types.ObjectId, ref: 'Category'}],
 	threads: [{type: Schema.Types.ObjectId, ref: 'Thread'}],
 	lastPost: {type: Schema.Types.ObjectId, ref: 'Post'},
@@ -16,6 +22,8 @@ var CategorySchema = new Schema({
 	deletedAt: {type: Date, default: null}
 });
 
+// declare what a deepPopulate (chaining population) will return
+// for a specific attribute
 CategorySchema.plugin(deepPopulate, {
 	populate: {
 		'parent' : {

@@ -1,8 +1,14 @@
+/**
+ * Blueprint for posts and interface
+ * for MongoDB
+ */
+
+// dependencies
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-
 var deepPopulate = require('mongoose-deep-populate');
 
+// schema
 var PostSchema = new Schema({
 	body: String,
 	parent: {type: Schema.Types.ObjectId, ref: 'Thread', required: true},
@@ -14,6 +20,8 @@ var PostSchema = new Schema({
 	deletedAt: {type: Date, default: null}
 });
 
+// declare what a deepPopulate (chaining population) will return
+// for a specific attribute
 PostSchema.plugin(deepPopulate, {
 	populate : {
 		'parent' : { // thread

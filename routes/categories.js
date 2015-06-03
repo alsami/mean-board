@@ -1,9 +1,19 @@
+/**
+ * All needed routes to offer CRUD functionality
+ * CRUD:
+ * CREATE - post
+ * READ - get
+ * UPDATE - put
+ * DELETE - put / delete
+ */
+
+// dependencies
 var express = require('express');
 var router = express.Router();
 var permission = require('./lib/permission');
 
 
-/* import mongoose and all needed Models */
+// import mongoose and all needed Models
 var mongoose = require('mongoose');
 var Category = require('../models/Category.js');
 
@@ -73,6 +83,7 @@ router.post('/', function(req, res, next) {
 		if (err) return next(err);
 
 		// if the new category has a parent we will register it
+		// used $push as a shortcut to append the category to its parent
 		if(category.parent !== null){
 			Category.findByIdAndUpdate(category.parent, { $push: { categories: category}}, function(err, category){
 				if(err) return next(err);

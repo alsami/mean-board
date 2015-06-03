@@ -1,10 +1,16 @@
+/**
+ * Controls all needed permissions
+ */
+
+
+// dependencies
 var Post = require('../../models/Post');
 var Thread = require('../../models/Thread');
 var User = require('../../models/User');
 var ACL = require('./acl');
 var permission = {};
 
-
+// check if a role is permitted to call a specifiy http method
 permission.secureApi = function(req, res, next){
 	var isPermitted = getAcl(req);
 	if(isPermitted){
@@ -15,6 +21,7 @@ permission.secureApi = function(req, res, next){
 };
 
 
+// helper function, interface to ACL
 function getAcl(req){
 	var role = getRole(req);
 	console.log('permission.js - role: ', role);
@@ -46,6 +53,7 @@ function getUri(req){
 };
 
 
+// Check if a role is permitted to interact with a specifiy object
 // note: only used for put and delete AND for get by id for messages
 permission.check = function(req, res, next){
 	if(req.user.role === 'admin'){
@@ -107,6 +115,7 @@ function get_requested_user_role(id, callback){
 };
 
 
+// avoid that unallowed attributes will be stored into the DB
 permission.permitted_obj = function(req){
 	var update_obj = {};
 	var attributes = getAcl(req);

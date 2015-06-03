@@ -1,3 +1,24 @@
+/**
+ * Access Control List (ACL)
+ * Specify each role (guest, user, moderator, admin)
+ * and its permissions.
+ *
+ * access_key and editable_by have to be prime numbers
+ * except for role guest. The numbers are used to controll
+ * the permission between the roles.
+ *
+ * Structure:
+ * role : { 
+ * 		access_key: prime number,
+ * 		editable_by: prime_number,
+ * 		object_to_interact_with: {
+ * 			http_method: {
+ * 				boolean or list of allowed attributes
+ * 			}
+ * 		}
+ * }
+ */
+
 var acl = {
 	guest: {
 		access_key: -1,
@@ -196,9 +217,11 @@ var acl = {
 };
 
 
+// uppercase ACL object provides logic
+// and closure for acl list
 var ACL = {};
 
-
+// check if role is permittet
 ACL.isPermitted = function(role, method, uri){
 	try {
 		return acl[role][uri][method];

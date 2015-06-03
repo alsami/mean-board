@@ -1,3 +1,13 @@
+/**
+ * All needed routes to offer CRUD functionality
+ * CRUD:
+ * CREATE - post
+ * READ - get
+ * UPDATE - put
+ * DELETE - put / delete
+ */
+
+// dependencies
 var express = require('express');
 var router = express.Router();
 var permission = require('./lib/permission');

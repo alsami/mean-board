@@ -1,3 +1,9 @@
+/**
+ * This file creates an app object and adds all
+ * needed requirements.
+ * This object is used to start the nodeJS server.
+ */
+
 // default express modules
 var express = require('express');
 var path = require('path');
@@ -35,6 +41,7 @@ mongoose.connect('mongodb://localhost/meanDB', function(err){
 	}
 });
 
+// create app
 var app = express();
 
 // config app
@@ -58,6 +65,7 @@ app.use(session({
 	ephemeral: true // delte cookie when browser close
 }));
 
+// middleware: add a user attribute to the req object, needed for permissions
 app.use(function(req, res, next){
 	if(req.session && req.session.user){
 		User.findOne({userName: req.session.user.userName}, function(err, user){
@@ -76,12 +84,10 @@ app.use(function(req, res, next){
 	}
 });
 
-// secure API with ACLs
+// middleware: secure API with ACLs
 app.use('/api', permission.secureApi);
 
 // use default express middleware
-// uncomment after placing your favicon in /public
-//app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(cookieParser());

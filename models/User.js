@@ -1,15 +1,21 @@
+/**
+ * Blueprint for users and interface
+ * for MongoDB
+ */
+
+// dependencies
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-
 var deepPopulate = require('mongoose-deep-populate');
 
+// schema
 var UserSchema = new Schema({
 	firstName: { type: String, required: true},
 	lastName: String,
 	birthday: Date,
 	gender: String,
 
-	userName: { type: String, required: true, unique: true},
+	userName: { type: String, required: true, unique: true}, // userName has to be unique
 	password: { type: String, required: true },
 	email: {type: String, required: true, unique: true},
 
@@ -33,6 +39,8 @@ var UserSchema = new Schema({
 	deletedAt: {type: Date, default: null}
 });
 
+// declare what a deepPopulate (chaining population) will return
+// for a specific attribute
 UserSchema.plugin(deepPopulate, {});
 
 module.exports = mongoose.model('User', UserSchema);
