@@ -8,6 +8,17 @@
     Inbox
   </div>
   <div class="panel-body">
+    <div class="hide-overflow">
+      <div class="pull-right">
+        <label>Order by</label>
+        <select ng-model="orderBy" class="form-control input-margin">
+          <option value="-createdAt">Created at</option>
+          <option value="isRead">Is Read</option>
+          <option value="from.userName">Sender</option>
+          <option value="subject">Subject</option>
+        </select>
+      </div>
+    </div>
     <table class="table">
       <thead>
         <tr>
@@ -18,7 +29,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr ng-repeat="message in messages">
+        <tr ng-repeat="message in messages | orderBy: orderBy">
           <td>
             <a ng-show="message.isRead" href="/#/message/{{message._id}}">{{message.subject}}</a>
             <a ng-hide="message.isRead" href="/#/message/{{message._id}}"><strong>{{message.subject}}</strong></a>
@@ -28,7 +39,7 @@
           <td>
             <span ng-hide="message.isRead" class="badge">Unread</span>
             <span class="glyphicon glyphicon-envelope pointer" aria-hidden="true" title="reply"></span>
-            <span class="glyphicon glyphicon-trash pointer" aria-hidden="true" title="delete message"></span>
+            <span ng-click="deleteMessage(message)" class="glyphicon glyphicon-trash pointer" aria-hidden="true" title="delete message"></span>
           </td>
         </tr>
       </tbody>
