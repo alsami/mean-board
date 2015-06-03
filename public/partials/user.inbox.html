@@ -1,13 +1,21 @@
+<!-- view for listing messages of the user -->
+<!--
+quick overview about current site and navigation
+-->
 <ol class="breadcrumb">
   <li><a href="/#/home">Home</a></li>
   <li class="active">Inbox</li>
 </ol>
 
+<!--
+main panel
+-->
 <div class="panel panel-primary">
   <div class="panel-heading">
     Inbox
   </div>
   <div class="panel-body">
+    <!-- select field for changing order of the message list -->
     <div class="hide-overflow">
       <div class="pull-right">
         <label>Order by</label>
@@ -19,6 +27,7 @@
         </select>
       </div>
     </div>
+    <!-- table with list of the messages -->
     <table class="table">
       <thead>
         <tr>

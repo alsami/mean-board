@@ -1,10 +1,14 @@
 var userModule = angular.module('user', [])
 
+
+// State provider for registring routes of templates
 userModule.config(['$stateProvider', function($stateProvider){
 	$stateProvider
 		.state('userControlPanel', {
+			// define url
 			url: '/user/{id}',
 			views: {
+				// define templates and controller
 				'body': {
 					templateUrl: './partials/user.panel.html',
 					controller: 'userPanelCtrl'
@@ -14,6 +18,7 @@ userModule.config(['$stateProvider', function($stateProvider){
 				}
 			},
 			resolve: {
+				// get important data for the template
 					user: ['$stateParams', 'userFactory', function($stateParams, userFactory) {
 						return userFactory.getSingleUser($stateParams.id);
 					}]
@@ -38,6 +43,7 @@ userModule.config(['$stateProvider', function($stateProvider){
 		});
 }]);
 
+// user factory for providing functions to get or set user data
 userModule.factory('userFactory', ['$http', function($http){
   userObject = {
   	user: {}
@@ -47,12 +53,15 @@ userModule.factory('userFactory', ['$http', function($http){
   // otherwise you will lose your user when
   // you are reloading your page
   userObject.getUser = function(callback){
+		// http request to a server route to get data of the user, which is currently logged in
   	$http.get('/api/user/login')
   	.success(function(data){
+			// a callback, which is called when the data is received
   		userObject.user = data;
   		callback(userObject.user);
   	})
 	.error(function(error){
+		// a callback, which is called when a error is occured
 		userObject.user = null;
 		callback(null);
 	});
@@ -112,9 +121,14 @@ userModule.factory('userFactory', ['$http', function($http){
 		});
 	};
 
+	// return the collection of functions and data
   return userObject;
 }]);
 
+/*
+ * Controller for user panel
+ * Providing functions and data for the user panel
+*/
 userModule.controller('userPanelCtrl', ['$scope', 'userFactory', 'user', function ($scope, userFactory, user) {
 	$scope.user = user.data;
 	if ($scope.user.birthday != null)
@@ -124,6 +138,7 @@ userModule.controller('userPanelCtrl', ['$scope', 'userFactory', 'user', functio
 	$scope.validationErrors = [];
 	$scope.successMessages = [];
 
+	// for activating and deactivating the edit mode
 	$scope.toggleEditMode = function () {
 		if ($scope.editMode) {
 			$scope.editMode = false;
@@ -133,6 +148,7 @@ userModule.controller('userPanelCtrl', ['$scope', 'userFactory', 'user', functio
 			$scope.editMode = true;
 	};
 
+	// frontend check is user authorized to use the edit mode and he clicked the edit mode button
 	$scope.isEditMode = function (authUser) {
 		if (!authUser)
 			return false;
@@ -146,6 +162,7 @@ userModule.controller('userPanelCtrl', ['$scope', 'userFactory', 'user', functio
 			return false;
 	};
 
+  // validate the form data and submitting the data to the backend using the user factory
 	$scope.submitEditProfile = function (authUser) {
 		$scope.validationErrors = [];
 		$scope.successMessages = [];
@@ -174,7 +191,9 @@ userModule.controller('userPanelCtrl', ['$scope', 'userFactory', 'user', functio
 	};
 }]);
 
+// controler for the user list
 userModule.controller('userListCtrl', ['$scope', 'userList', function ($scope, userList) {
 	$scope.userList = userList.data;
+	// scope variable for the order of the user list, which can be change over the frontend
 	$scope.usersOrderBy = 'userName';
 }]);

@@ -1,9 +1,15 @@
+<!--
+quick overview about current site and navigation
+-->
 <ol class="breadcrumb">
   <li><a href="/#/home">Home</a></li>
   <li><a href="/#/users">Users</a></li>
   <li class="active">{{user.userName}}</li>
 </ol>
 
+<!--
+main panel
+-->
 <div class="panel panel-primary">
   <div class="panel-heading">
     {{user.userName}} (<span ng-show="user.role == 'user'">Registered User</span><span ng-show="user.role == 'moderator'">Board-Moderator</span><span ng-show="user.role == 'admin'">Board-Admin</span>)
@@ -11,6 +17,7 @@
   <div class="panel-body">
     <div class="container-fluid">
       <form ng-submit="submitEditProfile(authUser)">
+        <!-- Div's for showing errors and success messages -->
         <div ng-repeat="validationError in validationErrors" class="alert alert-danger">
           <strong>{{validationError.title}}</strong> <span>{{validationError.error}}</span>
         </div>
@@ -19,6 +26,7 @@
           <strong>{{successMessage.title}}</strong> <span>{{successMessage.message}}</span>
         </div>
 
+        <!-- show user information and is able to show input fields, when the user is authorized -->
         <div class="panel panel-default ucp-personal-information">
           <div class="panel-heading">
             Personal information
@@ -90,6 +98,7 @@
           </div>
         </div>
 
+        <!-- show buttons -->
         <div class="container-fluid pull-right" ng-show="authUser.role == 'admin' || authUser._id == user._id">
           <button
             type="button"

@@ -1,9 +1,16 @@
+<!-- view for reading message and reply -->
+<!--
+quick overview about current site and navigation
+-->
 <ol class="breadcrumb">
   <li><a href="/#/home">Home</a></li>
   <li><a href="/#/userInbox">Inbox</a></li>
   <li class="active">{{message.subject}}</li>
 </ol>
 
+<!--
+panel for the message view
+-->
 <div class="panel panel-primary">
   <div class="panel-heading">
     Message from {{message.from.userName}}: {{message.subject}}
@@ -13,16 +20,21 @@
   </div>
 </div>
 
+<!--
+panel for the reply form
+-->
 <div class="panel panel-primary">
   <div class="panel-heading">
     Reply to {{message.from.userName}}
   </div>
   <div class="panel-body">
     <form ng-submit="submitMessage()">
+      <!-- show success message -->
       <div ng-show="messageCreated" class="alert alert-success">
         <span>Message sent...</span>
       </div>
 
+      <!-- inputs for the answer message -->
       <label>Subject</label>
       <input ng-disabled="messageCreated" type="text" required="true" ng-model="answer.subject" class="form-control input-margin" placeholder="subject"/>
 

@@ -1,14 +1,22 @@
+<!-- user list view -->
+<!--
+quick overview about current site and navigation
+-->
 <ol class="breadcrumb">
   <li><a href="/#/home">Home</a></li>
   <li class="active">Users</li>
 </ol>
 
+<!--
+main panel
+-->
 <div class="panel panel-primary">
   <div class="panel-heading">
     Userlist
   </div>
   <div class="panel-body">
     <div class="container-fluid">
+      <!-- select field for changing order of the user list -->
       <div class="hide-overflow">
         <div class="pull-right">
           <label>Order by</label>
@@ -21,6 +29,7 @@
           </select>
         </div>
       </div>
+      <!-- user list -->
       <div class="list-group">
         <a ng-repeat="user in userList | orderBy: usersOrderBy" href="/#/user/{{user._id}}" class="list-group-item">
           <h4>{{user.userName}}</h4>

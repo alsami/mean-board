@@ -1,3 +1,7 @@
+<!-- view for sending a new message to a user -->
+<!--
+quick overview about current site and navigation
+-->
 <ol class="breadcrumb">
   <li><a href="/#/home">Home</a></li>
   <li><a ui-sref="userList">Users</a></li>
@@ -5,6 +9,9 @@
   <li class="active">Send message</li>
 </ol>
 
+<!--
+main panel
+-->
 <div class="panel panel-primary">
   <div class="panel-heading">
     Send message to {{user.userName}}
@@ -12,11 +19,13 @@
   <div class="panel-body">
     <div ng-hide="messageCreated">
       <form ng-submit="submitMessage()">
+        <!-- form and inputs for the message -->
         <label>Subject</label>
         <input type="text" required="true" ng-model="message.subject" class="form-control input-margin" placeholder="subject"/>
         <label>Message</label>
         <textarea ng-model="message.body" class="form-control input-margin" placeholder="message" required="true"></textarea>
 
+        <!-- submit and cancel button -->
         <div class="container-fluid pull-right">
           <a
             href="/#/user/{{user._id}}"
@@ -29,6 +38,7 @@
         </div>
       </form>
     </div>
+    <!-- show success message, after message is created -->
     <div ng-show="messageCreated">
       <div class="alert alert-success">
         <span>Message sent...</span>
