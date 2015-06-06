@@ -37,7 +37,7 @@ PostSchema.plugin(deepPopulate, {
 			select : '_id title'
 		},
 		'createdBy' : {
-			select: '_id userName createdAt role'
+			select: '_id userName createdAt role posts'
 		},
 		'updatedBy' : {
 			select: '_id userName role'
