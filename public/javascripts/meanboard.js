@@ -5,7 +5,7 @@ var app = angular.module('meanBoard', ['ui.router', 'auth', 'user', 'board', 'me
 // home, sweet home :)
 app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider){
 	// You can uncomment this when testing page-routes
-	// $urlRouterProvider.otherwise('/home');
+	$urlRouterProvider.otherwise('/home');
 
 	$stateProvider
 		.state('home', {
