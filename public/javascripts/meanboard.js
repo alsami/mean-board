@@ -20,9 +20,3 @@ app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $ur
 			}
 		})
 }]);
-
-app.filter('breakFilter', function(){
-		return function(textInput){
-			return textInput ? textInput.replace(/\n/g, '<br />') : '';
-		}
-});

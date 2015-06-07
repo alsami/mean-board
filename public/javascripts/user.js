@@ -67,6 +67,7 @@ userModule.factory('userFactory', ['$http', function($http){
 	});
   };
 
+	// login user
   userObject.login = function(user, callback){
     $http.post('/api/user/login', user)
     .success(function(data){
@@ -78,6 +79,8 @@ userModule.factory('userFactory', ['$http', function($http){
     });
   };
 
+
+	// logout a user
   userObject.logout = function(){
 	$http.get('/api/user/logout')
 	.success(function(data){
@@ -86,6 +89,7 @@ userModule.factory('userFactory', ['$http', function($http){
 	});
   }
 
+	// create a user
   userObject.create = function(user, callback){
     $http.post('/api/user', user)
     .success(function(data){
@@ -97,6 +101,7 @@ userModule.factory('userFactory', ['$http', function($http){
 	});
   };
 
+	// update a user
   userObject.update = function(user, callback){
     return $http.put('/api/user/byID/' + user._id, user)
     .success(function(data){
@@ -109,12 +114,14 @@ userModule.factory('userFactory', ['$http', function($http){
     });
   };
 
+	// get a signle User by id
 	userObject.getSingleUser = function(userId){
 		return $http.get('/api/user/byID/' + userId).success(function(data){
 			return data;
 		});
 	};
 
+	// Get all available users
 	userObject.getAllUsers = function() {
 		return $http.get('/api/user').success(function(data) {
 			return data;
